@@ -1,0 +1,30 @@
+generated: '2026-07-18'
+method: searched
+source: openapi/doppel-openapi-original.yml
+docs: https://doppel.readme.io/docs/authentication
+summary:
+  types:
+  - apiKey
+  api_key_in:
+  - header
+  notes: >-
+    Doppel V1 authenticates with static API keys passed as request headers. User-specific
+    (recommended): send both x-api-key (org key) and x-user-api-key (per-user, self-service,
+    self-rotatable, RBAC-scoped). Organization-wide: send x-api-key only. No OAuth2/OIDC surface.
+schemes:
+- name: api_key
+  type: apiKey
+  in: header
+  parameter: x-api-key
+  description: API key from Doppel Vision API settings. Required for gateway authentication
+    and quota.
+  sources:
+  - openapi/doppel-openapi-original.yml
+- name: user_api_key
+  type: apiKey
+  in: header
+  parameter: x-user-api-key
+  description: User API key from Doppel Vision API settings. Required together with x-api-key
+    for authenticated requests.
+  sources:
+  - openapi/doppel-openapi-original.yml
