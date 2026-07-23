@@ -1,0 +1,1020 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Doppel alerts API
+  description: APIs to interface with Doppel's core system for social engineering defense — Brand Protection alerts, URL scanning, reports, protected assets, and Human Risk Management campaigns.
+  contact:
+    name: Doppel API Support
+    url: https://doppel.readme.io/
+servers:
+- url: https://api.doppel.com/v1
+tags:
+- name: alerts
+paths:
+  /alert:
+    post:
+      description: 'Creates an alert for a specific entity (URL or phone number) within Doppel''s Brand Protection product.
+
+
+        **Behavior:**
+
+        - If an alert already exists for the entity, the existing alert is returned (HTTP 200).
+
+        - If the alert exists but with a different brand than requested, returns HTTP 409.
+
+        - After creation, the alert is automatically processed through Doppel''s triage workflow.
+
+        - If `source` is provided, it must exactly match the "API value" field of an external source configured in your organization''s settings in Doppel Vision.
+
+
+        **Returns HTTP 400 when:**
+
+        - `entity` is missing, not a valid URL, or not a valid phone number.
+
+        - `entity` is a protected asset (e.g. google.com).
+
+        - `tags` is not a list of non-empty strings.
+
+        - `source` does not match any configured external source for the organization.
+
+        - `files` contains more than 10 items, duplicate file names, or is missing `file_to_upload`.
+
+        '
+      summary: Create Alert
+      operationId: create_alert
+      tags:
+      - alerts
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+        deadline: 180
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: Content-Type
+        in: header
+        required: true
+        description: ''
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - entity
+              properties:
+                entity:
+                  type: string
+                  description: URL or phone number to be alerted.
+                  example: https://suspicious-site.example.com
+                brand:
+                  type: string
+                  description: The brand name to associate with the alert. Must match an active (non-archived) brand in your organization. Case-insensitive.
+                  example: Acme Corp
+                tags:
+                  type: array
+                  items:
+                    type: string
+                  description: 'Array of tag names to associate with the alert. Tags must already exist for your organization or be global tags.
+
+                    Tags that don''t exist will be silently ignored.
+
+                    '
+                  example:
+                  - Credential Theft
+                  - NSFW
+                  - Malicious
+                  - Spam
+                source:
+                  type: string
+                  description: Custom API source identifier configured in organization settings in Doppel Vision. Must exactly match the "API value" field of the desired source.
+                  example: slack-integration
+                files:
+                  type: array
+                  maxItems: 10
+                  description: 'Optional list of files to upload with the alert. Each file must include base64-encoded content. Maximum 10 files per request.
+
+                    For Telco alerts, uploaded image files may also be used as the alert''s canonical screenshot. If an uploaded Telco image is selected as the screenshot, Doppel stores a separate screenshot copy for alert review and downstream enforcement workflows while preserving the original Uploaded Files copy. Only upload image files that are appropriate to display as alert evidence.'
+                  items:
+                    $ref: '#/components/schemas/FileInput'
+        required: true
+      responses:
+        '200':
+          description: Alert already exists
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertCreatedResponse'
+        '201':
+          description: Submitted report successfully
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertCreatedResponse'
+        '400':
+          description: Invalid input
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Brand not found or archived for this organization
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Alert already exists with a different brand
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertCreatedResponse'
+        '429':
+          description: Rate limit exceeded
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+      x-google-quota:
+        metricCosts:
+          create-alert-request: 1
+    get:
+      description: 'Retrieves the details of a single alert by its ID or entity value.
+
+
+        **You must provide exactly one of `id` or `entity`**. Providing neither or both returns HTTP 400.
+
+
+        Returns the full alert object including audit logs, tags, entity content, and a signed screenshot URL (expires in 1 hour).
+
+        '
+      summary: Get Alert
+      operationId: get-alert
+      tags:
+      - alerts
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: id
+        in: query
+        required: false
+        description: The alert ID (format ORG-1234). Mutually exclusive with `entity`.
+        example: ACM-1234
+        schema:
+          type: string
+      - name: entity
+        in: query
+        required: false
+        description: The URL, phone number, or email of the alert to retrieve. Mutually exclusive with `id`.
+        example: https://suspicious-site.example.com
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Alert successfully retrieved
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertResponse'
+        '400':
+          description: Invalid input
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Alert not found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+      x-google-quota:
+        metricCosts:
+          get-alert-request: 1
+    put:
+      description: 'Updates an alert''s information in Doppel''s system. Works across all modules.
+
+
+        **You must provide exactly one of `id` or `entity`** to identify the alert. At least one field to update must be provided in the request body.
+
+
+        **Paired parameters:**
+
+        - `tag_action` and `tag_name` must both be provided together.
+
+        - `file_action` and `files` must both be provided together.
+
+        '
+      summary: Update Alert
+      operationId: update_alert
+      tags:
+      - alerts
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+        deadline: 30
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: Content-Type
+        in: header
+        required: true
+        description: ''
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: id
+        in: query
+        required: false
+        description: The alert ID (format ORG-1234). Mutually exclusive with `entity`.
+        example: ACM-1234
+        schema:
+          type: string
+      - name: entity
+        in: query
+        required: false
+        description: The URL, phone number, or email of the alert to update. Mutually exclusive with `id`.
+        example: https://suspicious-site.example.com
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                queue_state:
+                  description: 'New queue state to update the alert with.
+
+                    (Note: taken_down is equivalent to Resolved in the Doppel Vision App)
+
+                    '
+                  type: string
+                  enum:
+                  - doppel_review
+                  - needs_confirmation
+                  - actioned
+                  - taken_down
+                  - monitoring
+                  - archived
+                  example: actioned
+                entity_state:
+                  $ref: '#/components/schemas/EntityState'
+                comment:
+                  type: string
+                  description: A new comment to add to the alert.
+                  example: Confirmed phishing — proceeding with takedown.
+                tag_action:
+                  $ref: '#/components/schemas/TagActionType'
+                tag_name:
+                  type: string
+                  description: Name of the tag to add or remove. Must be provided together with `tag_action`.
+                  example: Credential Theft
+                file_action:
+                  $ref: '#/components/schemas/FileActionType'
+                files:
+                  type: array
+                  maxItems: 10
+                  description: 'List of files to upload or delete. Must be provided together with `file_action`. Maximum 10 files per request. When file_action is "upload", each file must include base64-encoded content in file_to_upload. When file_action is "delete", only file_name is required.
+
+                    For Telco alerts, uploaded image files may also be used as the alert''s canonical screenshot. If an uploaded Telco image is selected as the screenshot, Doppel stores a separate screenshot copy for alert review and downstream enforcement workflows while preserving the original Uploaded Files copy. Deleting the uploaded-file copy does not delete the canonical screenshot copy.'
+                  items:
+                    $ref: '#/components/schemas/FileInput'
+        description: 'Fields to update on the alert. At least one field is required.
+
+          `tag_action`/`tag_name` and `file_action`/`files` are paired — both in each pair must be provided together.
+
+          '
+      responses:
+        '200':
+          description: Updated alert successfully
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AlertResponse'
+        '400':
+          description: Invalid input
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Alert or tag not found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+      x-google-quota:
+        metricCosts:
+          update-alert-request: 1
+  /alert/referrer:
+    post:
+      description: This endpoint submits referrer logs to Doppel for processing. These logs capture URLs that direct visitors to a site and may help identify threats or suspicious activity. Submitting a referrer log does not guarantee that an alert will be generated. Instead, the submitted URL will be analyzed as part of Doppel's referrer log processing.
+      summary: Submit Referrer Logs
+      operationId: submit-referrer-logs
+      tags:
+      - alerts
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+        deadline: 30
+      security:
+      - api_key: []
+        user_api_key: []
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: Content-Type
+        in: header
+        required: true
+        description: ''
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - referrer_url
+              properties:
+                referrer_url:
+                  type: string
+                  description: The referrer URL where the user came from (required). Must not be a known protected asset for your organization.
+                  example: https://suspicious-referrer.example.com/phish
+                destination_url:
+                  type: string
+                  description: The URL where the user navigated to (optional). If provided and not already a known protected asset, it will be automatically added as a protected asset for your organization.
+                  example: https://your-company.com/login
+        description: Referrer log information to be submitted
+        required: true
+      x-google-quota:
+        metricCosts:
+          submit-referrer-logs-request: 1
+      responses:
+        '202':
+          description: Request accepted for processing - URL has been submitted for potential alert creation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Successful referrer log submission.
+        '400':
+          description: Bad request - missing required field, invalid URL format, or URL is a known internal asset
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized - invalid or missing API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /alerts:
+    get:
+      description: 'Returns a paginated list of alerts across all modules, with support for filtering and sorting.
+
+
+        **Sorting:** If `sort_type` is provided, `sort_order` must also be provided. If neither is provided, defaults to `date_sourced` descending.
+
+
+        **Pagination:** Zero-indexed. Default page_size is 30, maximum is 200.
+
+
+        **Note:** In this endpoint''s response, the alert timestamp field is named `last_activity_timestamp` (instead of `last_activity` as returned by GET /alert, PUT /alert, and POST /alert).
+
+        '
+      summary: Get Alerts
+      operationId: get-alerts
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+        deadline: 60
+      tags:
+      - alerts
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: search_key
+        in: query
+        description: Search alerts by URL. Currently only URL search is supported.
+        required: false
+        example: example.com
+        schema:
+          type: string
+      - $ref: '#/components/parameters/QueueStateFilter'
+      - $ref: '#/components/parameters/Product'
+      - name: created_before
+        in: query
+        description: Filter alerts created before this date (ISO 8601 format).
+        required: false
+        example: '2024-01-05T13:45:30'
+        schema:
+          type: string
+          format: date-time
+      - name: created_after
+        in: query
+        description: Filter alerts created after this date (ISO 8601 format).
+        required: false
+        example: '2024-01-01T00:00:00'
+        schema:
+          type: string
+          format: date-time
+      - name: last_activity_timestamp
+        in: query
+        description: Filter alerts with last activity at or after this date (ISO 8601 format).
+        required: false
+        example: '2024-01-05T13:45:30'
+        schema:
+          type: string
+          format: date-time
+      - $ref: '#/components/parameters/SortType'
+      - $ref: '#/components/parameters/SortOrder'
+      - name: page
+        in: query
+        description: Page number for pagination (zero-indexed). Defaults to 0.
+        required: false
+        schema:
+          type: integer
+          default: 0
+      - name: page_size
+        in: query
+        description: Number of alerts per page (default 30, max 200)
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 30
+      - name: tags
+        in: query
+        description: Comma-separated list of tag names to filter alerts by.
+        required: false
+        example: Credential Theft,Malicious
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  alerts:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AlertResponse'
+                  metadata:
+                    type: object
+                    properties:
+                      count:
+                        type: integer
+                        description: Total count of alerts
+                      page:
+                        type: integer
+                        description: Current page number
+                      total_pages:
+                        type: integer
+                        description: Total number of pages
+                      page_size:
+                        type: integer
+                        description: Number of alerts per page
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+      x-google-quota:
+        metricCosts:
+          get-alerts-request: 1
+components:
+  schemas:
+    Product:
+      description: Product category the report belongs to.
+      type: string
+      enum:
+      - domains
+      - social_media
+      - mobile_apps
+      - ecommerce
+      - crypto
+      - email
+      - paid_ads
+      - telco
+      - darkweb
+    AuditLog:
+      title: AuditLog
+      description: A log of the changes on a report.
+      type: object
+      properties:
+        changed_by:
+          type: string
+          description: Email of the user who made the change, or "Doppel".
+        value:
+          type: string
+          description: New log value
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when the change was made.
+        type:
+          type: string
+          description: Type of audit log.
+        metadata:
+          title: Metadata
+          description: Metadata for audit log.
+          type: object
+          properties:
+            enforcement_request:
+              description: Enforcement request information.
+              type: object
+              properties:
+                platform:
+                  description: Platform where the enforcement request was made.
+                  type: string
+                type:
+                  description: Type of enforcement request.
+                  type: string
+            match:
+              description: Match information.
+              type: object
+              properties:
+                domain:
+                  description: Domain information.
+                  type: object
+                  properties:
+                    url:
+                      description: URL associated with metadata.
+                      type: string
+    FileInput:
+      description: A file to upload or delete.
+      type: object
+      required:
+      - file_name
+      properties:
+        file_name:
+          type: string
+          description: Name of the file (e.g. "evidence.png"). Must not contain path separators or start with a dot.
+        file_to_upload:
+          type: string
+          format: byte
+          description: 'Base64-encoded file content. Required when file_action is "upload". Maximum file size is 50MB.
+
+            Supported file extensions: .csv, .docx, .eml, .exe, .gif, .html, .jfif, .jpg, .jpeg, .js, .m4a, .mov, .mp3, .mp4, .msg, .odt, .pdf, .png, .pptx, .rtf, .snagx, .tsv, .txt, .wav, .webp, .xlsx, .zip (files with no extension are also accepted).
+
+            For Telco alerts, uploaded image files may be copied into canonical screenshot storage and used as the alert screenshot. The uploaded-file copy remains separate from the screenshot copy.
+
+            '
+    EntityState:
+      description: 'The live status of the entity (URL, phone number, etc.) that the alert is tracking.
+
+        - `active`: The entity is currently live/accessible.
+
+        - `down`: The entity is no longer accessible (e.g. domain taken down).
+
+        - `parked`: The domain is parked (registered but not hosting active content).
+
+        - `suspicious`: The entity appears to be malicious or suspicious.
+
+        - `unclassified`: The entity has not yet been classified.
+
+        - `unrelated`: The entity has been determined to be unrelated to the brand.
+
+        - `related`: The entity is related to the brand but not necessarily malicious.
+
+        - `unknown`: The entity''s status cannot be determined.
+
+        '
+      type: string
+      enum:
+      - active
+      - down
+      - parked
+      - suspicious
+      - unclassified
+      - unrelated
+      - related
+      - unknown
+    AlertResponse:
+      title: AlertResponse
+      description: 'Full alert object returned by GET /alert, GET /alerts, and PUT /alert.
+
+        Represents a single threat alert tracked by Doppel across any product type (domains, social media, mobile apps, etc.).
+
+        '
+      type: object
+      properties:
+        id:
+          type: string
+          description: Alert ID in the format ORG-NUMBER (e.g. ACM-1234). The prefix is your organization's abbreviation.
+          example: ACM-1234
+        entity:
+          description: The URL, phone number, or email being tracked by this alert.
+          type: string
+          example: https://suspicious-site.example.com
+        brand:
+          description: The brand name this alert is associated with.
+          type: string
+          example: Acme Corp
+        doppel_link:
+          description: Direct link to this alert in the Doppel Vision web app.
+          type: string
+          example: https://app.doppel.com/alerts/ACM-1234
+        queue_state:
+          $ref: '#/components/schemas/QueueState'
+        entity_state:
+          $ref: '#/components/schemas/EntityState'
+        severity:
+          $ref: '#/components/schemas/Severity'
+        source:
+          $ref: '#/components/schemas/ReportSource'
+        product:
+          $ref: '#/components/schemas/Product'
+        platform:
+          description: The specific platform the alert is associated with (e.g. Twitter, Facebook, Linkedin). More granular than product.
+          type: string
+          example: twitter
+        notes:
+          description: Latest comment associated with the alert.
+          type: string
+        uploaded_by:
+          description: Email of the user who submitted the alert, or "Doppel" if sourced automatically.
+          type: string
+          example: jane.doe@company.com
+        assignee:
+          description: Email of the user currently assigned to handle this alert.
+          type: string
+          example: john.doe@company.com
+        created_at:
+          description: Timestamp when the alert was created (ISO 8601).
+          type: string
+          format: date-time
+          example: '2024-06-15T10:30:00'
+        screenshot_url:
+          description: Signed URL of the screenshot associated with the alert. Expires after 1 hour. May be null if no screenshot is available.
+          type: string
+        audit_logs:
+          description: Chronological list of visible changes made to this alert.
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditLog'
+        tags:
+          description: List of tags associated with this alert.
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the tag.
+            example:
+              name: Credential Theft
+        entity_content:
+          $ref: '#/components/schemas/EntityContent'
+        last_activity:
+          description: 'Timestamp of the most recent activity on this alert (ISO 8601).
+
+            Note: GET /alerts returns this field as `last_activity_timestamp` instead.
+
+            '
+          type: string
+          format: date-time
+          example: '2024-06-20T14:00:00'
+        score:
+          description: 'Numeric severity score for the alert, ranging from 0.0 to 1.0 (higher = more severe). May be null.
+
+            '
+          type: number
+          format: float
+          minimum: 0
+          maximum: 1
+        file_results:
+          description: Results of file operations, only present when files were included in the request (PUT /alert).
+          type: array
+          items:
+            $ref: '#/components/schemas/FileResult'
+        alert_summary:
+          description: 'AI-generated summary of the alert, returned by GET /alert, GET /alerts, and PUT /alert.
+
+            May be null when summary generation is still in progress, no visible summary exists, or
+
+            the summary is withheld for restricted users on redacted dark-web alerts.
+
+            '
+          type: string
+          example: This alert tracks a phishing domain impersonating Acme Corp login pages.
+    ErrorResponse:
+      title: ErrorResponse
+      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error description.
+          example: This is an error message
+    FileResult:
+      description: Result of an individual file operation.
+      type: object
+      properties:
+        file_name:
+          type: string
+        success:
+          type: boolean
+        error:
+          type: string
+          description: Error message if the file operation failed. Only present when success is false.
+    QueueState:
+      description: 'The workflow queue an alert is currently in. Maps to the status columns in Doppel Vision.
+
+        - `doppel_review`: Under review by Doppel''s internal team.
+
+        - `needs_confirmation`: Awaiting customer confirmation before enforcement action.
+
+        - `actioned`: Enforcement action has been taken (e.g. takedown request sent).
+
+        - `taken_down`: Threat has been resolved. Equivalent to "Resolved" in Doppel Vision.
+
+        - `monitoring`: Being actively monitored but no enforcement action taken yet.
+
+        - `archived`: Dismissed or no longer relevant.
+
+        '
+      type: string
+      enum:
+      - doppel_review
+      - needs_confirmation
+      - actioned
+      - taken_down
+      - monitoring
+      - archived
+    Severity:
+      description: 'Severity level assigned to the alert.
+
+        - `high`: Confirmed or high-confidence threat requiring immediate action.
+
+        - `medium`: Likely threat that needs further investigation.
+
+        - `low`: Low-confidence signal; may be benign.
+
+        '
+      type: string
+      enum:
+      - high
+      - medium
+      - low
+    EntityContent:
+      description: 'Content related to the entity of the alert, if available, for the following product types: domains, social media posts, social media users, social media groups, mobile apps, ecommerce, emails and paid advertisements. Object fields vary based on product type and availability.
+
+
+        Possible keys and their fields:
+
+        - `root_domain` (product: domains): `domain`, `registrar`, `ip_address`, `country_code`, `hosting_provider`, `contact_email`, `mx_records`, `nameservers`
+
+        - `social_media_user` (product: social_media): `account_created_at`, `slug`, `profile_display_name`, `profile_image_url`, `profile_id`, `num_followers`, `profile_description`, `profile_display_url`
+
+        - `social_media_post` (product: social_media): `external_created_at`, `num_upvotes`, `full_text`, `extra_urls`
+
+        - `social_media_group` (product: social_media): `external_created_at`, `name`, `description`, `num_members`, `image_url`
+
+        - `mobile_app` (product: mobile_apps): `external_created_at`, `title`, `platform_name`, `app_id`, `bundle_id`, `developer_id`, `developer_name`
+
+        - `ecommerce` (product: ecommerce): `price`, `num_units`, `title`, `seller_name`, `description`, `telegram_link`
+
+        - `email` (product: email): `subject`, `forwarder`, `sender`, `receiver`, `cc`, `bcc`, `eml_url`, `body`
+
+        - `telco` (product: telco): `entity_created_at`, `entity_updated_at`, `country_code`, `telco_provider`
+
+        - `advertisement_data` (product: paid_ads): `ad_detail_link`, `destination_url`, `text_content`, `date_first_shown`, `date_last_shown`, `advertiser_data`
+
+        '
+      type: object
+      additionalProperties: true
+    AlertCreatedResponse:
+      title: AlertCreatedResponse
+      description: 'Lightweight response returned by POST /alert. Contains the alert ID and link but not the full alert details.
+
+        Use GET /alert with the returned `id` to retrieve the full alert object.
+
+        '
+      type: object
+      properties:
+        id:
+          type: string
+          description: Alert ID in the format ORG-NUMBER (e.g. ACM-1234).
+          example: ACM-1234
+        entity:
+          description: The URL or phone number submitted for the alert.
+          type: string
+          example: https://suspicious-site.example.com
+        doppel_link:
+          description: Direct link to the alert in the Doppel Vision web app.
+          type: string
+          example: https://app.doppel.com/alerts/ACM-1234
+        last_activity:
+          description: Timestamp of the most recent activity on this alert (ISO 8601).
+          type: string
+          format: date-time
+          example: '2024-06-15T10:30:00'
+        message:
+          description: Additional context about the response. Present when the alert already exists (e.g. "Alert exists but with different brand. To update brand contact support.").
+          type: string
+        file_results:
+          description: Results of file operations, only present when files were included in the request.
+          type: array
+          items:
+            $ref: '#/components/schemas/FileResult'
+    FileActionType:
+      description: 'Type of file operation to perform on an alert.
+
+        - `upload`: Upload new files (file_to_upload is required for each file).
+
+        - `delete`: Delete existing files (only file_name is required).
+
+        '
+      type: string
+      enum:
+      - upload
+      - delete
+    TagActionType:
+      description: 'Action to take on a tag for an alert.
+
+        - `add`: Associate the named tag with the alert.
+
+        - `remove`: Remove the named tag from the alert.
+
+        '
+      type: string
+      enum:
+      - add
+      - remove
+    ReportSource:
+      description: How the report was sourced.
+      type: string
+      enum:
+      - Manual Upload
+      - API Upload
+      - Social Media API
+      - Web Search API
+      - Domains Feed
+      - Phishing Feed
+      - Marketplace API
+      - Ads Feed
+      - Dark Web Feed
+      - SSL Transparency Logs
+      - Pivot
+      - Abuse Box
+      - Brand Abusebox
+      - Email Inbox
+      - Web Beacon
+      - Other
+      - Crawler
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header
+      description: API key from Doppel Vision API settings. Required for gateway authentication and quota.
+    user_api_key:
+      type: apiKey
+      name: x-user-api-key
+      in: header
+      description: User API key from Doppel Vision API settings. Required together with x-api-key for authenticated requests.
+x-readme:
+  parameter-ordering:
+  - path
+  - header
+  - query
+  - body
+  - cookie
+  - form

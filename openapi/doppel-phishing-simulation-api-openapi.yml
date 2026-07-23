@@ -1,0 +1,111 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Doppel alerts phishing-simulation API
+  description: APIs to interface with Doppel's core system for social engineering defense — Brand Protection alerts, URL scanning, reports, protected assets, and Human Risk Management campaigns.
+  contact:
+    name: Doppel API Support
+    url: https://doppel.readme.io/
+servers:
+- url: https://api.doppel.com/v1
+tags:
+- name: phishing-simulation
+paths:
+  /phishing/track:
+    get:
+      description: Tracks user interactions with phishing simulation campaign emails. This endpoint records various actions such as email opens, link clicks, form submissions, and email reports while returning a transparent tracking pixel.
+      summary: Track Phishing Campaign Actions
+      operationId: track_campaign_actions
+      tags:
+      - phishing-simulation
+      parameters:
+      - name: email_id
+        in: query
+        required: false
+        description: Identifier for the simulation email being tracked (deprecated)
+        schema:
+          type: string
+      - name: short_id
+        in: query
+        required: true
+        description: Identifier for the simulation attack instance being tracked
+        schema:
+          type: string
+      - name: action
+        in: query
+        required: true
+        description: Type of action being tracked
+        schema:
+          type: string
+          enum:
+          - EMAIL_OPENED
+          - LINK_CLICKED
+          - FORM_SUBMITTED
+          - EMAIL_REPORTED
+      responses:
+        '200':
+          description: Tracking pixel returned successfully and interaction recorded
+          content:
+            image/png:
+              schema:
+                type: string
+                format: binary
+        '400':
+          description: Missing required tracking parameters
+          content:
+            image/png:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            image/png:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            image/png:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security: []
+      x-google-backend:
+        address: https://track-campaign-actions-725058953679.us-west1.run.app
+        jwt_audience: https://track-campaign-actions-725058953679.us-west1.run.app
+        deadline: 10
+        path_translation: APPEND_PATH_TO_ADDRESS
+      x-google-quota:
+        metricCosts:
+          track-campaign-action-request: 1
+components:
+  schemas:
+    ErrorResponse:
+      title: ErrorResponse
+      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error description.
+          example: This is an error message
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header
+      description: API key from Doppel Vision API settings. Required for gateway authentication and quota.
+    user_api_key:
+      type: apiKey
+      name: x-user-api-key
+      in: header
+      description: User API key from Doppel Vision API settings. Required together with x-api-key for authenticated requests.
+x-readme:
+  parameter-ordering:
+  - path
+  - header
+  - query
+  - body
+  - cookie
+  - form

@@ -1,0 +1,242 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Doppel alerts scan API
+  description: APIs to interface with Doppel's core system for social engineering defense — Brand Protection alerts, URL scanning, reports, protected assets, and Human Risk Management campaigns.
+  contact:
+    name: Doppel API Support
+    url: https://doppel.readme.io/
+servers:
+- url: https://api.doppel.com/v1
+tags:
+- name: scan
+paths:
+  /scan:
+    post:
+      description: Submit a URL for analysis to determine if it contains potentially suspicious or malicious content. Doppel will analyze the submitted URL and categorize its suspiciousness on a scale of low, medium, and high. Based on the suspiciousness of the URL, an alert can be created in our system, facilitating further triage actions.
+      summary: Submit Scan Url
+      operationId: scan
+      tags:
+      - scan
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+        deadline: 30
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: Content-Type
+        in: header
+        required: true
+        description: ''
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - url
+              properties:
+                url:
+                  type: string
+                  description: URL to scan
+                  format: uri
+                  example: https://example.com
+                associated_urls:
+                  type: array
+                  description: URLs associated with the main URL
+                  items:
+                    type: string
+                    format: uri
+                  example:
+                  - https://associated1.com
+                  - https://associated2.com
+        required: true
+      responses:
+        '201':
+          description: Scan for URL created successfully
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  scan_id:
+                    type: string
+                    format: uuid
+                    description: ID of the created scan
+        '400':
+          description: Invalid input
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+      x-google-quota:
+        metricCosts:
+          submit-scan-request: 1
+  /scan/result:
+    get:
+      description: Get the suspiciousness result of a scan given the submitted scan's ID.
+      summary: Get Scan Result
+      operationId: get_scan_result
+      tags:
+      - scan
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+        deadline: 30
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: scan_id
+        in: query
+        required: true
+        description: ID of the scan to retrieve results for
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Successfully retrieved scan results
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    enum:
+                    - PENDING
+                    - COMPLETED
+                    description: Current status of the scan
+                  url:
+                    type: string
+                    description: URL that was submitted to be scanned for suspiciousness
+                  scan_id:
+                    type: string
+                    format: uuid
+                    description: ID of the scan
+                  results:
+                    type: array
+                    description: Array of scan results (empty if status is PENDING)
+                    items:
+                      type: object
+                      properties:
+                        suspiciousness:
+                          type: string
+                          description: Suspiciousness of the scan result
+                          enum:
+                          - low
+                          - medium
+                          - high
+                          - na
+                        category:
+                          type: string
+                          description: Scan Type - what type of scan was performed
+                          enum:
+                          - phishing
+                        scan_data:
+                          type: object
+                          description: Additional data about the scan result
+                          additionalProperties: true
+                        created_at:
+                          type: string
+                          format: date-time
+                          description: Timestamp when the scan result was created
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Scan not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+      x-google-quota:
+        metricCosts:
+          get-scan-result-request: 1
+components:
+  schemas:
+    ErrorResponse:
+      title: ErrorResponse
+      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error description.
+          example: This is an error message
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header
+      description: API key from Doppel Vision API settings. Required for gateway authentication and quota.
+    user_api_key:
+      type: apiKey
+      name: x-user-api-key
+      in: header
+      description: User API key from Doppel Vision API settings. Required together with x-api-key for authenticated requests.
+x-readme:
+  parameter-ordering:
+  - path
+  - header
+  - query
+  - body
+  - cookie
+  - form

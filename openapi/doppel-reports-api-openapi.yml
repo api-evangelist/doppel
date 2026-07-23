@@ -1,0 +1,613 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Doppel alerts reports API
+  description: APIs to interface with Doppel's core system for social engineering defense — Brand Protection alerts, URL scanning, reports, protected assets, and Human Risk Management campaigns.
+  contact:
+    name: Doppel API Support
+    url: https://doppel.readme.io/
+servers:
+- url: https://api.doppel.com/v1
+tags:
+- name: reports
+paths:
+  /report:
+    get:
+      description: Retrieves the report details by URL or ID. Must include exactly one of either `url`, `id` or `display_id`.
+      summary: Get Report
+      deprecated: true
+      operationId: get_report
+      tags:
+      - reports
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: url
+        in: query
+        required: false
+        description: The reported URL to retrieve details for
+        schema:
+          type: string
+          format: uri
+      - name: id
+        in: query
+        required: false
+        description: The report ID to retrieve details for
+        schema:
+          type: string
+      - name: display_id
+        in: query
+        required: false
+        description: The report's display ID to retrieve details for
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Report successfully retrieved
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+        '400':
+          description: Invalid input
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Report not found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+      x-google-quota:
+        metricCosts:
+          get-report-request: 1
+    post:
+      description: Submit a report for the provided URL. Will fail if the URL is invalid or is protected (e.g. google.com) in Doppel's system.
+      summary: Submit Report
+      deprecated: true
+      operationId: submit_report
+      tags:
+      - reports
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+        deadline: 30
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: Content-Type
+        in: header
+        required: true
+        description: ''
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+              - url
+              properties:
+                url:
+                  type: string
+                  description: URL to be reported.
+                screenshot_url:
+                  type: string
+                  description: URL of the customer uploaded screenshot associated with this report.
+        required: true
+      responses:
+        '200':
+          description: Existing report found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+        '201':
+          description: Submitted report successfully
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+        '400':
+          description: Invalid input
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+      x-google-quota:
+        metricCosts:
+          submit-report-request: 1
+    put:
+      description: Updates a report in the system with certain parameters.
+      summary: Update Report
+      deprecated: true
+      operationId: update_report
+      tags:
+      - reports
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+        deadline: 30
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: Content-Type
+        in: header
+        required: true
+        description: ''
+        schema:
+          type: string
+          enum:
+          - application/json
+      - name: url
+        in: query
+        required: false
+        description: One of the reports urls to update
+        schema:
+          type: string
+          format: uri
+      - name: id
+        in: query
+        required: false
+        description: The id of the report to update
+        schema:
+          type: string
+      - name: display_id
+        in: query
+        required: false
+        description: The display ID of the report to update
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                notes:
+                  type: string
+                  description: New notes to update report with (id or display id required)
+                report_status:
+                  $ref: '#/components/schemas/ReportStatus'
+                classification:
+                  $ref: '#/components/schemas/ReportClassification'
+      responses:
+        '200':
+          description: Existing report found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+        '201':
+          description: Updated report successfully
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReportResponse'
+        '400':
+          description: Invalid input
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+      x-google-quota:
+        metricCosts:
+          update-report-request: 1
+  /reports:
+    get:
+      description: Retrieves a list of reports. Can be filtered by various parameters.
+      summary: Get Reports
+      deprecated: true
+      operationId: get_reports
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+      tags:
+      - reports
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: search_key
+        in: query
+        description: Currently only supports search by url
+        required: false
+        schema:
+          type: string
+      - $ref: '#/components/parameters/ReportStatusFilter'
+      - $ref: '#/components/parameters/Product'
+      - name: sourced_before
+        in: query
+        description: Filter reports sourced before this date. '2024-01-05T13:45:30' -- Represents the 5th of January 2024, at 1:45:30 PM
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: sourced_after
+        in: query
+        description: Filter reports sourced after this date. '2024-01-05T13:45:30' -- Represents the 5th of January 2024, at 1:45:30 PM
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - $ref: '#/components/parameters/SortType'
+      - $ref: '#/components/parameters/SortOrder'
+      - name: page
+        in: query
+        description: Page number for pagination; defaults to 0
+        required: false
+        schema:
+          type: integer
+      - name: page_size
+        in: query
+        description: Number of reports per page (default 30, max 200)
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    properties:
+                      reports:
+                        type: array
+                        items:
+                          $ref: '#/components/schemas/ReportResponse'
+                  metadata:
+                    type: object
+                    properties:
+                      count:
+                        type: integer
+                        description: Total count of reports
+                      page:
+                        type: integer
+                        description: Current page number
+                      pages:
+                        type: integer
+                        description: Total number of pages
+                      page_size:
+                        type: integer
+                        description: Number of reports per page
+        '400':
+          description: Invalid input
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+      x-google-quota:
+        metricCosts:
+          get-reports-request: 1
+components:
+  schemas:
+    ReportStatus:
+      description: 'Status of which queue the report is in.
+
+        (Note: taken_down is equivalent to Resolved in the Doppel Vision App)
+
+        '
+      type: string
+      enum:
+      - doppel_review
+      - needs_confirmation
+      - actioned
+      - taken_down
+      - monitoring
+      - archived
+    Product:
+      description: Product category the report belongs to.
+      type: string
+      enum:
+      - domains
+      - social_media
+      - mobile_apps
+      - ecommerce
+      - crypto
+      - email
+      - paid_ads
+      - telco
+      - darkweb
+    AuditLog:
+      title: AuditLog
+      description: A log of the changes on a report.
+      type: object
+      properties:
+        changed_by:
+          type: string
+          description: Email of the user who made the change, or "Doppel".
+        value:
+          type: string
+          description: New log value
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when the change was made.
+        type:
+          type: string
+          description: Type of audit log.
+        metadata:
+          title: Metadata
+          description: Metadata for audit log.
+          type: object
+          properties:
+            enforcement_request:
+              description: Enforcement request information.
+              type: object
+              properties:
+                platform:
+                  description: Platform where the enforcement request was made.
+                  type: string
+                type:
+                  description: Type of enforcement request.
+                  type: string
+            match:
+              description: Match information.
+              type: object
+              properties:
+                domain:
+                  description: Domain information.
+                  type: object
+                  properties:
+                    url:
+                      description: URL associated with metadata.
+                      type: string
+    ErrorResponse:
+      title: ErrorResponse
+      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error description.
+          example: This is an error message
+    ReportClassification:
+      description: New classification to update a report's url with (url required)
+      type: string
+      enum:
+      - suspicious
+      - down
+      - parked
+      - active
+    ReportResponse:
+      title: ReportResponse
+      description: Doppel report schema
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the reported URL
+        display_id:
+          type: string
+          description: Unique identifier for the report (e.g. TST-1234)
+        submitted_url:
+          description: URL submitted for report
+          type: string
+        doppel_url:
+          description: Doppel URL of the report that was created
+          type: string
+        report_status:
+          $ref: '#/components/schemas/ReportStatus'
+        classification:
+          $ref: '#/components/schemas/ReportClassification'
+        product:
+          $ref: '#/components/schemas/Product'
+        source:
+          $ref: '#/components/schemas/ReportSource'
+        notes:
+          description: Notes associated with a report.
+          type: string
+        uploaded_by:
+          description: Email of the user who submitted the report, or "Doppel".
+          type: string
+        created_at:
+          description: Timestamp when the report was created.
+          type: string
+          format: date-time
+        matches:
+          description: A list of matches found for this report.
+          type: array
+          items:
+            type: object
+            properties:
+              domain:
+                type: object
+                properties:
+                  url:
+                    type: string
+                    description: The URL of the matched domain.
+                  screenshot_url:
+                    type: string
+                    description: The URL of the screenshot for the matched domain.
+                  classification:
+                    type: string
+                    description: The classification of the matched domain.
+        root_domain:
+          type: object
+          properties:
+            domain:
+              type: string
+              description: The root domain associated with the reported URL.
+            registrar:
+              type: string
+              description: The registrar of the root domain.
+            ip_address:
+              type: string
+              description: The IP address associated with the root domain.
+            country_code:
+              type: string
+              description: The country code of the root domain's server location.
+            hosting_provider:
+              type: string
+              description: The hosting provider for the root domain.
+        audit_logs:
+          description: A list of changes made to this report.
+          type: array
+          items:
+            $ref: '#/components/schemas/AuditLog'
+        tags:
+          description: A list of tags associated with this report.
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the tag.
+    ReportSource:
+      description: How the report was sourced.
+      type: string
+      enum:
+      - Manual Upload
+      - API Upload
+      - Social Media API
+      - Web Search API
+      - Domains Feed
+      - Phishing Feed
+      - Marketplace API
+      - Ads Feed
+      - Dark Web Feed
+      - SSL Transparency Logs
+      - Pivot
+      - Abuse Box
+      - Brand Abusebox
+      - Email Inbox
+      - Web Beacon
+      - Other
+      - Crawler
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header
+      description: API key from Doppel Vision API settings. Required for gateway authentication and quota.
+    user_api_key:
+      type: apiKey
+      name: x-user-api-key
+      in: header
+      description: User API key from Doppel Vision API settings. Required together with x-api-key for authenticated requests.
+x-readme:
+  parameter-ordering:
+  - path
+  - header
+  - query
+  - body
+  - cookie
+  - form

@@ -1,0 +1,502 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Doppel alerts protected-assets API
+  description: APIs to interface with Doppel's core system for social engineering defense — Brand Protection alerts, URL scanning, reports, protected assets, and Human Risk Management campaigns.
+  contact:
+    name: Doppel API Support
+    url: https://doppel.readme.io/
+servers:
+- url: https://api.doppel.com/v1
+tags:
+- name: protected-assets
+paths:
+  /protected-asset:
+    post:
+      description: Create a new protected asset for one or more brands. Protected assets are URLs, handles, or identifiers that your organization wants to monitor for unauthorized use. The asset must be unique per organization, and the brands must belong to your organization.
+      summary: Create Protected Asset
+      operationId: create-protected-asset
+      tags:
+      - protected-assets
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+        deadline: 30
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: Content-Type
+        in: header
+        required: true
+        description: ''
+        schema:
+          type: string
+          enum:
+          - application/json
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProtectedAssetRequest'
+        required: true
+      responses:
+        '201':
+          description: Protected asset created successfully
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateProtectedAssetResponse'
+        '400':
+          description: Invalid request parameters
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Brand(s) not found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Asset already exists but is archived
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation error - invalid request body (e.g., missing required fields, invalid format)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: array
+                    items:
+                      type: object
+        '429':
+          description: Rate limit exceeded
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+  /protected-asset/{id}:
+    delete:
+      x-google-quota:
+        metricCosts:
+          delete-protected-asset-request: 1
+      description: Delete a protected asset. This removes the asset from your organization's protected assets list, meaning it will no longer suppress alerts for matching content.
+      summary: Delete Protected Asset
+      operationId: delete-protected-asset
+      tags:
+      - protected-assets
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+        deadline: 30
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: id
+        in: path
+        required: true
+        description: The unique identifier (UUID) of the protected asset to delete
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Protected asset deleted successfully
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteProtectedAssetResponse'
+        '400':
+          description: Invalid request parameters (e.g., invalid UUID format)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Protected asset not found or does not belong to your organization
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+  /protected-assets:
+    get:
+      description: List protected assets for the authenticated organization. Filter by platform and/or brand IDs/brand names, with pagination support. Protected assets are URLs, handles, or identifiers that your organization wants to monitor for unauthorized use across various platforms.
+      summary: List Protected Assets
+      operationId: list-protected-assets
+      tags:
+      - protected-assets
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: platform_name
+        in: query
+        description: Filter by platform (e.g., linkedin, facebook, twitter, domains, instagram)
+        required: false
+        schema:
+          type: string
+          enum:
+          - domains
+          - twitter
+          - facebook
+          - instagram
+          - youtube
+          - tiktok
+          - linkedin
+          - reddit
+          - github
+          - telegram
+          - discord
+          - pinterest
+          - snapchat
+          - whatsapp
+          - medium
+          - tumblr
+          - twitch
+          - spotify
+          - threads
+          - bluesky
+          - truth_social
+          - weibo
+          - wechat
+          - apple_app_store
+          - google_play_store
+          - amazon
+          - ebay
+          - alibaba
+          - etsy
+          - walmart
+          - shopee
+          - facebook_marketplace
+          - coinbase
+          - binance
+          - opensea
+          - email
+          - darkweb
+          - telco
+          - google_ads
+          - facebook_ads
+          - bing_ads
+      - name: brand_ids
+        in: query
+        description: Filter by multiple brand IDs (comma-separated, max 100)
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+          maxItems: 100
+      - name: brand_names
+        in: query
+        description: Filter by multiple brand names (comma-separated, case-insensitive, max 100)
+        required: false
+        style: form
+        explode: false
+        schema:
+          type: array
+          items:
+            type: string
+          maxItems: 100
+      - name: limit
+        in: query
+        description: Maximum number of results to return
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          default: 100
+      - name: offset
+        in: query
+        description: Number of results to skip for pagination
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+      responses:
+        '200':
+          description: Successfully retrieved protected assets
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListProtectedAssetsResponse'
+        '400':
+          description: Invalid request parameters
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Validation error - invalid query parameters (e.g., invalid enum value, out of range)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  detail:
+                    type: array
+                    items:
+                      type: object
+        '429':
+          description: Rate limit exceeded
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+components:
+  schemas:
+    CreateProtectedAssetResponse:
+      title: CreateProtectedAssetResponse
+      description: Response model for created protected asset
+      type: object
+      required:
+      - data
+      - message
+      properties:
+        data:
+          $ref: '#/components/schemas/ProtectedAssetResponse'
+        message:
+          type: string
+          description: Success message
+          example: Protected asset created successfully
+    ListProtectedAssetsResponse:
+      title: ListProtectedAssetsResponse
+      description: Response model for list of protected assets
+      type: object
+      required:
+      - data
+      - count
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProtectedAssetResponse'
+        count:
+          type: integer
+          description: Total number of protected assets returned
+    ProtectedAssetResponse:
+      title: ProtectedAssetResponse
+      description: Response model for a single protected asset
+      type: object
+      required:
+      - id
+      - brand_ids
+      - asset_value
+      - created_at
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the protected asset
+        brand_ids:
+          type: array
+          items:
+            type: string
+          description: List of brand IDs associated with this protected asset
+        platform:
+          type: string
+          description: Specific platform (e.g., linkedin, facebook, twitter, domains, instagram). Shown as "Type" in the Doppel dashboard.
+          enum:
+          - domains
+          - twitter
+          - facebook
+          - instagram
+          - youtube
+          - tiktok
+          - linkedin
+          - reddit
+          - github
+          - telegram
+          - discord
+          - pinterest
+          - snapchat
+          - whatsapp
+          - medium
+          - tumblr
+          - twitch
+          - spotify
+          - threads
+          - bluesky
+          - truth_social
+          - weibo
+          - wechat
+          - apple_app_store
+          - google_play_store
+          - amazon
+          - ebay
+          - alibaba
+          - etsy
+          - walmart
+          - shopee
+          - facebook_marketplace
+          - coinbase
+          - binance
+          - opensea
+          - email
+          - darkweb
+          - telco
+          - google_ads
+          - facebook_ads
+          - bing_ads
+        asset_value:
+          type: string
+          description: The protected asset value (URL, handle, identifier, etc.)
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp when the asset was created
+        updated_at:
+          type: string
+          format: date-time
+          description: Timestamp when the asset was last updated
+        updated_by:
+          type: string
+          description: User who last updated the asset. Changes made by Doppel on your behalf are shown as "Doppel". Null when the last editor is unknown.
+    ErrorResponse:
+      title: ErrorResponse
+      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error description.
+          example: This is an error message
+    CreateProtectedAssetRequest:
+      title: CreateProtectedAssetRequest
+      description: Request model for creating a protected asset
+      type: object
+      required:
+      - brand_ids
+      - asset_value
+      properties:
+        brand_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          minItems: 1
+          maxItems: 100
+          description: List of brand IDs to associate with asset (1-100 brand IDs)
+          example:
+          - 123e4567-e89b-12d3-a456-426614174000
+        asset_value:
+          type: string
+          description: The protected asset value (URL, handle, identifier, etc.)
+          example: https://linkedin.com/company/example
+    DeleteProtectedAssetResponse:
+      title: DeleteProtectedAssetResponse
+      description: Response model for deleted protected asset
+      type: object
+      required:
+      - id
+      - message
+      properties:
+        id:
+          type: string
+          description: ID of the deleted protected asset
+          example: 123e4567-e89b-12d3-a456-426614174000
+        message:
+          type: string
+          description: Success message
+          example: Protected asset deleted successfully
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header
+      description: API key from Doppel Vision API settings. Required for gateway authentication and quota.
+    user_api_key:
+      type: apiKey
+      name: x-user-api-key
+      in: header
+      description: User API key from Doppel Vision API settings. Required together with x-api-key for authenticated requests.
+x-readme:
+  parameter-ordering:
+  - path
+  - header
+  - query
+  - body
+  - cookie
+  - form

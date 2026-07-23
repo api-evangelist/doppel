@@ -1,0 +1,254 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Doppel alerts brands API
+  description: APIs to interface with Doppel's core system for social engineering defense — Brand Protection alerts, URL scanning, reports, protected assets, and Human Risk Management campaigns.
+  contact:
+    name: Doppel API Support
+    url: https://doppel.readme.io/
+servers:
+- url: https://api.doppel.com/v1
+tags:
+- name: brands
+paths:
+  /brands:
+    get:
+      description: List active brands for the authenticated organization. Filter by brand_type (organization_brand or personal_brand) and/or name, with pagination support. Only returns active brands (archived brands are excluded).
+      summary: List Brands
+      operationId: list-brands
+      tags:
+      - brands
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: brand_type
+        in: query
+        description: Filter by brand type (organization_brand or personal_brand)
+        required: false
+        schema:
+          type: string
+          enum:
+          - organization_brand
+          - personal_brand
+      - name: name
+        in: query
+        description: Search by brand name (case-insensitive contains)
+        required: false
+        schema:
+          type: string
+      - name: limit
+        in: query
+        description: Maximum number of results to return
+        required: false
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          default: 100
+      - name: offset
+        in: query
+        description: Number of results to skip for pagination
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+      responses:
+        '200':
+          description: Successfully retrieved brands
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetBrandResponse'
+        '400':
+          description: Invalid request parameters
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Invalid query parameter (e.g. out-of-range limit/offset, invalid brand_type)
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+  /brands/{brand_id}:
+    delete:
+      description: Delete (archive) a brand by ID. This soft-deletes the brand by setting its status to archived, along with disabling related sourcing queries, trademarks, customer assets, and designated takedown assets.
+      summary: Delete Brand
+      operationId: delete-brand
+      tags:
+      - brands
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: brand_id
+        in: path
+        description: UUID of the brand to delete
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        '200':
+          description: Brand successfully deleted
+          headers: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    format: uuid
+                    description: UUID of the deleted brand
+        '401':
+          description: Unauthorized
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '403':
+          description: Forbidden - insufficient permissions
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Brand not found
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '422':
+          description: Invalid request - malformed UUID in path
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal server error
+          headers: {}
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+components:
+  schemas:
+    GetBrandResponse:
+      title: GetBrandResponse
+      description: Response model for list of brands
+      type: object
+      required:
+      - data
+      - count
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BrandResponse'
+        count:
+          type: integer
+          description: Total number of brands returned
+    BrandResponse:
+      title: BrandResponse
+      description: Response model for a single brand
+      type: object
+      required:
+      - id
+      - name
+      - brand_type
+      - created_at
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the brand
+        name:
+          type: string
+          description: Brand name
+        brand_type:
+          type: string
+          description: Brand type (e.g., organization_brand)
+        created_at:
+          type: string
+          description: Timestamp when the brand was created
+        updated_at:
+          type: string
+          description: Timestamp when the brand was last updated
+    ErrorResponse:
+      title: ErrorResponse
+      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error description.
+          example: This is an error message
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header
+      description: API key from Doppel Vision API settings. Required for gateway authentication and quota.
+    user_api_key:
+      type: apiKey
+      name: x-user-api-key
+      in: header
+      description: User API key from Doppel Vision API settings. Required together with x-api-key for authenticated requests.
+x-readme:
+  parameter-ordering:
+  - path
+  - header
+  - query
+  - body
+  - cookie
+  - form

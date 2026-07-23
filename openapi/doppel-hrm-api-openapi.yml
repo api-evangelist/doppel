@@ -1,0 +1,405 @@
+openapi: 3.1.0
+info:
+  version: 1.0.0
+  title: Doppel alerts hrm API
+  description: APIs to interface with Doppel's core system for social engineering defense — Brand Protection alerts, URL scanning, reports, protected assets, and Human Risk Management campaigns.
+  contact:
+    name: Doppel API Support
+    url: https://doppel.readme.io/
+servers:
+- url: https://api.doppel.com/v1
+tags:
+- name: hrm
+paths:
+  /hrm/campaigns:
+    get:
+      description: List phishing simulation campaigns for the authenticated organization. Supports filtering by status, campaign type, date range, and test flag. Returns paginated results.
+      summary: List Campaigns
+      operationId: list-hrm-campaigns
+      tags:
+      - hrm
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: status
+        in: query
+        description: Filter by campaign status (e.g. pending, in_progress, finished)
+        schema:
+          type: string
+      - name: campaign_type
+        in: query
+        description: Filter by campaign type (e.g. simulation)
+        schema:
+          type: string
+      - name: launch_date_after
+        in: query
+        description: Filter campaigns launched after this ISO 8601 date
+        schema:
+          type: string
+      - name: launch_date_before
+        in: query
+        description: Filter campaigns launched before this ISO 8601 date
+        schema:
+          type: string
+      - name: is_test
+        in: query
+        description: Include test campaigns (defaults to false)
+        schema:
+          type: boolean
+          default: false
+      - name: sort_by
+        in: query
+        description: 'Sort field: launch_date, created_at, or name'
+        schema:
+          type: string
+          default: created_at
+      - name: sort_order
+        in: query
+        description: 'Sort order: asc or desc'
+        schema:
+          type: string
+          default: desc
+      - name: limit
+        in: query
+        description: Maximum number of results to return
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          default: 100
+      - name: offset
+        in: query
+        description: Number of results to skip for pagination
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+      responses:
+        '200':
+          description: List of campaigns
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListCampaignsResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+  /hrm/campaigns/{campaign_id}:
+    get:
+      description: Get a single phishing simulation campaign by ID for the authenticated organization.
+      summary: Get Campaign
+      operationId: get-hrm-campaign
+      tags:
+      - hrm
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: campaign_id
+        in: path
+        required: true
+        description: Campaign ID
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Campaign details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HrmCampaignResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '404':
+          description: Campaign not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+  /hrm/events:
+    get:
+      description: List phishing simulation user events (observations) for the authenticated organization. Events track user interactions with phishing campaigns such as email opens, link clicks, data submissions, and reports. Includes joined user context (name, department, email) in each event. Supports filtering by campaign, action type, user attributes, and date range.
+      summary: List Events
+      operationId: list-hrm-events
+      tags:
+      - hrm
+      x-google-backend:
+        address: https://external-api-gateway-725058953679.us-west1.run.app
+        jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
+        path_translation: APPEND_PATH_TO_ADDRESS
+      parameters:
+      - $ref: '#/components/parameters/XOrganizationCodeHeader'
+      - name: campaign_id
+        in: query
+        description: Filter events by campaign ID
+        schema:
+          type: string
+      - name: action
+        in: query
+        description: Filter by event type (e.g. email_opened, link_visited, data_submitted, email_reported)
+        schema:
+          type: string
+      - name: sim_user_id
+        in: query
+        description: Filter events by sim user ID
+        schema:
+          type: string
+      - name: department
+        in: query
+        description: Filter events by user department
+        schema:
+          type: string
+      - name: manager_email
+        in: query
+        description: Filter events by user manager email
+        schema:
+          type: string
+      - name: country
+        in: query
+        description: Filter events by user country
+        schema:
+          type: string
+      - name: date_after
+        in: query
+        description: Filter events created after this ISO 8601 date
+        schema:
+          type: string
+      - name: date_before
+        in: query
+        description: Filter events created before this ISO 8601 date
+        schema:
+          type: string
+      - name: sort_by
+        in: query
+        description: 'Sort field: created_at'
+        schema:
+          type: string
+          default: created_at
+      - name: sort_order
+        in: query
+        description: 'Sort order: asc or desc'
+        schema:
+          type: string
+          default: desc
+      - name: limit
+        in: query
+        description: Maximum number of results to return
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          default: 100
+      - name: offset
+        in: query
+        description: Number of results to skip for pagination
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+      responses:
+        '200':
+          description: List of events
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListEventsResponse'
+        '401':
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '500':
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+      security:
+      - api_key: []
+        user_api_key: []
+components:
+  schemas:
+    ListCampaignsResponse:
+      type: object
+      required:
+      - data
+      - count
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HrmCampaignResponse'
+        count:
+          type: integer
+          description: Total number of matching campaigns
+    HrmEventResponse:
+      type: object
+      required:
+      - id
+      - campaign_id
+      - action
+      properties:
+        id:
+          type: string
+          description: Event ID
+        campaign_id:
+          type: string
+          description: Campaign ID this event belongs to
+        action:
+          type: string
+          description: Event type (e.g. email_opened, link_visited, data_submitted, email_reported)
+        created_at:
+          type: string
+          description: ISO 8601 timestamp
+        sim_user_id:
+          type: string
+          description: Sim user ID
+        user_email:
+          type: string
+          description: User email address
+        user_first_name:
+          type: string
+          description: User first name
+        user_last_name:
+          type: string
+          description: User last name
+        department:
+          type: string
+          description: User department
+        manager_email:
+          type: string
+          description: User manager email address
+        country:
+          type: string
+          description: User country
+        device_type:
+          type: string
+          description: Device type (e.g. desktop, mobile)
+        source:
+          type: string
+          description: Event source
+    ErrorResponse:
+      title: ErrorResponse
+      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error description.
+          example: This is an error message
+    HrmCampaignResponse:
+      type: object
+      required:
+      - id
+      - name
+      - status
+      - campaign_type
+      - is_test
+      properties:
+        id:
+          type: string
+          description: Campaign ID
+        name:
+          type: string
+          description: Campaign name
+        status:
+          type: string
+          description: Campaign status (e.g. pending, in_progress, finished)
+        campaign_type:
+          type: string
+          description: Campaign type (e.g. simulation)
+        launch_date:
+          type: string
+          description: ISO 8601 launch date
+        end_date:
+          type: string
+          description: ISO 8601 end date
+        created_at:
+          type: string
+          description: ISO 8601 creation timestamp
+        is_test:
+          type: boolean
+          description: Whether this is a test campaign
+    ListEventsResponse:
+      type: object
+      required:
+      - data
+      - count
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HrmEventResponse'
+        count:
+          type: integer
+          description: Total number of matching events
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header
+      description: API key from Doppel Vision API settings. Required for gateway authentication and quota.
+    user_api_key:
+      type: apiKey
+      name: x-user-api-key
+      in: header
+      description: User API key from Doppel Vision API settings. Required together with x-api-key for authenticated requests.
+x-readme:
+  parameter-ordering:
+  - path
+  - header
+  - query
+  - body
+  - cookie
+  - form
