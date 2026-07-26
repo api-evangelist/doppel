@@ -1,0 +1,36 @@
+generated: '2026-07-18'
+method: searched
+source: https://doppel.readme.io/changelog
+scheme: dated
+current_version: v2
+entries:
+- date: '2026-07-13'
+  title: Doppel API V2 is now available
+  type: addition
+  breaking: false
+  url: https://doppel.readme.io/changelog/2026-07-13-api-v2
+  highlights: New V2 API surface released alongside a V1 migration guide.
+- date: '2026-07-01'
+  title: Protected assets API now returns who last updated each asset
+  type: addition
+  breaking: false
+  url: https://doppel.readme.io/changelog/2026-07-01-updated-by-on-protected-assets
+  highlights: Protected-asset responses now include an updated-by attribution field.
+- date: '2026-07-01'
+  title: AI alert summary on alert API responses
+  type: addition
+  breaking: false
+  url: https://doppel.readme.io/changelog/2026-07-01-alert-summary-on-alert-api-responses
+  highlights: Alert responses now carry an AI-generated summary.
+- date: '2026-06-23'
+  title: Telco screenshots from uploaded alert images
+  type: addition
+  breaking: false
+  url: https://doppel.readme.io/changelog/2026-06-23-telco-screenshot-uploaded-files
+  highlights: Uploaded Telco alert images can be used as the canonical alert screenshot.
+- date: '2026-06-18'
+  title: AI alert summary on GET alert
+  type: addition
+  breaking: false
+  url: https://doppel.readme.io/changelog/2026-06-18-alert-summary-on-get-alert
+  highlights: GET /alert responses gained the AI alert summary field.

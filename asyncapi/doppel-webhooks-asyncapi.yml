@@ -1,0 +1,406 @@
+asyncapi: 3.0.0
+info:
+  title: Doppel Webhooks
+  version: 1.0.0
+  description: AsyncAPI derived from the Doppel V1 OpenAPI webhooks[] surface — the events Doppel POSTs
+    to a subscriber endpoint for Brand Protection, IOC, and Human Risk Management activity. Payload schemas
+    are the real OpenAPI component schemas.
+  x-generated: '2026-07-18'
+  x-method: derived
+  x-source: openapi/doppel-openapi-original.yml (webhooks)
+defaultContentType: application/json
+channels:
+  alert_updated:
+    address: alert_updated
+    description: Fired when an alert is updated in Doppel.
+    messages:
+      alert_updated_message:
+        $ref: '#/components/messages/alert_updated_message'
+  hrm_event:
+    address: hrm_event
+    description: Fired on a Human Risk Management phishing-simulation engagement event (email_sent, email_opened,
+      link_visited, data_submitted, email_reported, quiz_passed/failed, voice call results, etc.).
+    messages:
+      hrm_event_message:
+        $ref: '#/components/messages/hrm_event_message'
+  ioc_updated:
+    address: ioc_updated
+    description: Fired whenever an IOC is updated (subscription-gated; contact Doppel).
+    messages:
+      ioc_updated_message:
+        $ref: '#/components/messages/ioc_updated_message'
+  report_surfaced:
+    address: report_surfaced
+    description: Fired when a report is surfaced; may carry any number of associated URLs and prior audit
+      logs.
+    messages:
+      report_surfaced_message:
+        $ref: '#/components/messages/report_surfaced_message'
+  sms_response:
+    address: sms_response
+    description: Fired whenever an SMS response is received from a Twilio outreach campaign.
+    messages:
+      sms_response_message:
+        $ref: '#/components/messages/sms_response_message'
+  url_surfaced:
+    address: url_surfaced
+    description: Fired whenever any URL appears in Doppel; may be tied to a new or existing report.
+    messages:
+      url_surfaced_message:
+        $ref: '#/components/messages/url_surfaced_message'
+operations:
+  receive_alert_updated:
+    action: receive
+    channel:
+      $ref: '#/channels/alert_updated'
+    summary: Alert Updated
+  receive_hrm_event:
+    action: receive
+    channel:
+      $ref: '#/channels/hrm_event'
+    summary: HRM Campaign Event
+  receive_ioc_updated:
+    action: receive
+    channel:
+      $ref: '#/channels/ioc_updated'
+    summary: IOC Updated Webhook
+  receive_report_surfaced:
+    action: receive
+    channel:
+      $ref: '#/channels/report_surfaced'
+    summary: Report Surfaced
+  receive_sms_response:
+    action: receive
+    channel:
+      $ref: '#/channels/sms_response'
+    summary: SMS Response
+  receive_url_surfaced:
+    action: receive
+    channel:
+      $ref: '#/channels/url_surfaced'
+    summary: URL Surfaced
+components:
+  messages:
+    alert_updated_message:
+      name: alert_updated
+      title: Alert Updated
+      summary: Fired when an alert is updated in Doppel.
+      payload:
+        $ref: '#/components/schemas/AlertUpdatedPayload'
+    hrm_event_message:
+      name: hrm_event
+      title: HRM Campaign Event
+      summary: Fired on a Human Risk Management phishing-simulation engagement event (email_sent, email_opened,
+        link_visited, data_submitted, email_reported, quiz_passed/failed, voice call results, etc.).
+      payload:
+        $ref: '#/components/schemas/HrmEventPayload'
+    ioc_updated_message:
+      name: ioc_updated
+      title: IOC Updated Webhook
+      summary: Fired whenever an IOC is updated (subscription-gated; contact Doppel).
+      payload:
+        $ref: '#/components/schemas/IOCUpdatedPayload'
+    report_surfaced_message:
+      name: report_surfaced
+      title: Report Surfaced
+      summary: Fired when a report is surfaced; may carry any number of associated URLs and prior audit
+        logs.
+      payload:
+        $ref: '#/components/schemas/ReportSurfacedPayload'
+    sms_response_message:
+      name: sms_response
+      title: SMS Response
+      summary: Fired whenever an SMS response is received from a Twilio outreach campaign.
+      payload:
+        $ref: '#/components/schemas/SMSResponsePayload'
+    url_surfaced_message:
+      name: url_surfaced
+      title: URL Surfaced
+      summary: Fired whenever any URL appears in Doppel; may be tied to a new or existing report.
+      payload:
+        $ref: '#/components/schemas/UrlSurfacedPayload'
+  schemas:
+    AlertUpdatedPayload:
+      type: object
+      description: Payload type for the "Alert Updated" webhook.
+      required:
+      - id
+      - doppel_link
+      - created_at
+      - entity
+      - entity_state
+      - queue_state
+      - severity
+      - product
+      - source
+      - notes
+      - uploaded_by
+      - tags
+      properties:
+        id:
+          type: string
+          description: ID of the surfaced alert.
+          example: ABC-12345
+        doppel_link:
+          type: string
+          description: Accessible link to the surfaced alert in Doppel Vision.
+          example: https://app.doppel.com/domains/ABC-12345
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the alert was initially created.
+          example: '2024-08-20T15:30:00Z'
+        entity:
+          type: string
+          description: Value representing the potentially malicious entity identified by the alert.
+          example: https://example.surfaced-domain.com
+        entity_state:
+          type: string
+          description: Current state of the potentially malicious entity identified by the alert.
+          example: active
+        queue_state:
+          type: string
+          description: Current queue that the potentially malicious entity is in.
+          example: doppel_review
+        severity:
+          type: string
+          description: Severity of the alert's suspiciousness.
+          example: high
+        product:
+          type: string
+          description: Product type associated with the alert.
+          example: domains
+        source:
+          type: string
+          description: Source of the alert.
+          example: whoisxml_streaming
+        notes:
+          type: string
+          description: Notes associated with the alert.
+          example: This alert was marked as 'down' on 2024-08-20.
+        uploaded_by:
+          type: string
+          description: Email of the Doppel user who uploaded the alert.
+          example: example@gmail.com
+        tags:
+          type: array
+          description: A list of external tags associated with the alert.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the tag.
+        brand:
+          type: string
+          nullable: true
+          description: The brand associated with the alert.
+        brand_type:
+          type: string
+          nullable: true
+          description: The brand type associated with the alert (for example, organization_brand or personal_brand).
+        credential_data:
+          $ref: '#/components/schemas/AlertDarkWebCredentialData'
+        has_credit_card_data:
+          type: boolean
+          description: This is true if the report dark web contains associated credit card data. Data
+            itself is not shown.
+    HrmEventPayload:
+      type: object
+      description: Payload type for the "HRM Event" webhook. Fired when a phishing simulation campaign
+        engagement event is recorded (e.g., a target opens an attack email, clicks a link, submits data,
+        completes training, or answers a vishing call).
+      required:
+      - action
+      - campaign_id
+      properties:
+        action:
+          type: string
+          description: 'The engagement action that was recorded. Values come from the SimCampaignActions
+            enum (e.g., email_opened, link_visited, data_submitted, quiz_passed) or voice behavior labels
+            (e.g., refusal, disclosure_full, security_escalation).
+
+            '
+          example: link_visited
+        campaign_id:
+          type: string
+          format: uuid
+          description: ID of the phishing simulation campaign.
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        sim_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: ID of the simulated user (target) who performed the action.
+          example: 12345678-abcd-ef01-2345-6789abcdef01
+        sim_attack_instance_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: ID of the specific attack instance (email, SMS, voice call, etc.) the action relates
+            to.
+          example: abcdef01-2345-6789-abcd-ef0123456789
+        source:
+          type: string
+          nullable: true
+          description: Attack vector or source context (e.g., "qr_code", "link", "voice_followup_email",
+            "voice_followup_sms").
+          example: link
+        device_type:
+          type: string
+          nullable: true
+          description: Device type of the target user when the action was recorded.
+          enum:
+          - Desktop
+          - Mobile
+          - Tablet
+          example: Mobile
+    IOCUpdatedPayload:
+      type: object
+      description: Payload type for the IOC updated webhook.
+      required:
+      - id
+      - created_at
+      - type
+      - indicator
+      - status
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the IOC.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of the IOC creation.
+        type:
+          type: string
+          description: Type of the IOC, e.g., LINK, FILE, etc.
+        indicator:
+          type: string
+          description: The actual IOC indicator, e.g., domain name, file hash.
+        status:
+          type: string
+          description: Status of the IOC, e.g., MALICIOUS, SUSPICIOUS.
+    ReportSurfacedPayload:
+      type: object
+      description: Payload type for the "Report Surfaced" webhook.
+      required:
+      - report_id
+      - display_id
+      - doppel_url
+      - timestamp
+      - urls
+      properties:
+        report_id:
+          type: string
+          format: uuid
+          description: ID of the surfaced report.
+          example: efdad1e5-e8ae-4eb3-8aa6-fe539b05f97e
+        display_id:
+          type: string
+          description: Display ID of the surfaced report.
+          example: ABC-12345
+        doppel_url:
+          type: string
+          description: Doppel URL of the surfaced report.
+          example: https://app.doppel.com/domains/ABC-12345
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of the webhook notification.
+          example: '2024-04-28T23:59:59.123456'
+        urls:
+          type: array
+          items:
+            type: string
+            description: URLs included in the surfaced report.
+            example: https://example.surfaced-domain.com
+          example:
+          - https://surfaced-domain.com
+          - https://subdomain1.surfaced-domain.com
+          - https://subdomain2.surfaced-domain.com
+    SMSResponsePayload:
+      type: object
+      description: Payload type for the "SMS Response" webhook.
+      required:
+      - message_sid
+      - from_number
+      - to_number
+      - body
+      - timestamp
+      - campaign_id
+      properties:
+        message_sid:
+          type: string
+          description: Twilio message SID for the incoming SMS.
+          example: SM1234567890abcdef
+        from_number:
+          type: string
+          description: Phone number that sent the SMS response.
+          example: '+1234567890'
+        to_number:
+          type: string
+          description: Phone number that received the SMS (your Twilio number).
+          example: '+1987654321'
+        body:
+          type: string
+          description: Content of the SMS response.
+          example: Yes, I received the phishing email
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when the SMS was received.
+          example: '2024-04-28T23:59:59.123456'
+        campaign_id:
+          type: string
+          description: Identifier for the outreach campaign this response belongs to.
+          example: phishing_awareness_2024_q1
+        user_id:
+          type: string
+          description: Optional user identifier if available from the campaign.
+          example: user_12345
+        metadata:
+          type: object
+          description: Additional metadata about the SMS response.
+          properties:
+            message_type:
+              type: string
+              description: Type of message (e.g., 'sms', 'mms').
+              example: sms
+            num_media:
+              type: integer
+              description: Number of media files attached (for MMS).
+              example: 0
+            media_urls:
+              type: array
+              items:
+                type: string
+              description: URLs of media files if any were attached.
+              example: []
+    UrlSurfacedPayload:
+      type: object
+      description: Payload type for the "URL Surfaced" webhook.
+      required:
+      - url
+      - report_id
+      - doppel_url
+      - timestamp
+      properties:
+        url:
+          type: string
+          description: URL which has been surfaced in the system.
+          example: https://example.surfaced-domain.com
+        report_id:
+          type: string
+          format: uuid
+          description: ID of the report the URL is associated with.
+          example: efdad1e5-e8ae-4eb3-8aa6-fe539b05f97e
+        doppel_url:
+          type: string
+          description: Doppel URL of the associated report.
+          example: https://app.doppel.com/domains/efdad1e5-e8ae-4eb3-8aa6-fe539b05f97e
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of the webhook notification.
+          example: '2024-04-28T23:59:59.123456'

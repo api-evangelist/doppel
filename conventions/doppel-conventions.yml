@@ -1,0 +1,49 @@
+generated: '2026-07-18'
+method: searched
+source: openapi/doppel-openapi-original.yml
+docs: https://doppel.readme.io/reference
+authentication:
+  style: api-key-header
+  headers: [x-api-key, x-user-api-key]
+  ref: authentication/doppel-authentication.yml
+pagination:
+  style: page-number
+  zero_indexed: true
+  params:
+    page: Zero-indexed page number
+    page_size: Items per page (default 30, maximum 200)
+  response_note: >-
+    List endpoints (GET /alerts, /reports, /brands, /protected-assets, /hrm/campaigns,
+    /hrm/events) return paginated collections. In GET /alerts the alert timestamp field is
+    named last_activity_timestamp (vs last_activity on the singular alert endpoints).
+sorting:
+  params: [sort_type, sort_order]
+  note: If sort_type is provided, sort_order must also be provided; default is date_sourced desc.
+filtering:
+  common_params: [search_key, created_before, created_after, tags, brand_type, name, platform,
+    status, campaign_type]
+idempotency:
+  supported: false
+  note: >-
+    No idempotency-key header/parameter is documented. POST /alert is naturally idempotent by
+    entity — creating an alert for an existing entity returns the existing alert (HTTP 200)
+    rather than a duplicate — but this is entity-dedup behavior, not a client-supplied
+    idempotency key.
+error_envelope:
+  content_type: application/json
+  shape: '{ "message": "<description>" }'
+  ref: errors/doppel-problem-types.yml
+rate_limiting:
+  style: per-operation-quota
+  signal: HTTP 429
+  note: Each operation has its own gateway quota (x-google-management metrics per endpoint).
+versioning:
+  style: uri-path
+  ref: lifecycle/doppel-lifecycle.yml
+webhooks:
+  supported: true
+  ref: asyncapi/doppel-webhooks-asyncapi.yml
+files:
+  note: >-
+    Alert file attachments are base64-encoded (FileInput), max 10 files per alert, max 50MB
+    each; screenshot URLs are signed and expire after 1 hour.

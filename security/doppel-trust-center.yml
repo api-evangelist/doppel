@@ -1,0 +1,29 @@
+generated: '2026-07-18'
+method: searched
+probe: true
+source: https://trust.doppel.com/
+url: https://trust.doppel.com/
+security_page: https://www.doppel.com/security
+certifications:
+- SOC 2 Type II
+- ISO/IEC 27001:2022
+- ISO/IEC 42001:2023
+- ISO/IEC 27701
+- GDPR
+notes: >-
+  SOC 2 Type II issued 2025-01-20. Doppel is among the first ~350 organizations worldwide to
+  achieve ISO/IEC 42001 (AI management systems), and also holds ISO/IEC 27001 (information
+  security) and ISO/IEC 27701 (privacy information management). Trust center at trust.doppel.com
+  hosts certifications, subprocessors, and security documentation.
+evidence:
+- source: https://trust.doppel.com/
+  keywords:
+  - soc 2 type ii
+  - iso 27001
+  - iso 42001
+  - iso 27701
+  - trust center
+- source: https://www.doppel.com/security
+  keywords:
+  - soc 2 type ii
+  - responsible disclosure

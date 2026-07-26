@@ -1,0 +1,20 @@
+generated: '2026-07-18'
+method: generated
+source: openapi/doppel-openapi-original.yml
+skills:
+- file: doppel-submit-and-triage-alert.md
+  name: Submit and triage a Doppel Brand Protection alert
+  api: openapi/doppel-openapi-original.yml
+  operations: [create_alert, get-alert, update_alert]
+- file: doppel-scan-url.md
+  name: Scan a URL for suspiciousness with Doppel
+  api: openapi/doppel-openapi-original.yml
+  operations: [scan, get_scan_result]
+- file: doppel-manage-protected-assets.md
+  name: Manage Doppel brands and protected assets
+  api: openapi/doppel-openapi-original.yml
+  operations: [list-brands, list-protected-assets, create-protected-asset, delete-protected-asset]
+- file: doppel-hrm-campaign-results.md
+  name: Pull Doppel Human Risk Management campaign results
+  api: openapi/doppel-openapi-original.yml
+  operations: [list-hrm-campaigns, get-hrm-campaign, list-hrm-events]

@@ -1,0 +1,41 @@
+{
+  "provider": "doppel",
+  "sources": [
+    "doppel-alerts-api-openapi.yml",
+    "doppel-brands-api-openapi.yml",
+    "doppel-hrm-api-openapi.yml",
+    "doppel-phishing-simulation-api-openapi.yml",
+    "doppel-protected-assets-api-openapi.yml",
+    "doppel-reports-api-openapi.yml",
+    "doppel-scan-api-openapi.yml"
+  ],
+  "outputs": [
+    "doppel-alerts-api-openapi.yml",
+    "doppel-brands-api-openapi.yml",
+    "doppel-hrm-api-openapi.yml",
+    "doppel-phishing-simulation-api-openapi.yml",
+    "doppel-protected-assets-api-openapi.yml",
+    "doppel-reports-api-openapi.yml",
+    "doppel-scan-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [
+    "doppel-alerts-api-openapi.yml: dangling $ref: #/components/parameters/Product",
+    "doppel-alerts-api-openapi.yml: dangling $ref: #/components/parameters/QueueStateFilter",
+    "doppel-alerts-api-openapi.yml: dangling $ref: #/components/parameters/SortOrder",
+    "doppel-alerts-api-openapi.yml: dangling $ref: #/components/parameters/SortType",
+    "doppel-alerts-api-openapi.yml: dangling $ref: #/components/parameters/XOrganizationCodeHeader",
+    "doppel-brands-api-openapi.yml: dangling $ref: #/components/parameters/XOrganizationCodeHeader",
+    "doppel-hrm-api-openapi.yml: dangling $ref: #/components/parameters/XOrganizationCodeHeader",
+    "doppel-protected-assets-api-openapi.yml: dangling $ref: #/components/parameters/XOrganizationCodeHeader",
+    "doppel-reports-api-openapi.yml: dangling $ref: #/components/parameters/Product",
+    "doppel-reports-api-openapi.yml: dangling $ref: #/components/parameters/ReportStatusFilter",
+    "doppel-reports-api-openapi.yml: dangling $ref: #/components/parameters/SortOrder",
+    "doppel-reports-api-openapi.yml: dangling $ref: #/components/parameters/SortType",
+    "doppel-reports-api-openapi.yml: dangling $ref: #/components/parameters/XOrganizationCodeHeader",
+    "doppel-scan-api-openapi.yml: dangling $ref: #/components/parameters/XOrganizationCodeHeader"
+  ],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}

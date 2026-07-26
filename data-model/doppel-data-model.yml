@@ -1,0 +1,67 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/doppel-openapi-original.yml
+docs: https://doppel.readme.io/reference
+entities:
+- name: Alert
+  schema: AlertResponse
+  id_field: id
+  domain: Brand Protection alert for a suspicious entity (URL or phone number).
+  relationships:
+  - type: belongs_to
+    target: Brand
+    via: brand
+  - type: has_many
+    target: AuditLog
+    via: audit_logs
+  - type: has_one
+    target: EntityContent
+    via: entity_content
+- name: Report
+  schema: ReportResponse
+  id_field: id
+  domain: A report on suspicious content, identified by url, id, or display_id.
+  relationships:
+  - type: belongs_to
+    target: Brand
+    via: brand
+- name: Brand
+  schema: BrandResponse
+  id_field: id
+  domain: An organization_brand or personal_brand protected by the org.
+  relationships:
+  - type: has_many
+    target: ProtectedAsset
+    via: brand_id
+  - type: has_many
+    target: Alert
+    via: brand
+- name: ProtectedAsset
+  schema: ProtectedAssetResponse
+  id_field: id
+  domain: A URL, handle, or identifier monitored for unauthorized use; suppresses matching alerts.
+  relationships:
+  - type: belongs_to
+    target: Brand
+    via: brand_id
+- name: HrmCampaign
+  schema: HrmCampaignResponse
+  id_field: campaign_id
+  domain: A Human Risk Management phishing-simulation campaign.
+  relationships:
+  - type: has_many
+    target: HrmEvent
+    via: campaign_id
+- name: HrmEvent
+  schema: HrmEventResponse
+  id_field: id
+  domain: A user interaction/observation within an HRM campaign (open, click, submit, report).
+  relationships:
+  - type: belongs_to
+    target: HrmCampaign
+    via: campaign_id
+- name: Scan
+  schema: null
+  id_field: scan_id
+  domain: A URL suspiciousness scan (submit via POST /scan, result via GET /scan/result).
+  relationships: []

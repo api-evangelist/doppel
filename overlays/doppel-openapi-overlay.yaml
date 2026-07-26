@@ -1,0 +1,14 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Doppel
+  version: 1.0.0
+extends: openapi/doppel-openapi-original.yml
+actions:
+- target: $.info
+  update:
+    x-apievangelist-rating: 4
+    x-apievangelist-notes: 'Real V1 OpenAPI assembled from Doppel ReadMe reference pages (per-operation
+      OpenAPI fragments merged). Auth: apiKey headers. 20 operations, 6 webhooks, 35 schemas.'
+- target: $.info
+  update:
+    x-artifact-provenance: searched

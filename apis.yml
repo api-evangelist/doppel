@@ -1,8 +1,14 @@
 aid: doppel
 name: Doppel
-description: Doppel is a company surfaced as a portfolio company of a16z, bessemer-venture-partners and
-  added to the API Evangelist network as a stub for enrichment. This profile is a lead awaiting the enrichment
-  pipeline.
+description: >-
+  Doppel is an AI-native social engineering defense platform that protects brands, executives,
+  and employees from AI-powered impersonation, phishing, fraud, and account takeover across
+  domains, social media, ads, messaging apps, app stores, crypto surfaces, and the dark web.
+  Its real-time Threat Graph correlates signals to detect and dismantle attacker infrastructure,
+  unifying Digital Risk Protection, Human Risk Management, and Email Security. Doppel exposes a
+  REST API (https://api.doppel.com/v1) for Brand Protection alerts, URL scanning, reports,
+  protected assets, and phishing-simulation campaigns, plus webhooks for real-time events.
+  Backed by a16z and Bessemer Venture Partners.
 url: https://raw.githubusercontent.com/api-evangelist/doppel/refs/heads/main/apis.yml
 x-type: company
 x-source: vc-portfolio
@@ -11,12 +17,118 @@ x-backed-by:
 - bessemer-venture-partners
 x-tier: stub
 x-tier-reason: portfolio-lead
+accessModel:
+  pricing: unknown
+  onboarding: self-serve
+  trial: false
+  try_now: false
+  public: false
+  label: Self-serve signup
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
 specificationVersion: '0.20'
 created: '2026-07-17'
-modified: '2026-07-17'
+modified: '2026-07-18'
+image: https://prod-cms.doppel.com/sites/default/files/2025-11/Open_Graph_Image_0.png
 tags:
 - Company
-apis: []
+- Security
+- Cybersecurity
+- Digital Risk Protection
+- Social Engineering Defense
+- Brand Protection
+- Anti-Phishing
+- Threat Intelligence
+- Human Risk Management
+- Takedowns
+apis:
+- aid: doppel:doppel-alerts-api
+  name: Doppel alerts API
+  description: The alerts API from Doppel — 3 operation(s) for alerts.
+  humanURL: https://doppel.readme.io/reference
+  baseURL: https://api.doppel.com/v1
+  tags:
+  - alerts
+  properties:
+  - type: OpenAPI
+    url: openapi/doppel-alerts-api-openapi.yml
+  - type: APIReference
+    url: https://doppel.readme.io/reference
+- aid: doppel:doppel-brands-api
+  name: Doppel brands API
+  description: The brands API from Doppel — 2 operation(s) for brands.
+  humanURL: https://doppel.readme.io/reference
+  baseURL: https://api.doppel.com/v1
+  tags:
+  - brands
+  properties:
+  - type: OpenAPI
+    url: openapi/doppel-brands-api-openapi.yml
+  - type: APIReference
+    url: https://doppel.readme.io/reference
+- aid: doppel:doppel-hrm-api
+  name: Doppel hrm API
+  description: The hrm API from Doppel — 3 operation(s) for hrm.
+  humanURL: https://doppel.readme.io/reference
+  baseURL: https://api.doppel.com/v1
+  tags:
+  - hrm
+  properties:
+  - type: OpenAPI
+    url: openapi/doppel-hrm-api-openapi.yml
+  - type: APIReference
+    url: https://doppel.readme.io/reference
+- aid: doppel:doppel-phishing-simulation-api
+  name: Doppel phishing-simulation API
+  description: The phishing-simulation API from Doppel — 1 operation(s) for phishing-simulation.
+  humanURL: https://doppel.readme.io/reference
+  baseURL: https://api.doppel.com/v1
+  tags:
+  - phishing-simulation
+  properties:
+  - type: OpenAPI
+    url: openapi/doppel-phishing-simulation-api-openapi.yml
+  - type: APIReference
+    url: https://doppel.readme.io/reference
+- aid: doppel:doppel-protected-assets-api
+  name: Doppel protected-assets API
+  description: The protected-assets API from Doppel — 3 operation(s) for protected-assets.
+  humanURL: https://doppel.readme.io/reference
+  baseURL: https://api.doppel.com/v1
+  tags:
+  - protected-assets
+  properties:
+  - type: OpenAPI
+    url: openapi/doppel-protected-assets-api-openapi.yml
+  - type: APIReference
+    url: https://doppel.readme.io/reference
+- aid: doppel:doppel-reports-api
+  name: Doppel reports API
+  description: The reports API from Doppel — 2 operation(s) for reports.
+  humanURL: https://doppel.readme.io/reference
+  baseURL: https://api.doppel.com/v1
+  tags:
+  - reports
+  properties:
+  - type: OpenAPI
+    url: openapi/doppel-reports-api-openapi.yml
+  - type: APIReference
+    url: https://doppel.readme.io/reference
+- aid: doppel:doppel-scan-api
+  name: Doppel scan API
+  description: The scan API from Doppel — 2 operation(s) for scan.
+  humanURL: https://doppel.readme.io/reference
+  baseURL: https://api.doppel.com/v1
+  tags:
+  - scan
+  properties:
+  - type: OpenAPI
+    url: openapi/doppel-scan-api-openapi.yml
+  - type: APIReference
+    url: https://doppel.readme.io/reference
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -25,3 +137,66 @@ maintainers:
 common:
 - type: Website
   url: https://www.doppel.com/
+- type: DeveloperPortal
+  url: https://doppel.readme.io/
+- type: Documentation
+  url: https://doppel.readme.io/docs/authentication
+- type: APIReference
+  url: https://doppel.readme.io/reference
+- type: GettingStarted
+  url: https://doppel.readme.io/docs/submit-alert
+- type: Authentication
+  url: authentication/doppel-authentication.yml
+- type: Blog
+  url: https://www.doppel.com/blog
+- type: Support
+  url: https://www.doppel.com/contact
+- type: StatusPage
+  url: https://doppel.instatus.com/
+- type: ChangeLog
+  url: https://doppel.readme.io/changelog
+- type: ChangeLog
+  url: changelog/doppel-changelog.yml
+- type: Login
+  url: https://vision.doppel.com/
+- type: TermsOfService
+  url: https://www.doppel.com/legal/terms-and-conditions
+- type: PrivacyPolicy
+  url: https://www.doppel.com/legal/privacy-policy
+- type: Security
+  url: https://www.doppel.com/security/responsible-disclosure-policy
+- type: TrustCenter
+  url: security/doppel-trust-center.yml
+- type: Compliance
+  url: https://trust.doppel.com/
+- type: LLMsTxt
+  url: llms/doppel-llms.txt
+- type: Lifecycle
+  url: lifecycle/doppel-lifecycle.yml
+- type: Conventions
+  url: conventions/doppel-conventions.yml
+- type: ErrorCatalog
+  url: errors/doppel-problem-types.yml
+- type: Conformance
+  url: conformance/doppel-conformance.yml
+- type: DataModel
+  url: data-model/doppel-data-model.yml
+- type: Overlay
+  url: overlays/doppel-openapi-overlay.yaml
+- type: MCPServer
+  url: mcp/doppel-mcp.yml
+- type: AsyncAPI
+  url: asyncapi/doppel-webhooks-asyncapi.yml
+- type: Webhooks
+  url: asyncapi/doppel-webhooks-asyncapi.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DomainSecurity
+  url: security/doppel-domain-security.yml
+- type: VulnerabilityDisclosure
+  url: security/doppel-vulnerability-disclosure.yml
+x-enrichment:
+  date: '2026-07-19'
+  status: backfilled
+  pass: local-v1
+  note: backfilled from .gitignore signal + verified work evidence

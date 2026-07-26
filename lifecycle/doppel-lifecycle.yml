@@ -1,0 +1,25 @@
+generated: '2026-07-18'
+method: searched
+source: https://doppel.readme.io/
+versioning:
+  scheme: uri-path
+  current: v1
+  available: [v1, v2]
+  base_url: https://api.doppel.com/v1
+  docs: https://doppel.readme.io/docs/migrating-to-v2
+  note: >-
+    Doppel API V2 became available 2026-07-13; a "Migrating to V2" guide is published. The
+    OpenAPI captured here reflects the V1 surface (https://api.doppel.com/v1).
+migration:
+  from: v1
+  to: v2
+  guide: https://doppel.readme.io/docs/migrating-to-v2
+status_page: https://doppel.instatus.com/
+changelog: https://doppel.readme.io/changelog
+sla: null
+deprecation:
+  policy_url: null
+  sunset_header: false
+  note: No formal deprecation/sunset policy or Sunset header support was found; V2 migration
+    is guided rather than governed by a dated sunset.
+deprecated_operations: []

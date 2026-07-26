@@ -1,0 +1,71 @@
+generated: '2026-07-18'
+method: derived
+status: candidate
+source: openapi/doppel-openapi-original.yml
+note: No official hosted Doppel MCP server was found. This is a candidate tool list derived one-tool-per-operation
+  from the captured OpenAPI, to be validated with Doppel.
+server:
+  name: doppel
+  transport: http
+  url: null
+tools:
+- name: create_alert
+  description: Create Alert
+  source_operation: openapi/doppel-openapi-original.yml#create_alert
+- name: get_alert
+  description: Get Alert
+  source_operation: openapi/doppel-openapi-original.yml#get-alert
+- name: update_alert
+  description: Update Alert
+  source_operation: openapi/doppel-openapi-original.yml#update_alert
+- name: submit_referrer_logs
+  description: Submit Referrer Logs
+  source_operation: openapi/doppel-openapi-original.yml#submit-referrer-logs
+- name: get_alerts
+  description: Get Alerts
+  source_operation: openapi/doppel-openapi-original.yml#get-alerts
+- name: list_brands
+  description: List Brands
+  source_operation: openapi/doppel-openapi-original.yml#list-brands
+- name: delete_brand
+  description: Delete Brand
+  source_operation: openapi/doppel-openapi-original.yml#delete-brand
+- name: list_hrm_campaigns
+  description: List Campaigns
+  source_operation: openapi/doppel-openapi-original.yml#list-hrm-campaigns
+- name: get_hrm_campaign
+  description: Get Campaign
+  source_operation: openapi/doppel-openapi-original.yml#get-hrm-campaign
+- name: list_hrm_events
+  description: List Events
+  source_operation: openapi/doppel-openapi-original.yml#list-hrm-events
+- name: track_campaign_actions
+  description: Track Phishing Campaign Actions
+  source_operation: openapi/doppel-openapi-original.yml#track_campaign_actions
+- name: create_protected_asset
+  description: Create Protected Asset
+  source_operation: openapi/doppel-openapi-original.yml#create-protected-asset
+- name: delete_protected_asset
+  description: Delete Protected Asset
+  source_operation: openapi/doppel-openapi-original.yml#delete-protected-asset
+- name: list_protected_assets
+  description: List Protected Assets
+  source_operation: openapi/doppel-openapi-original.yml#list-protected-assets
+- name: get_report
+  description: Get Report
+  source_operation: openapi/doppel-openapi-original.yml#get_report
+- name: submit_report
+  description: Submit Report
+  source_operation: openapi/doppel-openapi-original.yml#submit_report
+- name: update_report
+  description: Update Report
+  source_operation: openapi/doppel-openapi-original.yml#update_report
+- name: get_reports
+  description: Get Reports
+  source_operation: openapi/doppel-openapi-original.yml#get_reports
+- name: scan
+  description: Submit Scan Url
+  source_operation: openapi/doppel-openapi-original.yml#scan
+- name: get_scan_result
+  description: Get Scan Result
+  source_operation: openapi/doppel-openapi-original.yml#get_scan_result

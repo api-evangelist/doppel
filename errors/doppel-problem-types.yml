@@ -1,0 +1,57 @@
+generated: '2026-07-18'
+method: derived
+source: openapi/doppel-openapi-original.yml
+docs: https://doppel.readme.io/reference
+format: json-message-envelope
+envelope:
+  schema: ErrorResponse
+  content_type: application/json
+  shape: '{ "message": "<human-readable error description>" }'
+  note: >-
+    Doppel returns a single-field JSON envelope for all non-2xx responses (not RFC 9457
+    problem+json). The `message` field carries a human-readable description.
+problems:
+- status: 400
+  title: Invalid input
+  meaning: >-
+    Request validation failed — e.g. missing/invalid entity (not a valid URL or phone number),
+    entity is a protected asset, malformed tags, unknown source, or >10 files / duplicate names.
+  seen_on: [create_alert, get-alert, update_alert, get-alerts, submit-referrer-logs, submit_report,
+    get_report, get_reports, list-brands, create-protected-asset, delete-protected-asset,
+    list-protected-assets, scan, get_scan_result, track_campaign_actions]
+- status: 401
+  title: Unauthorized
+  meaning: Missing or invalid x-api-key / x-user-api-key credentials.
+  seen_on: [create_alert, get-alert, update_alert, get-alerts, submit-referrer-logs, submit_report,
+    get_report, update_report, get_reports, list-brands, delete-brand, create-protected-asset,
+    delete-protected-asset, list-protected-assets, list-hrm-campaigns, get-hrm-campaign,
+    list-hrm-events, scan, get_scan_result]
+- status: 403
+  title: Forbidden
+  meaning: Authenticated user lacks permission for the requested resource (RBAC).
+  seen_on: [delete-brand]
+- status: 404
+  title: Not found
+  meaning: The referenced alert, report, brand, protected asset, campaign, or scan does not exist.
+  seen_on: [create_alert, get-alert, update_alert, get_report, delete-brand, get-hrm-campaign,
+    create-protected-asset, delete-protected-asset, get_scan_result]
+- status: 409
+  title: Conflict
+  meaning: >-
+    Resource conflict — e.g. an alert already exists for the entity but under a different brand,
+    or a protected asset with the same value already exists for the organization.
+  seen_on: [create_alert, create-protected-asset]
+- status: 422
+  title: Unprocessable entity
+  meaning: Semantically invalid parameters (e.g. bad filter combination) on list/delete endpoints.
+  seen_on: [list-brands, delete-brand, create-protected-asset, list-protected-assets]
+- status: 429
+  title: Too many requests
+  meaning: >-
+    Per-operation quota exceeded. Doppel enforces per-endpoint rate limits via API-gateway
+    quotas (x-google-management metrics per operation).
+  seen_on: [all operations]
+- status: 500
+  title: Internal server error
+  meaning: Unexpected server-side error.
+  seen_on: [all operations]
