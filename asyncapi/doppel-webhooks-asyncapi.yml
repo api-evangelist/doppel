@@ -404,3 +404,13 @@ components:
           format: date-time
           description: Timestamp of the webhook notification.
           example: '2024-04-28T23:59:59.123456'
+
+# --- API Evangelist provenance -------------------------------------------
+x-superseded-by:
+  reason: >-
+    Provider publishes this event surface themselves in as-published OpenAPI; this document was authored by API Evangelist before that source was harvested.
+  published_spec: all/doppel/openapi/_original/doppel-openapi-original.yml
+  published_event_object: webhooks
+  published_events: 6
+  status: superseded
+  reviewed: '2026-07-31'
