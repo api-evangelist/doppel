@@ -1,0 +1,70 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Doppel alerts scan API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "scan",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Submit Scan Url",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.doppel.com/v1/scan",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Submit a URL for analysis to determine if it contains potentially suspicious or malicious content. Doppel will analyze the submitted URL and categorize its suspiciousness on a scale of low, medium, and high. Based on the suspiciousness of the URL, an alert can be created in our system, facilitating further triage actions."
+        },
+        {
+          "info": {
+            "name": "Get Scan Result",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.doppel.com/v1/scan/result",
+            "params": [
+              {
+                "name": "scan_id",
+                "value": "",
+                "type": "query",
+                "description": "ID of the scan to retrieve results for"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Get the suspiciousness result of a scan given the submitted scan's ID."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

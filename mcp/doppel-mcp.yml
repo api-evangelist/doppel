@@ -69,3 +69,9 @@ tools:
 - name: get_scan_result
   description: Get Scan Result
   source_operation: openapi/doppel-openapi-original.yml#get_scan_result
+deployment:
+  mode: none
+  verified: derived
+  tools: 20
+  checked: '2026-08-12'
+  source: catalog MCP census

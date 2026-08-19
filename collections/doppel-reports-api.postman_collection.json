@@ -1,0 +1,1749 @@
+{
+  "item": [
+    {
+      "id": "f4d754ad-d1cd-4bf8-8947-b01ed53efb30",
+      "name": "reports",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "37736ad2-8b38-4701-82bc-c827a3f11340",
+          "name": "Get Report",
+          "request": {
+            "name": "Get Report",
+            "description": {
+              "content": "Retrieves the report details by URL or ID. Must include exactly one of either `url`, `id` or `display_id`.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "report"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "url",
+                  "value": "<uri>",
+                  "description": "The reported URL to retrieve details for"
+                },
+                {
+                  "disabled": false,
+                  "key": "id",
+                  "value": "<string>",
+                  "description": "The report ID to retrieve details for"
+                },
+                {
+                  "disabled": false,
+                  "key": "display_id",
+                  "value": "<string>",
+                  "description": "The report's display ID to retrieve details for"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a81240c0-59fe-4471-b8f9-d60083c3cf63",
+              "name": "Report successfully retrieved",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "display_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"display_id\": \"string\",\n  \"submitted_url\": \"string\",\n  \"doppel_url\": \"string\",\n  \"report_status\": \"actioned\",\n  \"classification\": \"suspicious\",\n  \"product\": \"paid_ads\",\n  \"source\": \"Manual Upload\",\n  \"notes\": \"string\",\n  \"uploaded_by\": \"string\",\n  \"created_at\": \"1970-11-03T10:20:49.273Z\",\n  \"matches\": [\n    {\n      \"domain\": {\n        \"url\": \"string\",\n        \"screenshot_url\": \"string\",\n        \"classification\": \"string\"\n      }\n    },\n    {\n      \"domain\": {\n        \"url\": \"string\",\n        \"screenshot_url\": \"string\",\n        \"classification\": \"string\"\n      }\n    }\n  ],\n  \"root_domain\": {\n    \"domain\": \"string\",\n    \"registrar\": \"string\",\n    \"ip_address\": \"string\",\n    \"country_code\": \"string\",\n    \"hosting_provider\": \"string\"\n  },\n  \"audit_logs\": [\n    {\n      \"changed_by\": \"string\",\n      \"value\": \"string\",\n      \"timestamp\": \"1955-09-26T00:03:35.006Z\",\n      \"type\": \"string\",\n      \"metadata\": {\n        \"enforcement_request\": {\n          \"platform\": \"string\",\n          \"type\": \"string\"\n        },\n        \"match\": {\n          \"domain\": {\n            \"url\": \"string\"\n          }\n        }\n      }\n    },\n    {\n      \"changed_by\": \"string\",\n      \"value\": \"string\",\n      \"timestamp\": \"1950-06-22T12:49:58.717Z\",\n      \"type\": \"string\",\n      \"metadata\": {\n        \"enforcement_request\": {\n          \"platform\": \"string\",\n          \"type\": \"string\"\n        },\n        \"match\": {\n          \"domain\": {\n            \"url\": \"string\"\n          }\n        }\n      }\n    }\n  ],\n  \"tags\": [\n    {\n      \"name\": \"string\"\n    },\n    {\n      \"name\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "10937ba1-6af7-47c5-ac5f-4f1a5503177f",
+              "name": "Invalid input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "display_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e042fe80-e290-4a44-b607-b1f85b350e8a",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "display_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "dc6231cc-57db-4447-93e9-b4bceb9d51c7",
+              "name": "Report not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "display_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "27c0fc99-2bc3-4b7a-9e40-0c8e6b34d9cf",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "display_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "81dde789-e287-4719-9814-6fa0890226a4",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "display_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "5eaa7e9b-4153-4a25-9d82-e21c7013fc7b",
+          "name": "Submit Report",
+          "request": {
+            "name": "Submit Report",
+            "description": {
+              "content": "Submit a report for the provided URL. Will fail if the URL is invalid or is protected (e.g. google.com) in Doppel's system.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "report"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"url\": \"<string>\",\n  \"screenshot_url\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "03240ece-9471-4725-885e-a49a1111f9da",
+              "name": "Existing report found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"<string>\",\n  \"screenshot_url\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"display_id\": \"string\",\n  \"submitted_url\": \"string\",\n  \"doppel_url\": \"string\",\n  \"report_status\": \"actioned\",\n  \"classification\": \"suspicious\",\n  \"product\": \"paid_ads\",\n  \"source\": \"Manual Upload\",\n  \"notes\": \"string\",\n  \"uploaded_by\": \"string\",\n  \"created_at\": \"1970-11-03T10:20:49.273Z\",\n  \"matches\": [\n    {\n      \"domain\": {\n        \"url\": \"string\",\n        \"screenshot_url\": \"string\",\n        \"classification\": \"string\"\n      }\n    },\n    {\n      \"domain\": {\n        \"url\": \"string\",\n        \"screenshot_url\": \"string\",\n        \"classification\": \"string\"\n      }\n    }\n  ],\n  \"root_domain\": {\n    \"domain\": \"string\",\n    \"registrar\": \"string\",\n    \"ip_address\": \"string\",\n    \"country_code\": \"string\",\n    \"hosting_provider\": \"string\"\n  },\n  \"audit_logs\": [\n    {\n      \"changed_by\": \"string\",\n      \"value\": \"string\",\n      \"timestamp\": \"1955-09-26T00:03:35.006Z\",\n      \"type\": \"string\",\n      \"metadata\": {\n        \"enforcement_request\": {\n          \"platform\": \"string\",\n          \"type\": \"string\"\n        },\n        \"match\": {\n          \"domain\": {\n            \"url\": \"string\"\n          }\n        }\n      }\n    },\n    {\n      \"changed_by\": \"string\",\n      \"value\": \"string\",\n      \"timestamp\": \"1950-06-22T12:49:58.717Z\",\n      \"type\": \"string\",\n      \"metadata\": {\n        \"enforcement_request\": {\n          \"platform\": \"string\",\n          \"type\": \"string\"\n        },\n        \"match\": {\n          \"domain\": {\n            \"url\": \"string\"\n          }\n        }\n      }\n    }\n  ],\n  \"tags\": [\n    {\n      \"name\": \"string\"\n    },\n    {\n      \"name\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "7a5f7707-bc85-4c0b-b751-9edcbc6b94d4",
+              "name": "Submitted report successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"<string>\",\n  \"screenshot_url\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"display_id\": \"string\",\n  \"submitted_url\": \"string\",\n  \"doppel_url\": \"string\",\n  \"report_status\": \"actioned\",\n  \"classification\": \"suspicious\",\n  \"product\": \"paid_ads\",\n  \"source\": \"Manual Upload\",\n  \"notes\": \"string\",\n  \"uploaded_by\": \"string\",\n  \"created_at\": \"1970-11-03T10:20:49.273Z\",\n  \"matches\": [\n    {\n      \"domain\": {\n        \"url\": \"string\",\n        \"screenshot_url\": \"string\",\n        \"classification\": \"string\"\n      }\n    },\n    {\n      \"domain\": {\n        \"url\": \"string\",\n        \"screenshot_url\": \"string\",\n        \"classification\": \"string\"\n      }\n    }\n  ],\n  \"root_domain\": {\n    \"domain\": \"string\",\n    \"registrar\": \"string\",\n    \"ip_address\": \"string\",\n    \"country_code\": \"string\",\n    \"hosting_provider\": \"string\"\n  },\n  \"audit_logs\": [\n    {\n      \"changed_by\": \"string\",\n      \"value\": \"string\",\n      \"timestamp\": \"1955-09-26T00:03:35.006Z\",\n      \"type\": \"string\",\n      \"metadata\": {\n        \"enforcement_request\": {\n          \"platform\": \"string\",\n          \"type\": \"string\"\n        },\n        \"match\": {\n          \"domain\": {\n            \"url\": \"string\"\n          }\n        }\n      }\n    },\n    {\n      \"changed_by\": \"string\",\n      \"value\": \"string\",\n      \"timestamp\": \"1950-06-22T12:49:58.717Z\",\n      \"type\": \"string\",\n      \"metadata\": {\n        \"enforcement_request\": {\n          \"platform\": \"string\",\n          \"type\": \"string\"\n        },\n        \"match\": {\n          \"domain\": {\n            \"url\": \"string\"\n          }\n        }\n      }\n    }\n  ],\n  \"tags\": [\n    {\n      \"name\": \"string\"\n    },\n    {\n      \"name\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "9e045cc2-becb-4b8d-87fb-ceab4f52e4f5",
+              "name": "Invalid input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"<string>\",\n  \"screenshot_url\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1d9f2b2c-f83f-4dcb-b282-07c3acb440b1",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"<string>\",\n  \"screenshot_url\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "5a1e97c1-15e0-4a7e-837e-fa6c333d9974",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"<string>\",\n  \"screenshot_url\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e141fda0-1e38-488e-89ff-b13c9e92267e",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"url\": \"<string>\",\n  \"screenshot_url\": \"<string>\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "e5def741-05a5-4afe-bb99-c221d17049a1",
+          "name": "Update Report",
+          "request": {
+            "name": "Update Report",
+            "description": {
+              "content": "Updates a report in the system with certain parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "report"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "url",
+                  "value": "<uri>",
+                  "description": "One of the reports urls to update"
+                },
+                {
+                  "disabled": false,
+                  "key": "id",
+                  "value": "<string>",
+                  "description": "The id of the report to update"
+                },
+                {
+                  "disabled": false,
+                  "key": "display_id",
+                  "value": "<string>",
+                  "description": "The display ID of the report to update"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"notes\": \"<string>\",\n  \"report_status\": \"<string>\",\n  \"classification\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "40a4b592-aa65-47d1-aeb5-8801a47fcf92",
+              "name": "Existing report found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "display_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"notes\": \"<string>\",\n  \"report_status\": \"actioned\",\n  \"classification\": \"down\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"display_id\": \"string\",\n  \"submitted_url\": \"string\",\n  \"doppel_url\": \"string\",\n  \"report_status\": \"actioned\",\n  \"classification\": \"suspicious\",\n  \"product\": \"paid_ads\",\n  \"source\": \"Manual Upload\",\n  \"notes\": \"string\",\n  \"uploaded_by\": \"string\",\n  \"created_at\": \"1970-11-03T10:20:49.273Z\",\n  \"matches\": [\n    {\n      \"domain\": {\n        \"url\": \"string\",\n        \"screenshot_url\": \"string\",\n        \"classification\": \"string\"\n      }\n    },\n    {\n      \"domain\": {\n        \"url\": \"string\",\n        \"screenshot_url\": \"string\",\n        \"classification\": \"string\"\n      }\n    }\n  ],\n  \"root_domain\": {\n    \"domain\": \"string\",\n    \"registrar\": \"string\",\n    \"ip_address\": \"string\",\n    \"country_code\": \"string\",\n    \"hosting_provider\": \"string\"\n  },\n  \"audit_logs\": [\n    {\n      \"changed_by\": \"string\",\n      \"value\": \"string\",\n      \"timestamp\": \"1955-09-26T00:03:35.006Z\",\n      \"type\": \"string\",\n      \"metadata\": {\n        \"enforcement_request\": {\n          \"platform\": \"string\",\n          \"type\": \"string\"\n        },\n        \"match\": {\n          \"domain\": {\n            \"url\": \"string\"\n          }\n        }\n      }\n    },\n    {\n      \"changed_by\": \"string\",\n      \"value\": \"string\",\n      \"timestamp\": \"1950-06-22T12:49:58.717Z\",\n      \"type\": \"string\",\n      \"metadata\": {\n        \"enforcement_request\": {\n          \"platform\": \"string\",\n          \"type\": \"string\"\n        },\n        \"match\": {\n          \"domain\": {\n            \"url\": \"string\"\n          }\n        }\n      }\n    }\n  ],\n  \"tags\": [\n    {\n      \"name\": \"string\"\n    },\n    {\n      \"name\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "174baf20-2445-4475-80fb-3abaffcfeda3",
+              "name": "Updated report successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "display_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"notes\": \"<string>\",\n  \"report_status\": \"actioned\",\n  \"classification\": \"down\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"string\",\n  \"display_id\": \"string\",\n  \"submitted_url\": \"string\",\n  \"doppel_url\": \"string\",\n  \"report_status\": \"actioned\",\n  \"classification\": \"suspicious\",\n  \"product\": \"paid_ads\",\n  \"source\": \"Manual Upload\",\n  \"notes\": \"string\",\n  \"uploaded_by\": \"string\",\n  \"created_at\": \"1970-11-03T10:20:49.273Z\",\n  \"matches\": [\n    {\n      \"domain\": {\n        \"url\": \"string\",\n        \"screenshot_url\": \"string\",\n        \"classification\": \"string\"\n      }\n    },\n    {\n      \"domain\": {\n        \"url\": \"string\",\n        \"screenshot_url\": \"string\",\n        \"classification\": \"string\"\n      }\n    }\n  ],\n  \"root_domain\": {\n    \"domain\": \"string\",\n    \"registrar\": \"string\",\n    \"ip_address\": \"string\",\n    \"country_code\": \"string\",\n    \"hosting_provider\": \"string\"\n  },\n  \"audit_logs\": [\n    {\n      \"changed_by\": \"string\",\n      \"value\": \"string\",\n      \"timestamp\": \"1955-09-26T00:03:35.006Z\",\n      \"type\": \"string\",\n      \"metadata\": {\n        \"enforcement_request\": {\n          \"platform\": \"string\",\n          \"type\": \"string\"\n        },\n        \"match\": {\n          \"domain\": {\n            \"url\": \"string\"\n          }\n        }\n      }\n    },\n    {\n      \"changed_by\": \"string\",\n      \"value\": \"string\",\n      \"timestamp\": \"1950-06-22T12:49:58.717Z\",\n      \"type\": \"string\",\n      \"metadata\": {\n        \"enforcement_request\": {\n          \"platform\": \"string\",\n          \"type\": \"string\"\n        },\n        \"match\": {\n          \"domain\": {\n            \"url\": \"string\"\n          }\n        }\n      }\n    }\n  ],\n  \"tags\": [\n    {\n      \"name\": \"string\"\n    },\n    {\n      \"name\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "bc032c61-67d2-4c8a-abf3-e71e3f4b6e97",
+              "name": "Invalid input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "display_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"notes\": \"<string>\",\n  \"report_status\": \"actioned\",\n  \"classification\": \"down\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ef4f9e9a-c8ed-4d36-b5f5-12e70e816e11",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "display_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"notes\": \"<string>\",\n  \"report_status\": \"actioned\",\n  \"classification\": \"down\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "758b1a9d-12c1-4eea-9035-4c7a253cd76a",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "display_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"notes\": \"<string>\",\n  \"report_status\": \"actioned\",\n  \"classification\": \"down\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e5d18303-64f9-4b46-a7fd-89eb3d40696a",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "report"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "url",
+                      "value": "<uri>"
+                    },
+                    {
+                      "key": "id",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "display_id",
+                      "value": "<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"notes\": \"<string>\",\n  \"report_status\": \"actioned\",\n  \"classification\": \"down\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cccc1913-e753-480b-bf68-04c7445f6920",
+          "name": "Get Reports",
+          "request": {
+            "name": "Get Reports",
+            "description": {
+              "content": "Retrieves a list of reports. Can be filtered by various parameters.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "reports"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "search_key",
+                  "value": "<string>",
+                  "description": "Currently only supports search by url"
+                },
+                {
+                  "disabled": false,
+                  "key": "sourced_before",
+                  "value": "<dateTime>",
+                  "description": "Filter reports sourced before this date. '2024-01-05T13:45:30' -- Represents the 5th of January 2024, at 1:45:30 PM"
+                },
+                {
+                  "disabled": false,
+                  "key": "sourced_after",
+                  "value": "<dateTime>",
+                  "description": "Filter reports sourced after this date. '2024-01-05T13:45:30' -- Represents the 5th of January 2024, at 1:45:30 PM"
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "<integer>",
+                  "description": "Page number for pagination; defaults to 0"
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "<integer>",
+                  "description": "Number of reports per page (default 30, max 200)"
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "a61058c3-8db3-4f59-8419-c732ff6c567b",
+              "name": "Successful operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sourced_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "sourced_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"data\": {\n    \"reports\": [\n      {\n        \"id\": \"string\",\n        \"display_id\": \"string\",\n        \"submitted_url\": \"string\",\n        \"doppel_url\": \"string\",\n        \"report_status\": \"needs_confirmation\",\n        \"classification\": \"down\",\n        \"product\": \"ecommerce\",\n        \"source\": \"Domains Feed\",\n        \"notes\": \"string\",\n        \"uploaded_by\": \"string\",\n        \"created_at\": \"1975-02-18T04:09:28.395Z\",\n        \"matches\": [\n          {\n            \"domain\": {\n              \"url\": \"string\",\n              \"screenshot_url\": \"string\",\n              \"classification\": \"string\"\n            }\n          },\n          {\n            \"domain\": {\n              \"url\": \"string\",\n              \"screenshot_url\": \"string\",\n              \"classification\": \"string\"\n            }\n          }\n        ],\n        \"root_domain\": {\n          \"domain\": \"string\",\n          \"registrar\": \"string\",\n          \"ip_address\": \"string\",\n          \"country_code\": \"string\",\n          \"hosting_provider\": \"string\"\n        },\n        \"audit_logs\": [\n          {\n            \"changed_by\": \"string\",\n            \"value\": \"string\",\n            \"timestamp\": \"1987-12-01T10:15:28.368Z\",\n            \"type\": \"string\",\n            \"metadata\": {\n              \"enforcement_request\": {\n                \"platform\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"type\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"match\": {\n                \"domain\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          },\n          {\n            \"changed_by\": \"string\",\n            \"value\": \"string\",\n            \"timestamp\": \"1974-06-21T16:09:26.215Z\",\n            \"type\": \"string\",\n            \"metadata\": {\n              \"enforcement_request\": {\n                \"platform\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"type\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"match\": {\n                \"domain\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          }\n        ],\n        \"tags\": [\n          {\n            \"name\": \"string\"\n          },\n          {\n            \"name\": \"string\"\n          }\n        ]\n      },\n      {\n        \"id\": \"string\",\n        \"display_id\": \"string\",\n        \"submitted_url\": \"string\",\n        \"doppel_url\": \"string\",\n        \"report_status\": \"monitoring\",\n        \"classification\": \"active\",\n        \"product\": \"ecommerce\",\n        \"source\": \"Abuse Box\",\n        \"notes\": \"string\",\n        \"uploaded_by\": \"string\",\n        \"created_at\": \"1999-04-13T00:39:09.123Z\",\n        \"matches\": [\n          {\n            \"domain\": {\n              \"url\": \"string\",\n              \"screenshot_url\": \"string\",\n              \"classification\": \"string\"\n            }\n          },\n          {\n            \"domain\": {\n              \"url\": \"string\",\n              \"screenshot_url\": \"string\",\n              \"classification\": \"string\"\n            }\n          }\n        ],\n        \"root_domain\": {\n          \"domain\": \"string\",\n          \"registrar\": \"string\",\n          \"ip_address\": \"string\",\n          \"country_code\": \"string\",\n          \"hosting_provider\": \"string\"\n        },\n        \"audit_logs\": [\n          {\n            \"changed_by\": \"string\",\n            \"value\": \"string\",\n            \"timestamp\": \"1994-03-22T03:15:59.948Z\",\n            \"type\": \"string\",\n            \"metadata\": {\n              \"enforcement_request\": {\n                \"platform\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"type\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"match\": {\n                \"domain\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          },\n          {\n            \"changed_by\": \"string\",\n            \"value\": \"string\",\n            \"timestamp\": \"1996-03-20T09:23:40.395Z\",\n            \"type\": \"string\",\n            \"metadata\": {\n              \"enforcement_request\": {\n                \"platform\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                },\n                \"type\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              },\n              \"match\": {\n                \"domain\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          }\n        ],\n        \"tags\": [\n          {\n            \"name\": \"string\"\n          },\n          {\n            \"name\": \"string\"\n          }\n        ]\n      }\n    ]\n  },\n  \"metadata\": {\n    \"count\": 6589,\n    \"page\": 8260,\n    \"pages\": 1977,\n    \"page_size\": 5543\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d80e3361-8314-4a59-a23c-89fe108972a3",
+              "name": "Invalid input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sourced_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "sourced_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "4fe72fde-383d-4044-a1d2-e5b30713f9a3",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sourced_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "sourced_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "53eecaaf-2628-40e8-b914-56602de4ea47",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sourced_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "sourced_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d193910c-8237-4d09-9005-b96b7367720c",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "reports"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search_key",
+                      "value": "<string>"
+                    },
+                    {
+                      "key": "sourced_before",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "sourced_after",
+                      "value": "<dateTime>"
+                    },
+                    {
+                      "key": "page",
+                      "value": "<integer>"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "<integer>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.doppel.com/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "2b850b35-1bae-4983-8f9e-83a0355c93fb",
+    "name": "Doppel alerts reports API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "APIs to interface with Doppel's core system for social engineering defense — Brand Protection alerts, URL scanning, reports, protected assets, and Human Risk Management campaigns.\n\nContact Support:\n Name: Doppel API Support",
+      "type": "text/plain"
+    }
+  }
+}

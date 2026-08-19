@@ -1,0 +1,49 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Doppel alerts phishing-simulation API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "phishing-simulation",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Track Phishing Campaign Actions",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.doppel.com/v1/phishing/track",
+            "params": [
+              {
+                "name": "email_id",
+                "value": "",
+                "type": "query",
+                "description": "Identifier for the simulation email being tracked (deprecated)"
+              },
+              {
+                "name": "short_id",
+                "value": "",
+                "type": "query",
+                "description": "Identifier for the simulation attack instance being tracked"
+              },
+              {
+                "name": "action",
+                "value": "",
+                "type": "query",
+                "description": "Type of action being tracked"
+              }
+            ]
+          },
+          "docs": "Tracks user interactions with phishing simulation campaign emails. This endpoint records various actions such as email opens, link clicks, form submissions, and email reports while returning a transparent tracking pixel."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

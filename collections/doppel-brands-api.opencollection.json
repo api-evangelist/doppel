@@ -1,0 +1,86 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Doppel alerts brands API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "brands",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "List Brands",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.doppel.com/v1/brands",
+            "params": [
+              {
+                "name": "brand_type",
+                "value": "",
+                "type": "query",
+                "description": "Filter by brand type (organization_brand or personal_brand)"
+              },
+              {
+                "name": "name",
+                "value": "",
+                "type": "query",
+                "description": "Search by brand name (case-insensitive contains)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to skip for pagination"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List active brands for the authenticated organization. Filter by brand_type (organization_brand or personal_brand) and/or name, with pagination support. Only returns active brands (archived brands are excluded)."
+        },
+        {
+          "info": {
+            "name": "Delete Brand",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.doppel.com/v1/brands/:brand_id",
+            "params": [
+              {
+                "name": "brand_id",
+                "value": "",
+                "type": "path",
+                "description": "UUID of the brand to delete"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete (archive) a brand by ID. This soft-deletes the brand by setting its status to archived, along with disabling related sourcing queries, trademarks, customer assets, and designated takedown assets."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

@@ -1,0 +1,2210 @@
+{
+  "item": [
+    {
+      "id": "b0e85354-e90e-4563-ade5-f32b3447dba3",
+      "name": "alerts",
+      "description": {
+        "content": "",
+        "type": "text/plain"
+      },
+      "item": [
+        {
+          "id": "0f0560c0-5357-4219-b5ac-85eab0ca4d28",
+          "name": "Create Alert",
+          "request": {
+            "name": "Create Alert",
+            "description": {
+              "content": "Creates an alert for a specific entity (URL or phone number) within Doppel's Brand Protection product.\n\n**Behavior:**\n- If an alert already exists for the entity, the existing alert is returned (HTTP 200).\n- If the alert exists but with a different brand than requested, returns HTTP 409.\n- After creation, the alert is automatically processed through Doppel's triage workflow.\n- If `source` is provided, it must exactly match the \"API value\" field of an external source configured in your organization's settings in Doppel Vision.\n\n**Returns HTTP 400 when:**\n- `entity` is missing, not a valid URL, or not a valid phone number.\n- `entity` is a protected asset (e.g. google.com).\n- `tags` is not a list of non-empty strings.\n- `source` does not match any configured external source for the organization.\n- `files` contains more than 10 items, duplicate file names, or is missing `file_to_upload`.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "alert"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"entity\": \"<string>\",\n  \"brand\": \"<string>\",\n  \"tags\": [\n    \"<string>\",\n    \"<string>\"\n  ],\n  \"source\": \"<string>\",\n  \"files\": [\n    {\n      \"file_name\": \"<string>\",\n      \"file_to_upload\": \"<byte>\"\n    },\n    {\n      \"file_name\": \"<string>\",\n      \"file_to_upload\": \"<byte>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "47213cc7-6bb9-4168-9a85-b07e73c7c0f0",
+              "name": "Alert already exists",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entity\": \"https://suspicious-site.example.com\",\n  \"brand\": \"Acme Corp\",\n  \"tags\": [\n    \"Credential Theft\",\n    \"NSFW\",\n    \"Malicious\",\n    \"Spam\"\n  ],\n  \"source\": \"slack-integration\",\n  \"files\": [\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"ACM-1234\",\n  \"entity\": \"https://suspicious-site.example.com\",\n  \"doppel_link\": \"https://app.doppel.com/alerts/ACM-1234\",\n  \"last_activity\": \"2024-06-15T10:30:00\",\n  \"message\": \"string\",\n  \"file_results\": [\n    {\n      \"file_name\": \"string\",\n      \"success\": false,\n      \"error\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"success\": true,\n      \"error\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "77c2ced3-3336-4df2-a326-c6992f7f0c9d",
+              "name": "Submitted report successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entity\": \"https://suspicious-site.example.com\",\n  \"brand\": \"Acme Corp\",\n  \"tags\": [\n    \"Credential Theft\",\n    \"NSFW\",\n    \"Malicious\",\n    \"Spam\"\n  ],\n  \"source\": \"slack-integration\",\n  \"files\": [\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Created",
+              "code": 201,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"ACM-1234\",\n  \"entity\": \"https://suspicious-site.example.com\",\n  \"doppel_link\": \"https://app.doppel.com/alerts/ACM-1234\",\n  \"last_activity\": \"2024-06-15T10:30:00\",\n  \"message\": \"string\",\n  \"file_results\": [\n    {\n      \"file_name\": \"string\",\n      \"success\": false,\n      \"error\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"success\": true,\n      \"error\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "890df301-951b-4b4e-aa67-c336bf3d2753",
+              "name": "Invalid input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entity\": \"https://suspicious-site.example.com\",\n  \"brand\": \"Acme Corp\",\n  \"tags\": [\n    \"Credential Theft\",\n    \"NSFW\",\n    \"Malicious\",\n    \"Spam\"\n  ],\n  \"source\": \"slack-integration\",\n  \"files\": [\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ace05b5c-4c28-498e-88c3-0eeea996b225",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entity\": \"https://suspicious-site.example.com\",\n  \"brand\": \"Acme Corp\",\n  \"tags\": [\n    \"Credential Theft\",\n    \"NSFW\",\n    \"Malicious\",\n    \"Spam\"\n  ],\n  \"source\": \"slack-integration\",\n  \"files\": [\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "241f204d-8cd8-4555-8406-3013896f9abf",
+              "name": "Brand not found or archived for this organization",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entity\": \"https://suspicious-site.example.com\",\n  \"brand\": \"Acme Corp\",\n  \"tags\": [\n    \"Credential Theft\",\n    \"NSFW\",\n    \"Malicious\",\n    \"Spam\"\n  ],\n  \"source\": \"slack-integration\",\n  \"files\": [\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "1592240a-aa8e-4b3b-9b3c-fa426ca99615",
+              "name": "Alert already exists with a different brand",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entity\": \"https://suspicious-site.example.com\",\n  \"brand\": \"Acme Corp\",\n  \"tags\": [\n    \"Credential Theft\",\n    \"NSFW\",\n    \"Malicious\",\n    \"Spam\"\n  ],\n  \"source\": \"slack-integration\",\n  \"files\": [\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Conflict",
+              "code": 409,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"ACM-1234\",\n  \"entity\": \"https://suspicious-site.example.com\",\n  \"doppel_link\": \"https://app.doppel.com/alerts/ACM-1234\",\n  \"last_activity\": \"2024-06-15T10:30:00\",\n  \"message\": \"string\",\n  \"file_results\": [\n    {\n      \"file_name\": \"string\",\n      \"success\": false,\n      \"error\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"success\": true,\n      \"error\": \"string\"\n    }\n  ]\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "3f6c0f78-f1a3-4d9c-b190-480afb64edb3",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entity\": \"https://suspicious-site.example.com\",\n  \"brand\": \"Acme Corp\",\n  \"tags\": [\n    \"Credential Theft\",\n    \"NSFW\",\n    \"Malicious\",\n    \"Spam\"\n  ],\n  \"source\": \"slack-integration\",\n  \"files\": [\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "ce769168-7cee-4867-818d-02cb77d94ba9",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"entity\": \"https://suspicious-site.example.com\",\n  \"brand\": \"Acme Corp\",\n  \"tags\": [\n    \"Credential Theft\",\n    \"NSFW\",\n    \"Malicious\",\n    \"Spam\"\n  ],\n  \"source\": \"slack-integration\",\n  \"files\": [\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "4281a045-7c95-4052-8c86-5ecc20372e7b",
+          "name": "Get Alert",
+          "request": {
+            "name": "Get Alert",
+            "description": {
+              "content": "Retrieves the details of a single alert by its ID or entity value.\n\n**You must provide exactly one of `id` or `entity`**. Providing neither or both returns HTTP 400.\n\nReturns the full alert object including audit logs, tags, entity content, and a signed screenshot URL (expires in 1 hour).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "alert"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "id",
+                  "value": "<string>",
+                  "description": "The alert ID (format ORG-1234). Mutually exclusive with `entity`."
+                },
+                {
+                  "disabled": false,
+                  "key": "entity",
+                  "value": "<string>",
+                  "description": "The URL, phone number, or email of the alert to retrieve. Mutually exclusive with `id`."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "6a28fa9e-05b0-4caf-bb27-6deeb553cdf4",
+              "name": "Alert successfully retrieved",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "ACM-1234"
+                    },
+                    {
+                      "key": "entity",
+                      "value": "https://suspicious-site.example.com"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"ACM-1234\",\n  \"entity\": \"https://suspicious-site.example.com\",\n  \"brand\": \"Acme Corp\",\n  \"doppel_link\": \"https://app.doppel.com/alerts/ACM-1234\",\n  \"queue_state\": \"needs_confirmation\",\n  \"entity_state\": \"unrelated\",\n  \"severity\": \"medium\",\n  \"source\": \"Web Beacon\",\n  \"product\": \"telco\",\n  \"platform\": \"twitter\",\n  \"notes\": \"string\",\n  \"uploaded_by\": \"jane.doe@company.com\",\n  \"assignee\": \"john.doe@company.com\",\n  \"created_at\": \"2024-06-15T10:30:00\",\n  \"screenshot_url\": \"string\",\n  \"audit_logs\": [\n    {\n      \"changed_by\": \"string\",\n      \"value\": \"string\",\n      \"timestamp\": \"1960-09-17T23:15:24.589Z\",\n      \"type\": \"string\",\n      \"metadata\": {\n        \"enforcement_request\": {\n          \"platform\": \"string\",\n          \"type\": \"string\"\n        },\n        \"match\": {\n          \"domain\": {\n            \"url\": \"string\"\n          }\n        }\n      }\n    },\n    {\n      \"changed_by\": \"string\",\n      \"value\": \"string\",\n      \"timestamp\": \"2007-05-16T20:22:08.569Z\",\n      \"type\": \"string\",\n      \"metadata\": {\n        \"enforcement_request\": {\n          \"platform\": \"string\",\n          \"type\": \"string\"\n        },\n        \"match\": {\n          \"domain\": {\n            \"url\": \"string\"\n          }\n        }\n      }\n    }\n  ],\n  \"tags\": [\n    {\n      \"name\": \"Credential Theft\"\n    },\n    {\n      \"name\": \"Credential Theft\"\n    }\n  ],\n  \"entity_content\": {\n    \"key_0\": 3069.711568179897\n  },\n  \"last_activity\": \"2024-06-20T14:00:00\",\n  \"score\": 0.545584259249941,\n  \"file_results\": [\n    {\n      \"file_name\": \"string\",\n      \"success\": false,\n      \"error\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"success\": false,\n      \"error\": \"string\"\n    }\n  ],\n  \"alert_summary\": \"This alert tracks a phishing domain impersonating Acme Corp login pages.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d7afb5fd-72b9-4888-85c7-0da9af2a563a",
+              "name": "Invalid input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "ACM-1234"
+                    },
+                    {
+                      "key": "entity",
+                      "value": "https://suspicious-site.example.com"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b9edafba-7f31-48be-b1b9-aa53a09511c7",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "ACM-1234"
+                    },
+                    {
+                      "key": "entity",
+                      "value": "https://suspicious-site.example.com"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "cdfc01ee-415b-4642-8f81-3e8bcd10ec7a",
+              "name": "Alert not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "ACM-1234"
+                    },
+                    {
+                      "key": "entity",
+                      "value": "https://suspicious-site.example.com"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "aced2cce-0561-4dbf-a953-2837e1cd6f0c",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "ACM-1234"
+                    },
+                    {
+                      "key": "entity",
+                      "value": "https://suspicious-site.example.com"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "69c98b9b-a51b-4107-ab94-0cff6ad31c69",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "ACM-1234"
+                    },
+                    {
+                      "key": "entity",
+                      "value": "https://suspicious-site.example.com"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "cf2de0d9-a4c5-4061-b76b-f4a4a1291472",
+          "name": "Update Alert",
+          "request": {
+            "name": "Update Alert",
+            "description": {
+              "content": "Updates an alert's information in Doppel's system. Works across all modules.\n\n**You must provide exactly one of `id` or `entity`** to identify the alert. At least one field to update must be provided in the request body.\n\n**Paired parameters:**\n- `tag_action` and `tag_name` must both be provided together.\n- `file_action` and `files` must both be provided together.\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "alert"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "id",
+                  "value": "<string>",
+                  "description": "The alert ID (format ORG-1234). Mutually exclusive with `entity`."
+                },
+                {
+                  "disabled": false,
+                  "key": "entity",
+                  "value": "<string>",
+                  "description": "The URL, phone number, or email of the alert to update. Mutually exclusive with `id`."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "PUT",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"queue_state\": \"<string>\",\n  \"entity_state\": \"<string>\",\n  \"comment\": \"<string>\",\n  \"tag_action\": \"<string>\",\n  \"tag_name\": \"<string>\",\n  \"file_action\": \"<string>\",\n  \"files\": [\n    {\n      \"file_name\": \"<string>\",\n      \"file_to_upload\": \"<byte>\"\n    },\n    {\n      \"file_name\": \"<string>\",\n      \"file_to_upload\": \"<byte>\"\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "81cad3f0-c566-49eb-8727-3346fa4b283c",
+              "name": "Updated alert successfully",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "ACM-1234"
+                    },
+                    {
+                      "key": "entity",
+                      "value": "https://suspicious-site.example.com"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"queue_state\": \"actioned\",\n  \"entity_state\": \"unrelated\",\n  \"comment\": \"Confirmed phishing — proceeding with takedown.\",\n  \"tag_action\": \"remove\",\n  \"tag_name\": \"Credential Theft\",\n  \"file_action\": \"delete\",\n  \"files\": [\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"id\": \"ACM-1234\",\n  \"entity\": \"https://suspicious-site.example.com\",\n  \"brand\": \"Acme Corp\",\n  \"doppel_link\": \"https://app.doppel.com/alerts/ACM-1234\",\n  \"queue_state\": \"needs_confirmation\",\n  \"entity_state\": \"unrelated\",\n  \"severity\": \"medium\",\n  \"source\": \"Web Beacon\",\n  \"product\": \"telco\",\n  \"platform\": \"twitter\",\n  \"notes\": \"string\",\n  \"uploaded_by\": \"jane.doe@company.com\",\n  \"assignee\": \"john.doe@company.com\",\n  \"created_at\": \"2024-06-15T10:30:00\",\n  \"screenshot_url\": \"string\",\n  \"audit_logs\": [\n    {\n      \"changed_by\": \"string\",\n      \"value\": \"string\",\n      \"timestamp\": \"1960-09-17T23:15:24.589Z\",\n      \"type\": \"string\",\n      \"metadata\": {\n        \"enforcement_request\": {\n          \"platform\": \"string\",\n          \"type\": \"string\"\n        },\n        \"match\": {\n          \"domain\": {\n            \"url\": \"string\"\n          }\n        }\n      }\n    },\n    {\n      \"changed_by\": \"string\",\n      \"value\": \"string\",\n      \"timestamp\": \"2007-05-16T20:22:08.569Z\",\n      \"type\": \"string\",\n      \"metadata\": {\n        \"enforcement_request\": {\n          \"platform\": \"string\",\n          \"type\": \"string\"\n        },\n        \"match\": {\n          \"domain\": {\n            \"url\": \"string\"\n          }\n        }\n      }\n    }\n  ],\n  \"tags\": [\n    {\n      \"name\": \"Credential Theft\"\n    },\n    {\n      \"name\": \"Credential Theft\"\n    }\n  ],\n  \"entity_content\": {\n    \"key_0\": 3069.711568179897\n  },\n  \"last_activity\": \"2024-06-20T14:00:00\",\n  \"score\": 0.545584259249941,\n  \"file_results\": [\n    {\n      \"file_name\": \"string\",\n      \"success\": false,\n      \"error\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"success\": false,\n      \"error\": \"string\"\n    }\n  ],\n  \"alert_summary\": \"This alert tracks a phishing domain impersonating Acme Corp login pages.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "c71c18e5-666f-4e7f-a40e-2626c295ef17",
+              "name": "Invalid input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "ACM-1234"
+                    },
+                    {
+                      "key": "entity",
+                      "value": "https://suspicious-site.example.com"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"queue_state\": \"actioned\",\n  \"entity_state\": \"unrelated\",\n  \"comment\": \"Confirmed phishing — proceeding with takedown.\",\n  \"tag_action\": \"remove\",\n  \"tag_name\": \"Credential Theft\",\n  \"file_action\": \"delete\",\n  \"files\": [\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "058313a2-4888-4a1c-b5eb-630076ba9734",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "ACM-1234"
+                    },
+                    {
+                      "key": "entity",
+                      "value": "https://suspicious-site.example.com"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"queue_state\": \"actioned\",\n  \"entity_state\": \"unrelated\",\n  \"comment\": \"Confirmed phishing — proceeding with takedown.\",\n  \"tag_action\": \"remove\",\n  \"tag_name\": \"Credential Theft\",\n  \"file_action\": \"delete\",\n  \"files\": [\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "647acf36-2ea2-4997-8b2d-4c00c3bbc44e",
+              "name": "Alert or tag not found",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "ACM-1234"
+                    },
+                    {
+                      "key": "entity",
+                      "value": "https://suspicious-site.example.com"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"queue_state\": \"actioned\",\n  \"entity_state\": \"unrelated\",\n  \"comment\": \"Confirmed phishing — proceeding with takedown.\",\n  \"tag_action\": \"remove\",\n  \"tag_name\": \"Credential Theft\",\n  \"file_action\": \"delete\",\n  \"files\": [\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Not Found",
+              "code": 404,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "03f25318-124d-4114-8ca2-7fc664259fff",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "ACM-1234"
+                    },
+                    {
+                      "key": "entity",
+                      "value": "https://suspicious-site.example.com"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"queue_state\": \"actioned\",\n  \"entity_state\": \"unrelated\",\n  \"comment\": \"Confirmed phishing — proceeding with takedown.\",\n  \"tag_action\": \"remove\",\n  \"tag_name\": \"Credential Theft\",\n  \"file_action\": \"delete\",\n  \"files\": [\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "18940519-bad7-47d0-8291-556793a83922",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "id",
+                      "value": "ACM-1234"
+                    },
+                    {
+                      "key": "entity",
+                      "value": "https://suspicious-site.example.com"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "PUT",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"queue_state\": \"actioned\",\n  \"entity_state\": \"unrelated\",\n  \"comment\": \"Confirmed phishing — proceeding with takedown.\",\n  \"tag_action\": \"remove\",\n  \"tag_name\": \"Credential Theft\",\n  \"file_action\": \"delete\",\n  \"files\": [\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    },\n    {\n      \"file_name\": \"string\",\n      \"file_to_upload\": \"string\"\n    }\n  ]\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "ddd61a4e-b7b0-4d49-b400-4a32faedf1cb",
+          "name": "Submit Referrer Logs",
+          "request": {
+            "name": "Submit Referrer Logs",
+            "description": {
+              "content": "This endpoint submits referrer logs to Doppel for processing. These logs capture URLs that direct visitors to a site and may help identify threats or suspicious activity. Submitting a referrer log does not guarantee that an alert will be generated. Instead, the submitted URL will be analyzed as part of Doppel's referrer log processing.",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "alert",
+                "referrer"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "POST",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"referrer_url\": \"<string>\",\n  \"destination_url\": \"<string>\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "response": [
+            {
+              "id": "aca4e89d-2883-4f92-a034-227680896491",
+              "name": "Request accepted for processing - URL has been submitted for potential alert creation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert",
+                    "referrer"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"referrer_url\": \"https://suspicious-referrer.example.com/phish\",\n  \"destination_url\": \"https://your-company.com/login\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Accepted",
+              "code": 202,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"Successful referrer log submission.\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "e77e6712-37d7-4692-a2a8-09baa6a31e6f",
+              "name": "Bad request - missing required field, invalid URL format, or URL is a known internal asset",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert",
+                    "referrer"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"referrer_url\": \"https://suspicious-referrer.example.com/phish\",\n  \"destination_url\": \"https://your-company.com/login\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "d0ccabe9-d19f-4626-85ac-6afb2f60bf45",
+              "name": "Unauthorized - invalid or missing API key",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert",
+                    "referrer"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"referrer_url\": \"https://suspicious-referrer.example.com/phish\",\n  \"destination_url\": \"https://your-company.com/login\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b5580e0a-9988-44d7-b889-1deb809affbb",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert",
+                    "referrer"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"referrer_url\": \"https://suspicious-referrer.example.com/phish\",\n  \"destination_url\": \"https://your-company.com/login\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "64ffac58-7889-4f6b-900e-d2b8a4c4553b",
+              "name": "Internal server error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alert",
+                    "referrer"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "disabled": false,
+                    "description": "(Required) ",
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "POST",
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"referrer_url\": \"https://suspicious-referrer.example.com/phish\",\n  \"destination_url\": \"https://your-company.com/login\"\n}",
+                  "options": {
+                    "raw": {
+                      "language": "json"
+                    }
+                  }
+                }
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        },
+        {
+          "id": "a521012a-afb4-4b78-8a69-6df60f02e12b",
+          "name": "Get Alerts",
+          "request": {
+            "name": "Get Alerts",
+            "description": {
+              "content": "Returns a paginated list of alerts across all modules, with support for filtering and sorting.\n\n**Sorting:** If `sort_type` is provided, `sort_order` must also be provided. If neither is provided, defaults to `date_sourced` descending.\n\n**Pagination:** Zero-indexed. Default page_size is 30, maximum is 200.\n\n**Note:** In this endpoint's response, the alert timestamp field is named `last_activity_timestamp` (instead of `last_activity` as returned by GET /alert, PUT /alert, and POST /alert).\n",
+              "type": "text/plain"
+            },
+            "url": {
+              "path": [
+                "alerts"
+              ],
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "query": [
+                {
+                  "disabled": false,
+                  "key": "search_key",
+                  "value": "<string>",
+                  "description": "Search alerts by URL. Currently only URL search is supported."
+                },
+                {
+                  "disabled": false,
+                  "key": "created_before",
+                  "value": "<dateTime>",
+                  "description": "Filter alerts created before this date (ISO 8601 format)."
+                },
+                {
+                  "disabled": false,
+                  "key": "created_after",
+                  "value": "<dateTime>",
+                  "description": "Filter alerts created after this date (ISO 8601 format)."
+                },
+                {
+                  "disabled": false,
+                  "key": "last_activity_timestamp",
+                  "value": "<dateTime>",
+                  "description": "Filter alerts with last activity at or after this date (ISO 8601 format)."
+                },
+                {
+                  "disabled": false,
+                  "key": "page",
+                  "value": "0",
+                  "description": "Page number for pagination (zero-indexed). Defaults to 0."
+                },
+                {
+                  "disabled": false,
+                  "key": "page_size",
+                  "value": "30",
+                  "description": "Number of alerts per page (default 30, max 200)"
+                },
+                {
+                  "disabled": false,
+                  "key": "tags",
+                  "value": "<string>,<string>",
+                  "description": "Comma-separated list of tag names to filter alerts by."
+                }
+              ],
+              "variable": []
+            },
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json"
+              }
+            ],
+            "method": "GET",
+            "auth": {
+              "type": "apikey",
+              "apikey": [
+                {
+                  "key": "key",
+                  "value": "x-api-key"
+                },
+                {
+                  "key": "value",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "in",
+                  "value": "header"
+                }
+              ]
+            }
+          },
+          "response": [
+            {
+              "id": "716fb036-1f21-4508-93ef-38b6988edf9e",
+              "name": "Successful operation",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search_key",
+                      "value": "example.com"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2024-01-05T13:45:30"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2024-01-01T00:00:00"
+                    },
+                    {
+                      "key": "last_activity_timestamp",
+                      "value": "2024-01-05T13:45:30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "OK",
+              "code": 200,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"alerts\": [\n    {\n      \"id\": \"ACM-1234\",\n      \"entity\": \"https://suspicious-site.example.com\",\n      \"brand\": \"Acme Corp\",\n      \"doppel_link\": \"https://app.doppel.com/alerts/ACM-1234\",\n      \"queue_state\": \"actioned\",\n      \"entity_state\": \"active\",\n      \"severity\": \"medium\",\n      \"source\": \"Phishing Feed\",\n      \"product\": \"email\",\n      \"platform\": \"twitter\",\n      \"notes\": \"string\",\n      \"uploaded_by\": \"jane.doe@company.com\",\n      \"assignee\": \"john.doe@company.com\",\n      \"created_at\": \"2024-06-15T10:30:00\",\n      \"screenshot_url\": \"string\",\n      \"audit_logs\": [\n        {\n          \"changed_by\": \"string\",\n          \"value\": \"string\",\n          \"timestamp\": \"2023-10-26T13:25:21.992Z\",\n          \"type\": \"string\",\n          \"metadata\": {\n            \"enforcement_request\": {\n              \"platform\": \"string\",\n              \"type\": \"string\"\n            },\n            \"match\": {\n              \"domain\": {\n                \"url\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          }\n        },\n        {\n          \"changed_by\": \"string\",\n          \"value\": \"string\",\n          \"timestamp\": \"1957-10-27T20:10:47.174Z\",\n          \"type\": \"string\",\n          \"metadata\": {\n            \"enforcement_request\": {\n              \"platform\": \"string\",\n              \"type\": \"string\"\n            },\n            \"match\": {\n              \"domain\": {\n                \"url\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          }\n        }\n      ],\n      \"tags\": [\n        {\n          \"name\": \"Credential Theft\"\n        },\n        {\n          \"name\": \"Credential Theft\"\n        }\n      ],\n      \"entity_content\": {\n        \"key_0\": 9564.781326053284\n      },\n      \"last_activity\": \"2024-06-20T14:00:00\",\n      \"score\": 0.7623908532172834,\n      \"file_results\": [\n        {\n          \"file_name\": \"string\",\n          \"success\": true,\n          \"error\": \"string\"\n        },\n        {\n          \"file_name\": \"string\",\n          \"success\": false,\n          \"error\": \"string\"\n        }\n      ],\n      \"alert_summary\": \"This alert tracks a phishing domain impersonating Acme Corp login pages.\"\n    },\n    {\n      \"id\": \"ACM-1234\",\n      \"entity\": \"https://suspicious-site.example.com\",\n      \"brand\": \"Acme Corp\",\n      \"doppel_link\": \"https://app.doppel.com/alerts/ACM-1234\",\n      \"queue_state\": \"doppel_review\",\n      \"entity_state\": \"suspicious\",\n      \"severity\": \"high\",\n      \"source\": \"Web Beacon\",\n      \"product\": \"social_media\",\n      \"platform\": \"twitter\",\n      \"notes\": \"string\",\n      \"uploaded_by\": \"jane.doe@company.com\",\n      \"assignee\": \"john.doe@company.com\",\n      \"created_at\": \"2024-06-15T10:30:00\",\n      \"screenshot_url\": \"string\",\n      \"audit_logs\": [\n        {\n          \"changed_by\": \"string\",\n          \"value\": \"string\",\n          \"timestamp\": \"1988-12-21T00:21:12.835Z\",\n          \"type\": \"string\",\n          \"metadata\": {\n            \"enforcement_request\": {\n              \"platform\": \"string\",\n              \"type\": \"string\"\n            },\n            \"match\": {\n              \"domain\": {\n                \"url\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          }\n        },\n        {\n          \"changed_by\": \"string\",\n          \"value\": \"string\",\n          \"timestamp\": \"1962-02-18T01:15:11.701Z\",\n          \"type\": \"string\",\n          \"metadata\": {\n            \"enforcement_request\": {\n              \"platform\": \"string\",\n              \"type\": \"string\"\n            },\n            \"match\": {\n              \"domain\": {\n                \"url\": {\n                  \"value\": \"<Error: Too many levels of nesting to fake this schema>\"\n                }\n              }\n            }\n          }\n        }\n      ],\n      \"tags\": [\n        {\n          \"name\": \"Credential Theft\"\n        },\n        {\n          \"name\": \"Credential Theft\"\n        }\n      ],\n      \"entity_content\": {\n        \"key_0\": 6088.9501731582095,\n        \"key_1\": 1516,\n        \"key_2\": 3175,\n        \"key_3\": true\n      },\n      \"last_activity\": \"2024-06-20T14:00:00\",\n      \"score\": 0.4899204112278267,\n      \"file_results\": [\n        {\n          \"file_name\": \"string\",\n          \"success\": true,\n          \"error\": \"string\"\n        },\n        {\n          \"file_name\": \"string\",\n          \"success\": true,\n          \"error\": \"string\"\n        }\n      ],\n      \"alert_summary\": \"This alert tracks a phishing domain impersonating Acme Corp login pages.\"\n    }\n  ],\n  \"metadata\": {\n    \"count\": 328,\n    \"page\": 9525,\n    \"total_pages\": 4823,\n    \"page_size\": 9113\n  }\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "b3db0c71-b4d4-4e99-ba65-2393cef7632d",
+              "name": "Invalid input",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search_key",
+                      "value": "example.com"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2024-01-05T13:45:30"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2024-01-01T00:00:00"
+                    },
+                    {
+                      "key": "last_activity_timestamp",
+                      "value": "2024-01-05T13:45:30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Bad Request",
+              "code": 400,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "13a68195-dd11-470a-9f20-cf48a8ab0575",
+              "name": "Unauthorized",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search_key",
+                      "value": "example.com"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2024-01-05T13:45:30"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2024-01-01T00:00:00"
+                    },
+                    {
+                      "key": "last_activity_timestamp",
+                      "value": "2024-01-05T13:45:30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Unauthorized",
+              "code": 401,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "72d7e984-d884-49e6-aef8-f4501b4f62de",
+              "name": "Rate limit exceeded",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search_key",
+                      "value": "example.com"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2024-01-05T13:45:30"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2024-01-01T00:00:00"
+                    },
+                    {
+                      "key": "last_activity_timestamp",
+                      "value": "2024-01-05T13:45:30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Too Many Requests",
+              "code": 429,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            },
+            {
+              "id": "6ec8f8f6-cc23-4ebe-a2a1-13a232a590e2",
+              "name": "Internal Server Error",
+              "originalRequest": {
+                "url": {
+                  "path": [
+                    "alerts"
+                  ],
+                  "host": [
+                    "{{baseUrl}}"
+                  ],
+                  "query": [
+                    {
+                      "key": "search_key",
+                      "value": "example.com"
+                    },
+                    {
+                      "key": "created_before",
+                      "value": "2024-01-05T13:45:30"
+                    },
+                    {
+                      "key": "created_after",
+                      "value": "2024-01-01T00:00:00"
+                    },
+                    {
+                      "key": "last_activity_timestamp",
+                      "value": "2024-01-05T13:45:30"
+                    },
+                    {
+                      "key": "page",
+                      "value": "0"
+                    },
+                    {
+                      "key": "page_size",
+                      "value": "30"
+                    },
+                    {
+                      "key": "tags",
+                      "value": "<string>,<string>"
+                    }
+                  ],
+                  "variable": []
+                },
+                "header": [
+                  {
+                    "description": {
+                      "content": "Added as a part of security scheme: apikey",
+                      "type": "text/plain"
+                    },
+                    "key": "x-api-key",
+                    "value": "<API Key>"
+                  },
+                  {
+                    "key": "Accept",
+                    "value": "application/json"
+                  }
+                ],
+                "method": "GET",
+                "body": {}
+              },
+              "status": "Internal Server Error",
+              "code": 500,
+              "header": [
+                {
+                  "key": "Content-Type",
+                  "value": "application/json"
+                }
+              ],
+              "body": "{\n  \"message\": \"This is an error message\"\n}",
+              "cookie": [],
+              "_postman_previewlanguage": "json"
+            }
+          ],
+          "event": [],
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          }
+        }
+      ],
+      "event": []
+    }
+  ],
+  "event": [],
+  "variable": [
+    {
+      "type": "string",
+      "value": "https://api.doppel.com/v1",
+      "key": "baseUrl"
+    }
+  ],
+  "info": {
+    "_postman_id": "4bd035dc-6b12-4b49-9f76-c58e1f4617ed",
+    "name": "Doppel alerts API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": {
+      "content": "APIs to interface with Doppel's core system for social engineering defense — Brand Protection alerts, URL scanning, reports, protected assets, and Human Risk Management campaigns.\n\nContact Support:\n Name: Doppel API Support",
+      "type": "text/plain"
+    }
+  }
+}

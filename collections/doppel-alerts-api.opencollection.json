@@ -1,0 +1,205 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Doppel alerts API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "alerts",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Get Alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.doppel.com/v1/alert",
+            "params": [
+              {
+                "name": "id",
+                "value": "ACM-1234",
+                "type": "query",
+                "description": "The alert ID (format ORG-1234). Mutually exclusive with `entity`."
+              },
+              {
+                "name": "entity",
+                "value": "https://suspicious-site.example.com",
+                "type": "query",
+                "description": "The URL, phone number, or email of the alert to retrieve. Mutually exclusive with `id`."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Retrieves the details of a single alert by its ID or entity value.\n\n**You must provide exactly one of `id` or `entity`**. Providing neither or both returns HTTP 400.\n\nReturns the full alert object including audit logs, tags, entity content, and a signed screenshot URL (expires in 1 hour).\n"
+        },
+        {
+          "info": {
+            "name": "Create Alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.doppel.com/v1/alert",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Creates an alert for a specific entity (URL or phone number) within Doppel's Brand Protection product.\n\n**Behavior:**\n- If an alert already exists for the entity, the existing alert is returned (HTTP 200).\n- If the alert exists but with a different brand than requested, returns HTTP 409.\n- After creation, the alert is automatically processed through Doppel's triage workflow.\n- If `source` is provided, it must exactly match the \"API value\" field of an external source configured in your organizati"
+        },
+        {
+          "info": {
+            "name": "Update Alert",
+            "type": "http"
+          },
+          "http": {
+            "method": "PUT",
+            "url": "https://api.doppel.com/v1/alert",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "params": [
+              {
+                "name": "id",
+                "value": "ACM-1234",
+                "type": "query",
+                "description": "The alert ID (format ORG-1234). Mutually exclusive with `entity`."
+              },
+              {
+                "name": "entity",
+                "value": "https://suspicious-site.example.com",
+                "type": "query",
+                "description": "The URL, phone number, or email of the alert to update. Mutually exclusive with `id`."
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Updates an alert's information in Doppel's system. Works across all modules.\n\n**You must provide exactly one of `id` or `entity`** to identify the alert. At least one field to update must be provided in the request body.\n\n**Paired parameters:**\n- `tag_action` and `tag_name` must both be provided together.\n- `file_action` and `files` must both be provided together.\n"
+        },
+        {
+          "info": {
+            "name": "Submit Referrer Logs",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.doppel.com/v1/alert/referrer",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "This endpoint submits referrer logs to Doppel for processing. These logs capture URLs that direct visitors to a site and may help identify threats or suspicious activity. Submitting a referrer log does not guarantee that an alert will be generated. Instead, the submitted URL will be analyzed as part of Doppel's referrer log processing."
+        },
+        {
+          "info": {
+            "name": "Get Alerts",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.doppel.com/v1/alerts",
+            "params": [
+              {
+                "name": "search_key",
+                "value": "example.com",
+                "type": "query",
+                "description": "Search alerts by URL. Currently only URL search is supported."
+              },
+              {
+                "name": "created_before",
+                "value": "2024-01-05T13:45:30",
+                "type": "query",
+                "description": "Filter alerts created before this date (ISO 8601 format)."
+              },
+              {
+                "name": "created_after",
+                "value": "2024-01-01T00:00:00",
+                "type": "query",
+                "description": "Filter alerts created after this date (ISO 8601 format)."
+              },
+              {
+                "name": "last_activity_timestamp",
+                "value": "2024-01-05T13:45:30",
+                "type": "query",
+                "description": "Filter alerts with last activity at or after this date (ISO 8601 format)."
+              },
+              {
+                "name": "page",
+                "value": "",
+                "type": "query",
+                "description": "Page number for pagination (zero-indexed). Defaults to 0."
+              },
+              {
+                "name": "page_size",
+                "value": "",
+                "type": "query",
+                "description": "Number of alerts per page (default 30, max 200)"
+              },
+              {
+                "name": "tags",
+                "value": "Credential Theft,Malicious",
+                "type": "query",
+                "description": "Comma-separated list of tag names to filter alerts by."
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Returns a paginated list of alerts across all modules, with support for filtering and sorting.\n\n**Sorting:** If `sort_type` is provided, `sort_order` must also be provided. If neither is provided, defaults to `date_sourced` descending.\n\n**Pagination:** Zero-indexed. Default page_size is 30, maximum is 200.\n\n**Note:** In this endpoint's response, the alert timestamp field is named `last_activity_timestamp` (instead of `last_activity` as returned by GET /alert, PUT /alert, and POST /alert).\n"
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}

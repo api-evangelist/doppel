@@ -1,0 +1,119 @@
+{
+  "opencollection": "1.0.0",
+  "info": {
+    "name": "Doppel alerts protected-assets API",
+    "version": "1.0.0"
+  },
+  "items": [
+    {
+      "info": {
+        "name": "protected-assets",
+        "type": "folder"
+      },
+      "items": [
+        {
+          "info": {
+            "name": "Create Protected Asset",
+            "type": "http"
+          },
+          "http": {
+            "method": "POST",
+            "url": "https://api.doppel.com/v1/protected-asset",
+            "headers": [
+              {
+                "name": "Content-Type",
+                "value": ""
+              }
+            ],
+            "body": {
+              "type": "json",
+              "data": "{}"
+            },
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Create a new protected asset for one or more brands. Protected assets are URLs, handles, or identifiers that your organization wants to monitor for unauthorized use. The asset must be unique per organization, and the brands must belong to your organization."
+        },
+        {
+          "info": {
+            "name": "Delete Protected Asset",
+            "type": "http"
+          },
+          "http": {
+            "method": "DELETE",
+            "url": "https://api.doppel.com/v1/protected-asset/:id",
+            "params": [
+              {
+                "name": "id",
+                "value": "",
+                "type": "path",
+                "description": "The unique identifier (UUID) of the protected asset to delete"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "Delete a protected asset. This removes the asset from your organization's protected assets list, meaning it will no longer suppress alerts for matching content."
+        },
+        {
+          "info": {
+            "name": "List Protected Assets",
+            "type": "http"
+          },
+          "http": {
+            "method": "GET",
+            "url": "https://api.doppel.com/v1/protected-assets",
+            "params": [
+              {
+                "name": "platform_name",
+                "value": "",
+                "type": "query",
+                "description": "Filter by platform (e.g., linkedin, facebook, twitter, domains, instagram)"
+              },
+              {
+                "name": "brand_ids",
+                "value": "",
+                "type": "query",
+                "description": "Filter by multiple brand IDs (comma-separated, max 100)"
+              },
+              {
+                "name": "brand_names",
+                "value": "",
+                "type": "query",
+                "description": "Filter by multiple brand names (comma-separated, case-insensitive, max 100)"
+              },
+              {
+                "name": "limit",
+                "value": "",
+                "type": "query",
+                "description": "Maximum number of results to return"
+              },
+              {
+                "name": "offset",
+                "value": "",
+                "type": "query",
+                "description": "Number of results to skip for pagination"
+              }
+            ],
+            "auth": {
+              "type": "apikey",
+              "key": "x-api-key",
+              "value": "{{x-api-key}}",
+              "placement": "header"
+            }
+          },
+          "docs": "List protected assets for the authenticated organization. Filter by platform and/or brand IDs/brand names, with pagination support. Protected assets are URLs, handles, or identifiers that your organization wants to monitor for unauthorized use across various platforms."
+        }
+      ]
+    }
+  ],
+  "bundled": true
+}
