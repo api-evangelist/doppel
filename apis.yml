@@ -51,6 +51,8 @@ apis:
   humanURL: https://doppel.readme.io/reference
   baseURL: https://api.doppel.com/v1
   tags:
+  - Alerts
+  tags_raw:
   - alerts
   properties:
   - type: OpenAPI
@@ -63,6 +65,8 @@ apis:
   humanURL: https://doppel.readme.io/reference
   baseURL: https://api.doppel.com/v1
   tags:
+  - Brands
+  tags_raw:
   - brands
   properties:
   - type: OpenAPI
@@ -87,6 +91,8 @@ apis:
   humanURL: https://doppel.readme.io/reference
   baseURL: https://api.doppel.com/v1
   tags:
+  - Phishing Simulation
+  tags_raw:
   - phishing-simulation
   properties:
   - type: OpenAPI
@@ -111,6 +117,8 @@ apis:
   humanURL: https://doppel.readme.io/reference
   baseURL: https://api.doppel.com/v1
   tags:
+  - Reports
+  tags_raw:
   - reports
   properties:
   - type: OpenAPI
@@ -123,6 +131,8 @@ apis:
   humanURL: https://doppel.readme.io/reference
   baseURL: https://api.doppel.com/v1
   tags:
+  - Scans
+  tags_raw:
   - scan
   properties:
   - type: OpenAPI
