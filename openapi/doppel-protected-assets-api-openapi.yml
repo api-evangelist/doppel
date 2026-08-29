@@ -1,7 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   version: 1.0.0
-  title: Doppel alerts protected-assets API
+  title: Doppel Protected Assets API
   description: APIs to interface with Doppel's core system for social engineering defense — Brand Protection alerts, URL scanning, reports, protected assets, and Human Risk Management campaigns.
   contact:
     name: Doppel API Support
@@ -340,21 +340,17 @@ components:
           type: string
           description: Success message
           example: Protected asset created successfully
-    ListProtectedAssetsResponse:
-      title: ListProtectedAssetsResponse
-      description: Response model for list of protected assets
+    ErrorResponse:
+      title: ErrorResponse
+      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
       type: object
       required:
-      - data
-      - count
+      - message
       properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/ProtectedAssetResponse'
-        count:
-          type: integer
-          description: Total number of protected assets returned
+        message:
+          type: string
+          description: Human-readable error description.
+          example: This is an error message
     ProtectedAssetResponse:
       title: ProtectedAssetResponse
       description: Response model for a single protected asset
@@ -432,17 +428,37 @@ components:
         updated_by:
           type: string
           description: User who last updated the asset. Changes made by Doppel on your behalf are shown as "Doppel". Null when the last editor is unknown.
-    ErrorResponse:
-      title: ErrorResponse
-      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
+    DeleteProtectedAssetResponse:
+      title: DeleteProtectedAssetResponse
+      description: Response model for deleted protected asset
       type: object
       required:
+      - id
       - message
       properties:
+        id:
+          type: string
+          description: ID of the deleted protected asset
+          example: 123e4567-e89b-12d3-a456-426614174000
         message:
           type: string
-          description: Human-readable error description.
-          example: This is an error message
+          description: Success message
+          example: Protected asset deleted successfully
+    ListProtectedAssetsResponse:
+      title: ListProtectedAssetsResponse
+      description: Response model for list of protected assets
+      type: object
+      required:
+      - data
+      - count
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProtectedAssetResponse'
+        count:
+          type: integer
+          description: Total number of protected assets returned
     CreateProtectedAssetRequest:
       title: CreateProtectedAssetRequest
       description: Request model for creating a protected asset
@@ -465,22 +481,6 @@ components:
           type: string
           description: The protected asset value (URL, handle, identifier, etc.)
           example: https://linkedin.com/company/example
-    DeleteProtectedAssetResponse:
-      title: DeleteProtectedAssetResponse
-      description: Response model for deleted protected asset
-      type: object
-      required:
-      - id
-      - message
-      properties:
-        id:
-          type: string
-          description: ID of the deleted protected asset
-          example: 123e4567-e89b-12d3-a456-426614174000
-        message:
-          type: string
-          description: Success message
-          example: Protected asset deleted successfully
   securitySchemes:
     api_key:
       type: apiKey

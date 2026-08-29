@@ -1,7 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   version: 1.0.0
-  title: Doppel alerts brands API
+  title: Doppel Brands API
   description: APIs to interface with Doppel's core system for social engineering defense — Brand Protection alerts, URL scanning, reports, protected assets, and Human Risk Management campaigns.
   contact:
     name: Doppel API Support

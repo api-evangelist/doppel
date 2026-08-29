@@ -1,7 +1,7 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   version: 1.0.0
-  title: Doppel alerts API
+  title: Doppel Alerts API
   description: APIs to interface with Doppel's core system for social engineering defense — Brand Protection alerts, URL scanning, reports, protected assets, and Human Risk Management campaigns.
   contact:
     name: Doppel API Support
@@ -616,21 +616,99 @@ paths:
       x-google-quota:
         metricCosts:
           get-alerts-request: 1
+webhooks:
+  alert_updated:
+    post:
+      operationId: alert_updated
+      summary: Alert Updated
+      description: This webhook is fired when an alert is updated in our system.
+      tags:
+      - alerts
+      requestBody:
+        description: Information about the Alert that was updated. The alert ID, the alert's Doppel URL, its display ID, and other relevant miscellaeneous fields are also included.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Top-level webhook payload, containing the event type and the event-specific payload.
+              required:
+              - event_type
+              - timestamp
+              - updated_values
+              - initial_values
+              - alert
+              properties:
+                event_type:
+                  type: string
+                  description: The type of event that occurred.
+                  enum:
+                  - alert_updated
+                timestamp:
+                  type: string
+                  format: date-time
+                  description: Timestamp of the alert update.
+                updated_values:
+                  type: object
+                  description: Key-value pairs of fields that were updated in the alert.
+                  properties:
+                    queue_state:
+                      example: doppel_review
+                      type: string
+                    entity_state:
+                      example: active
+                      type: string
+                    notes:
+                      example: Custom alert notes here.
+                      type: string
+                    tag_add:
+                      example: example_tag
+                      type: string
+                    tag_remove:
+                      example: example_tag
+                      type: string
+                    file_action:
+                      example: Uploaded file.txt
+                      type: string
+                    severity:
+                      example: high
+                      type: string
+                initial_values:
+                  type: object
+                  description: Initial key-value pairs of fields that were updated in the alert.
+                  properties:
+                    queue_state:
+                      example: monitoring
+                      type: string
+                    entity_state:
+                      example: down
+                      type: string
+                    notes:
+                      example: Custom alert notes here.
+                      type: string
+                    tag_add:
+                      example: example_tag
+                      type: string
+                    tag_remove:
+                      example: example_tag
+                      type: string
+                    file_action:
+                      example: Uploaded file.txt
+                      type: string
+                    severity:
+                      example: low
+                      type: string
+                alert:
+                  $ref: '#/components/schemas/AlertUpdatedPayload'
+      responses:
+        '201':
+          description: Webhook notification received successfully, and acted upon synchronously.
+        '202':
+          description: Webhook notification received successfully, but will be acted upon asynchronously.
+        '400':
+          description: Invalid payload received.
 components:
   schemas:
-    Product:
-      description: Product category the report belongs to.
-      type: string
-      enum:
-      - domains
-      - social_media
-      - mobile_apps
-      - ecommerce
-      - crypto
-      - email
-      - paid_ads
-      - telco
-      - darkweb
     AuditLog:
       title: AuditLog
       description: A log of the changes on a report.
@@ -675,25 +753,75 @@ components:
                     url:
                       description: URL associated with metadata.
                       type: string
-    FileInput:
-      description: A file to upload or delete.
-      type: object
-      required:
-      - file_name
-      properties:
-        file_name:
-          type: string
-          description: Name of the file (e.g. "evidence.png"). Must not contain path separators or start with a dot.
-        file_to_upload:
-          type: string
-          format: byte
-          description: 'Base64-encoded file content. Required when file_action is "upload". Maximum file size is 50MB.
+    TagActionType:
+      description: 'Action to take on a tag for an alert.
 
-            Supported file extensions: .csv, .docx, .eml, .exe, .gif, .html, .jfif, .jpg, .jpeg, .js, .m4a, .mov, .mp3, .mp4, .msg, .odt, .pdf, .png, .pptx, .rtf, .snagx, .tsv, .txt, .wav, .webp, .xlsx, .zip (files with no extension are also accepted).
+        - `add`: Associate the named tag with the alert.
 
-            For Telco alerts, uploaded image files may be copied into canonical screenshot storage and used as the alert screenshot. The uploaded-file copy remains separate from the screenshot copy.
+        - `remove`: Remove the named tag from the alert.
 
-            '
+        '
+      type: string
+      enum:
+      - add
+      - remove
+    ReportSource:
+      description: How the report was sourced.
+      type: string
+      enum:
+      - Manual Upload
+      - API Upload
+      - Social Media API
+      - Web Search API
+      - Domains Feed
+      - Phishing Feed
+      - Marketplace API
+      - Ads Feed
+      - Dark Web Feed
+      - SSL Transparency Logs
+      - Pivot
+      - Abuse Box
+      - Brand Abusebox
+      - Email Inbox
+      - Web Beacon
+      - Other
+      - Crawler
+    QueueState:
+      description: 'The workflow queue an alert is currently in. Maps to the status columns in Doppel Vision.
+
+        - `doppel_review`: Under review by Doppel''s internal team.
+
+        - `needs_confirmation`: Awaiting customer confirmation before enforcement action.
+
+        - `actioned`: Enforcement action has been taken (e.g. takedown request sent).
+
+        - `taken_down`: Threat has been resolved. Equivalent to "Resolved" in Doppel Vision.
+
+        - `monitoring`: Being actively monitored but no enforcement action taken yet.
+
+        - `archived`: Dismissed or no longer relevant.
+
+        '
+      type: string
+      enum:
+      - doppel_review
+      - needs_confirmation
+      - actioned
+      - taken_down
+      - monitoring
+      - archived
+    FileActionType:
+      description: 'Type of file operation to perform on an alert.
+
+        - `upload`: Upload new files (file_to_upload is required for each file).
+
+        - `delete`: Delete existing files (only file_name is required).
+
+        '
+      type: string
+      enum:
+      - upload
+      - delete
     EntityState:
       description: 'The live status of the entity (URL, phone number, etc.) that the alert is tracking.
 
@@ -724,6 +852,64 @@ components:
       - unrelated
       - related
       - unknown
+    AlertCreatedResponse:
+      title: AlertCreatedResponse
+      description: 'Lightweight response returned by POST /alert. Contains the alert ID and link but not the full alert details.
+
+        Use GET /alert with the returned `id` to retrieve the full alert object.
+
+        '
+      type: object
+      properties:
+        id:
+          type: string
+          description: Alert ID in the format ORG-NUMBER (e.g. ACM-1234).
+          example: ACM-1234
+        entity:
+          description: The URL or phone number submitted for the alert.
+          type: string
+          example: https://suspicious-site.example.com
+        doppel_link:
+          description: Direct link to the alert in the Doppel Vision web app.
+          type: string
+          example: https://app.doppel.com/alerts/ACM-1234
+        last_activity:
+          description: Timestamp of the most recent activity on this alert (ISO 8601).
+          type: string
+          format: date-time
+          example: '2024-06-15T10:30:00'
+        message:
+          description: Additional context about the response. Present when the alert already exists (e.g. "Alert exists but with different brand. To update brand contact support.").
+          type: string
+        file_results:
+          description: Results of file operations, only present when files were included in the request.
+          type: array
+          items:
+            $ref: '#/components/schemas/FileResult'
+    ErrorResponse:
+      title: ErrorResponse
+      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error description.
+          example: This is an error message
+    Product:
+      description: Product category the report belongs to.
+      type: string
+      enum:
+      - domains
+      - social_media
+      - mobile_apps
+      - ecommerce
+      - crypto
+      - email
+      - paid_ads
+      - telco
+      - darkweb
     AlertResponse:
       title: AlertResponse
       description: 'Full alert object returned by GET /alert, GET /alerts, and PUT /alert.
@@ -832,52 +1018,6 @@ components:
             '
           type: string
           example: This alert tracks a phishing domain impersonating Acme Corp login pages.
-    ErrorResponse:
-      title: ErrorResponse
-      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Human-readable error description.
-          example: This is an error message
-    FileResult:
-      description: Result of an individual file operation.
-      type: object
-      properties:
-        file_name:
-          type: string
-        success:
-          type: boolean
-        error:
-          type: string
-          description: Error message if the file operation failed. Only present when success is false.
-    QueueState:
-      description: 'The workflow queue an alert is currently in. Maps to the status columns in Doppel Vision.
-
-        - `doppel_review`: Under review by Doppel''s internal team.
-
-        - `needs_confirmation`: Awaiting customer confirmation before enforcement action.
-
-        - `actioned`: Enforcement action has been taken (e.g. takedown request sent).
-
-        - `taken_down`: Threat has been resolved. Equivalent to "Resolved" in Doppel Vision.
-
-        - `monitoring`: Being actively monitored but no enforcement action taken yet.
-
-        - `archived`: Dismissed or no longer relevant.
-
-        '
-      type: string
-      enum:
-      - doppel_review
-      - needs_confirmation
-      - actioned
-      - taken_down
-      - monitoring
-      - archived
     Severity:
       description: 'Severity level assigned to the alert.
 
@@ -893,6 +1033,137 @@ components:
       - high
       - medium
       - low
+    FileResult:
+      description: Result of an individual file operation.
+      type: object
+      properties:
+        file_name:
+          type: string
+        success:
+          type: boolean
+        error:
+          type: string
+          description: Error message if the file operation failed. Only present when success is false.
+    AlertUpdatedPayload:
+      type: object
+      description: Payload type for the "Alert Updated" webhook.
+      required:
+      - id
+      - doppel_link
+      - created_at
+      - entity
+      - entity_state
+      - queue_state
+      - severity
+      - product
+      - source
+      - notes
+      - uploaded_by
+      - tags
+      properties:
+        id:
+          type: string
+          description: ID of the surfaced alert.
+          example: ABC-12345
+        doppel_link:
+          type: string
+          description: Accessible link to the surfaced alert in Doppel Vision.
+          example: https://app.doppel.com/domains/ABC-12345
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of when the alert was initially created.
+          example: '2024-08-20T15:30:00Z'
+        entity:
+          type: string
+          description: Value representing the potentially malicious entity identified by the alert.
+          example: https://example.surfaced-domain.com
+        entity_state:
+          type: string
+          description: Current state of the potentially malicious entity identified by the alert.
+          example: active
+        queue_state:
+          type: string
+          description: Current queue that the potentially malicious entity is in.
+          example: doppel_review
+        severity:
+          type: string
+          description: Severity of the alert's suspiciousness.
+          example: high
+        product:
+          type: string
+          description: Product type associated with the alert.
+          example: domains
+        source:
+          type: string
+          description: Source of the alert.
+          example: whoisxml_streaming
+        notes:
+          type: string
+          description: Notes associated with the alert.
+          example: This alert was marked as 'down' on 2024-08-20.
+        uploaded_by:
+          type: string
+          description: Email of the Doppel user who uploaded the alert.
+          example: example@gmail.com
+        tags:
+          type: array
+          description: A list of external tags associated with the alert.
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+                description: The name of the tag.
+        brand:
+          type: string
+          nullable: true
+          description: The brand associated with the alert.
+        brand_type:
+          type: string
+          nullable: true
+          description: The brand type associated with the alert (for example, organization_brand or personal_brand).
+        credential_data:
+          $ref: '#/components/schemas/AlertDarkWebCredentialData'
+        has_credit_card_data:
+          type: boolean
+          description: This is true if the report dark web contains associated credit card data. Data itself is not shown.
+    AlertDarkWebCredentialData:
+      type: object
+      description: If the alert is a Credential Leak from Dark Web, this contains its credential data.
+      properties:
+        credential_url:
+          type: string
+          description: URL in which the leaked credentials were found.
+        network:
+          type: string
+          description: Network of the URL in which the leaked credentials were found.
+          example: ONION.V2
+        email:
+          type: string
+          description: Email of the leaked credentials.
+        password:
+          type: string
+          description: Password of the leaked credentials.
+    FileInput:
+      description: A file to upload or delete.
+      type: object
+      required:
+      - file_name
+      properties:
+        file_name:
+          type: string
+          description: Name of the file (e.g. "evidence.png"). Must not contain path separators or start with a dot.
+        file_to_upload:
+          type: string
+          format: byte
+          description: 'Base64-encoded file content. Required when file_action is "upload". Maximum file size is 50MB.
+
+            Supported file extensions: .csv, .docx, .eml, .exe, .gif, .html, .jfif, .jpg, .jpeg, .js, .m4a, .mov, .mp3, .mp4, .msg, .odt, .pdf, .png, .pptx, .rtf, .snagx, .tsv, .txt, .wav, .webp, .xlsx, .zip (files with no extension are also accepted).
+
+            For Telco alerts, uploaded image files may be copied into canonical screenshot storage and used as the alert screenshot. The uploaded-file copy remains separate from the screenshot copy.
+
+            '
     EntityContent:
       description: 'Content related to the entity of the alert, if available, for the following product types: domains, social media posts, social media users, social media groups, mobile apps, ecommerce, emails and paid advertisements. Object fields vary based on product type and availability.
 
@@ -920,85 +1191,6 @@ components:
         '
       type: object
       additionalProperties: true
-    AlertCreatedResponse:
-      title: AlertCreatedResponse
-      description: 'Lightweight response returned by POST /alert. Contains the alert ID and link but not the full alert details.
-
-        Use GET /alert with the returned `id` to retrieve the full alert object.
-
-        '
-      type: object
-      properties:
-        id:
-          type: string
-          description: Alert ID in the format ORG-NUMBER (e.g. ACM-1234).
-          example: ACM-1234
-        entity:
-          description: The URL or phone number submitted for the alert.
-          type: string
-          example: https://suspicious-site.example.com
-        doppel_link:
-          description: Direct link to the alert in the Doppel Vision web app.
-          type: string
-          example: https://app.doppel.com/alerts/ACM-1234
-        last_activity:
-          description: Timestamp of the most recent activity on this alert (ISO 8601).
-          type: string
-          format: date-time
-          example: '2024-06-15T10:30:00'
-        message:
-          description: Additional context about the response. Present when the alert already exists (e.g. "Alert exists but with different brand. To update brand contact support.").
-          type: string
-        file_results:
-          description: Results of file operations, only present when files were included in the request.
-          type: array
-          items:
-            $ref: '#/components/schemas/FileResult'
-    FileActionType:
-      description: 'Type of file operation to perform on an alert.
-
-        - `upload`: Upload new files (file_to_upload is required for each file).
-
-        - `delete`: Delete existing files (only file_name is required).
-
-        '
-      type: string
-      enum:
-      - upload
-      - delete
-    TagActionType:
-      description: 'Action to take on a tag for an alert.
-
-        - `add`: Associate the named tag with the alert.
-
-        - `remove`: Remove the named tag from the alert.
-
-        '
-      type: string
-      enum:
-      - add
-      - remove
-    ReportSource:
-      description: How the report was sourced.
-      type: string
-      enum:
-      - Manual Upload
-      - API Upload
-      - Social Media API
-      - Web Search API
-      - Domains Feed
-      - Phishing Feed
-      - Marketplace API
-      - Ads Feed
-      - Dark Web Feed
-      - SSL Transparency Logs
-      - Pivot
-      - Abuse Box
-      - Brand Abusebox
-      - Email Inbox
-      - Web Beacon
-      - Other
-      - Crawler
   securitySchemes:
     api_key:
       type: apiKey

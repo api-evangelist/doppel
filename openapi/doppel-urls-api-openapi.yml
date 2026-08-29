@@ -1,0 +1,95 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Doppel URLS API
+  description: APIs to interface with Doppel's core system for social engineering defense — Brand Protection alerts, URL scanning, reports, protected assets, and Human Risk Management campaigns.
+  contact:
+    name: Doppel API Support
+    url: https://doppel.readme.io/
+servers:
+- url: https://api.doppel.com/v1
+tags:
+- name: urls
+paths: {}
+webhooks:
+  url_surfaced:
+    post:
+      operationId: url_surfaced
+      summary: URL Surfaced
+      description: This webhook is fired whenever any URL appears in our system. The new URL may be associated with a newly-created or already-existing report.
+      tags:
+      - urls
+      requestBody:
+        description: Information about the URL Surfaced event, such as the URL, the report ID it is associated with, and the Doppel URL of the report. Subscribing endpoints will receive a JSON object with the following fields.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Top-level webhook payload, containing the event type and the event-specific payload.
+              required:
+              - event_type
+              - payload
+              properties:
+                event_type:
+                  type: string
+                  description: The type of event that occurred.
+                  enum:
+                  - url_surfaced
+                payload:
+                  $ref: '#/components/schemas/UrlSurfacedPayload'
+      responses:
+        '201':
+          description: Webhook notification received successfully, and acted upon synchronously.
+        '202':
+          description: Webhook notification received successfully, but will be acted upon asynchronously.
+        '400':
+          description: Invalid payload received.
+components:
+  schemas:
+    UrlSurfacedPayload:
+      type: object
+      description: Payload type for the "URL Surfaced" webhook.
+      required:
+      - url
+      - report_id
+      - doppel_url
+      - timestamp
+      properties:
+        url:
+          type: string
+          description: URL which has been surfaced in the system.
+          example: https://example.surfaced-domain.com
+        report_id:
+          type: string
+          format: uuid
+          description: ID of the report the URL is associated with.
+          example: efdad1e5-e8ae-4eb3-8aa6-fe539b05f97e
+        doppel_url:
+          type: string
+          description: Doppel URL of the associated report.
+          example: https://app.doppel.com/domains/efdad1e5-e8ae-4eb3-8aa6-fe539b05f97e
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp of the webhook notification.
+          example: '2024-04-28T23:59:59.123456'
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header
+      description: API key from Doppel Vision API settings. Required for gateway authentication and quota.
+    user_api_key:
+      type: apiKey
+      name: x-user-api-key
+      in: header
+      description: User API key from Doppel Vision API settings. Required together with x-api-key for authenticated requests.
+x-readme:
+  parameter-ordering:
+  - path
+  - header
+  - query
+  - body
+  - cookie
+  - form

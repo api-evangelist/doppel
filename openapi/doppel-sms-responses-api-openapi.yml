@@ -1,0 +1,126 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Doppel Sms Responses API
+  description: APIs to interface with Doppel's core system for social engineering defense — Brand Protection alerts, URL scanning, reports, protected assets, and Human Risk Management campaigns.
+  contact:
+    name: Doppel API Support
+    url: https://doppel.readme.io/
+servers:
+- url: https://api.doppel.com/v1
+tags:
+- name: sms_responses
+paths: {}
+webhooks:
+  sms_response:
+    post:
+      operationId: sms_response
+      summary: SMS Response
+      description: This webhook is fired whenever an SMS response is received from a Twilio outreach campaign.
+      tags:
+      - sms_responses
+      requestBody:
+        description: Information about the SMS Response event, including the message details, sender information, and campaign context. Subscribing endpoints will receive a JSON object with the following fields.
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Top-level webhook payload, containing the event type and the event-specific payload.
+              required:
+              - event_type
+              - payload
+              properties:
+                event_type:
+                  type: string
+                  description: The type of event that occurred.
+                  enum:
+                  - sms_response
+                payload:
+                  $ref: '#/components/schemas/SMSResponsePayload'
+      responses:
+        '201':
+          description: Webhook notification received successfully, and acted upon synchronously.
+        '202':
+          description: Webhook notification received successfully, but will be acted upon asynchronously.
+        '400':
+          description: Invalid payload received.
+components:
+  schemas:
+    SMSResponsePayload:
+      type: object
+      description: Payload type for the "SMS Response" webhook.
+      required:
+      - message_sid
+      - from_number
+      - to_number
+      - body
+      - timestamp
+      - campaign_id
+      properties:
+        message_sid:
+          type: string
+          description: Twilio message SID for the incoming SMS.
+          example: SM1234567890abcdef
+        from_number:
+          type: string
+          description: Phone number that sent the SMS response.
+          example: '+1234567890'
+        to_number:
+          type: string
+          description: Phone number that received the SMS (your Twilio number).
+          example: '+1987654321'
+        body:
+          type: string
+          description: Content of the SMS response.
+          example: Yes, I received the phishing email
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when the SMS was received.
+          example: '2024-04-28T23:59:59.123456'
+        campaign_id:
+          type: string
+          description: Identifier for the outreach campaign this response belongs to.
+          example: phishing_awareness_2024_q1
+        user_id:
+          type: string
+          description: Optional user identifier if available from the campaign.
+          example: user_12345
+        metadata:
+          type: object
+          description: Additional metadata about the SMS response.
+          properties:
+            message_type:
+              type: string
+              description: Type of message (e.g., 'sms', 'mms').
+              example: sms
+            num_media:
+              type: integer
+              description: Number of media files attached (for MMS).
+              example: 0
+            media_urls:
+              type: array
+              items:
+                type: string
+              description: URLs of media files if any were attached.
+              example: []
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header
+      description: API key from Doppel Vision API settings. Required for gateway authentication and quota.
+    user_api_key:
+      type: apiKey
+      name: x-user-api-key
+      in: header
+      description: User API key from Doppel Vision API settings. Required together with x-api-key for authenticated requests.
+x-readme:
+  parameter-ordering:
+  - path
+  - header
+  - query
+  - body
+  - cookie
+  - form

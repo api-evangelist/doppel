@@ -151,6 +151,46 @@ apis:
     url: openapi/doppel-scan-api-openapi.yml
   - type: APIReference
     url: https://doppel.readme.io/reference
+- aid: doppel:doppel-iocs-api
+  name: Doppel Iocs API
+  description: The iocs API from Doppel — 0 operation(s) for iocs.
+  humanURL: https://doppel.readme.io/reference
+  baseURL: https://api.doppel.com/v1
+  tags:
+  - iocs
+  properties:
+  - type: OpenAPI
+    url: openapi/doppel-iocs-api-openapi.yml
+- aid: doppel:doppel-reports-deprecated-api
+  name: Doppel reports (deprecated) API
+  description: The reports (deprecated) API from Doppel — 0 operation(s) for reports (deprecated).
+  humanURL: https://doppel.readme.io/reference
+  baseURL: https://api.doppel.com/v1
+  tags:
+  - reports (deprecated)
+  properties:
+  - type: OpenAPI
+    url: openapi/doppel-reports-deprecated-api-openapi.yml
+- aid: doppel:doppel-sms-responses-api
+  name: Doppel Sms Responses API
+  description: The sms_responses API from Doppel — 0 operation(s) for sms_responses.
+  humanURL: https://doppel.readme.io/reference
+  baseURL: https://api.doppel.com/v1
+  tags:
+  - sms_responses
+  properties:
+  - type: OpenAPI
+    url: openapi/doppel-sms-responses-api-openapi.yml
+- aid: doppel:doppel-urls-api
+  name: Doppel URLS API
+  description: The urls API from Doppel — 0 operation(s) for urls.
+  humanURL: https://doppel.readme.io/reference
+  baseURL: https://api.doppel.com/v1
+  tags:
+  - urls
+  properties:
+  - type: OpenAPI
+    url: openapi/doppel-urls-api-openapi.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com

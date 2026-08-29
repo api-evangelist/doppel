@@ -1,0 +1,82 @@
+openapi: 3.2.0
+info:
+  version: 1.0.0
+  title: Doppel Iocs API
+  description: APIs to interface with Doppel's core system for social engineering defense — Brand Protection alerts, URL scanning, reports, protected assets, and Human Risk Management campaigns.
+  contact:
+    name: Doppel API Support
+    url: https://doppel.readme.io/
+servers:
+- url: https://api.doppel.com/v1
+tags:
+- name: iocs
+paths: {}
+webhooks:
+  ioc_updated:
+    post:
+      operationId: ioc_updated
+      summary: IOC Updated Webhook
+      description: This webhook is fired whenever an IOC is updated in our system. Please contact our team if you are interested in subscribing to this webhook.
+      tags:
+      - iocs
+      requestBody:
+        description: Information about the IOC event.
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/IOCUpdatedPayload'
+      responses:
+        '201':
+          description: Webhook notification received successfully, and acted upon synchronously.
+        '202':
+          description: Webhook notification received successfully, but will be acted upon asynchronously.
+        '400':
+          description: Invalid payload received.
+components:
+  schemas:
+    IOCUpdatedPayload:
+      type: object
+      description: Payload type for the IOC updated webhook.
+      required:
+      - id
+      - created_at
+      - type
+      - indicator
+      - status
+      properties:
+        id:
+          type: string
+          description: Unique identifier for the IOC.
+        created_at:
+          type: string
+          format: date-time
+          description: Timestamp of the IOC creation.
+        type:
+          type: string
+          description: Type of the IOC, e.g., LINK, FILE, etc.
+        indicator:
+          type: string
+          description: The actual IOC indicator, e.g., domain name, file hash.
+        status:
+          type: string
+          description: Status of the IOC, e.g., MALICIOUS, SUSPICIOUS.
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header
+      description: API key from Doppel Vision API settings. Required for gateway authentication and quota.
+    user_api_key:
+      type: apiKey
+      name: x-user-api-key
+      in: header
+      description: User API key from Doppel Vision API settings. Required together with x-api-key for authenticated requests.
+x-readme:
+  parameter-ordering:
+  - path
+  - header
+  - query
+  - body
+  - cookie
+  - form

@@ -1,41 +1,53 @@
 {
   "provider": "doppel",
   "sources": [
-    "doppel-alerts-api-openapi.yml",
-    "doppel-brands-api-openapi.yml",
-    "doppel-hrm-api-openapi.yml",
-    "doppel-phishing-simulation-api-openapi.yml",
-    "doppel-protected-assets-api-openapi.yml",
-    "doppel-reports-api-openapi.yml",
-    "doppel-scan-api-openapi.yml"
+    "_original/doppel-openapi-original.yml"
   ],
   "outputs": [
     "doppel-alerts-api-openapi.yml",
     "doppel-brands-api-openapi.yml",
     "doppel-hrm-api-openapi.yml",
+    "doppel-iocs-api-openapi.yml",
     "doppel-phishing-simulation-api-openapi.yml",
     "doppel-protected-assets-api-openapi.yml",
     "doppel-reports-api-openapi.yml",
-    "doppel-scan-api-openapi.yml"
+    "doppel-reports-deprecated-api-openapi.yml",
+    "doppel-scan-api-openapi.yml",
+    "doppel-sms-responses-api-openapi.yml",
+    "doppel-urls-api-openapi.yml"
   ],
   "archived": [],
   "errors": [
-    "doppel-alerts-api-openapi.yml: dangling $ref: #/components/parameters/Product",
-    "doppel-alerts-api-openapi.yml: dangling $ref: #/components/parameters/QueueStateFilter",
-    "doppel-alerts-api-openapi.yml: dangling $ref: #/components/parameters/SortOrder",
-    "doppel-alerts-api-openapi.yml: dangling $ref: #/components/parameters/SortType",
-    "doppel-alerts-api-openapi.yml: dangling $ref: #/components/parameters/XOrganizationCodeHeader",
-    "doppel-brands-api-openapi.yml: dangling $ref: #/components/parameters/XOrganizationCodeHeader",
-    "doppel-hrm-api-openapi.yml: dangling $ref: #/components/parameters/XOrganizationCodeHeader",
-    "doppel-protected-assets-api-openapi.yml: dangling $ref: #/components/parameters/XOrganizationCodeHeader",
-    "doppel-reports-api-openapi.yml: dangling $ref: #/components/parameters/Product",
-    "doppel-reports-api-openapi.yml: dangling $ref: #/components/parameters/ReportStatusFilter",
-    "doppel-reports-api-openapi.yml: dangling $ref: #/components/parameters/SortOrder",
-    "doppel-reports-api-openapi.yml: dangling $ref: #/components/parameters/SortType",
-    "doppel-reports-api-openapi.yml: dangling $ref: #/components/parameters/XOrganizationCodeHeader",
-    "doppel-scan-api-openapi.yml: dangling $ref: #/components/parameters/XOrganizationCodeHeader"
+    "doppel-openapi-original.yml: dangling $ref: #/components/parameters/Product",
+    "doppel-openapi-original.yml: dangling $ref: #/components/parameters/QueueStateFilter",
+    "doppel-openapi-original.yml: dangling $ref: #/components/parameters/ReportStatusFilter",
+    "doppel-openapi-original.yml: dangling $ref: #/components/parameters/SortOrder",
+    "doppel-openapi-original.yml: dangling $ref: #/components/parameters/SortType",
+    "doppel-openapi-original.yml: dangling $ref: #/components/parameters/XOrganizationCodeHeader"
   ],
   "warnings": [],
-  "notes": [],
-  "skipped": []
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "doppel-openapi-original.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "doppel-openapi-original.yml: declared missing tag: alerts",
+    "doppel-openapi-original.yml: declared missing tag: brands",
+    "doppel-openapi-original.yml: declared missing tag: hrm",
+    "doppel-openapi-original.yml: declared missing tag: iocs",
+    "doppel-openapi-original.yml: declared missing tag: phishing-simulation",
+    "doppel-openapi-original.yml: declared missing tag: protected-assets",
+    "doppel-openapi-original.yml: declared missing tag: reports",
+    "doppel-openapi-original.yml: declared missing tag: reports (deprecated)",
+    "doppel-openapi-original.yml: declared missing tag: scan",
+    "doppel-openapi-original.yml: declared missing tag: sms_responses",
+    "doppel-openapi-original.yml: declared missing tag: urls"
+  ],
+  "skipped": [
+    "doppel-alerts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doppel-brands-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doppel-hrm-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doppel-phishing-simulation-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doppel-protected-assets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doppel-reports-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doppel-scan-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }
