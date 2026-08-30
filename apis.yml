@@ -103,7 +103,7 @@ apis:
   humanURL: https://doppel.readme.io/reference
   baseURL: https://api.doppel.com/v1
   tags:
-  - Phishing Simulation
+  - phishing-simulation
   tags_raw:
   - phishing-simulation
   properties:
@@ -176,7 +176,8 @@ apis:
   description: The sms_responses API from Doppel — 0 operation(s) for sms_responses.
   humanURL: https://doppel.readme.io/reference
   baseURL: https://api.doppel.com/v1
-  tags:
+  tags: []
+  tags_raw:
   - sms_responses
   properties:
   - type: OpenAPI
@@ -187,6 +188,8 @@ apis:
   humanURL: https://doppel.readme.io/reference
   baseURL: https://api.doppel.com/v1
   tags:
+  - URLs
+  tags_raw:
   - urls
   properties:
   - type: OpenAPI
