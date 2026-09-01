@@ -103,7 +103,7 @@ apis:
   humanURL: https://doppel.readme.io/reference
   baseURL: https://api.doppel.com/v1
   tags:
-  - phishing-simulation
+  - Phishing Simulation
   tags_raw:
   - phishing-simulation
   properties:
