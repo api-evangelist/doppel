@@ -118,6 +118,8 @@ apis:
   humanURL: https://doppel.readme.io/reference
   baseURL: https://api.doppel.com/v1
   tags:
+  - Protected Assets
+  tags_raw:
   - protected-assets
   properties:
   - type: OpenAPI
