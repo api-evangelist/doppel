@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://api.doppel.com/v1
 tags:
-- name: alerts
+- name: Alerts
 paths:
   /alert:
     post:
@@ -37,13 +37,11 @@ paths:
 
         - `source` does not match any configured external source for the organization.
 
-        - `files` contains more than 10 items, duplicate file names, or is missing `file_to_upload`.
-
-        '
+        - `files` contains more than 10 items, duplicate file names, or is missing `file_to_upload`.'
       summary: Create Alert
       operationId: create_alert
       tags:
-      - alerts
+      - Alerts
       x-google-backend:
         address: https://external-api-gateway-725058953679.us-west1.run.app
         jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
@@ -171,13 +169,11 @@ paths:
         **You must provide exactly one of `id` or `entity`**. Providing neither or both returns HTTP 400.
 
 
-        Returns the full alert object including audit logs, tags, entity content, and a signed screenshot URL (expires in 1 hour).
-
-        '
+        Returns the full alert object including audit logs, tags, entity content, and a signed screenshot URL (expires in 1 hour).'
       summary: Get Alert
       operationId: get-alert
       tags:
-      - alerts
+      - Alerts
       x-google-backend:
         address: https://external-api-gateway-725058953679.us-west1.run.app
         jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
@@ -258,13 +254,11 @@ paths:
 
         - `tag_action` and `tag_name` must both be provided together.
 
-        - `file_action` and `files` must both be provided together.
-
-        '
+        - `file_action` and `files` must both be provided together.'
       summary: Update Alert
       operationId: update_alert
       tags:
-      - alerts
+      - Alerts
       x-google-backend:
         address: https://external-api-gateway-725058953679.us-west1.run.app
         jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
@@ -397,7 +391,7 @@ paths:
       summary: Submit Referrer Logs
       operationId: submit-referrer-logs
       tags:
-      - alerts
+      - Alerts
       x-google-backend:
         address: https://external-api-gateway-725058953679.us-west1.run.app
         jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
@@ -483,9 +477,7 @@ paths:
         **Pagination:** Zero-indexed. Default page_size is 30, maximum is 200.
 
 
-        **Note:** In this endpoint''s response, the alert timestamp field is named `last_activity_timestamp` (instead of `last_activity` as returned by GET /alert, PUT /alert, and POST /alert).
-
-        '
+        **Note:** In this endpoint''s response, the alert timestamp field is named `last_activity_timestamp` (instead of `last_activity` as returned by GET /alert, PUT /alert, and POST /alert).'
       summary: Get Alerts
       operationId: get-alerts
       x-google-backend:
@@ -494,7 +486,7 @@ paths:
         path_translation: APPEND_PATH_TO_ADDRESS
         deadline: 60
       tags:
-      - alerts
+      - Alerts
       parameters:
       - $ref: '#/components/parameters/XOrganizationCodeHeader'
       - name: search_key
@@ -623,7 +615,7 @@ webhooks:
       summary: Alert Updated
       description: This webhook is fired when an alert is updated in our system.
       tags:
-      - alerts
+      - Alerts
       requestBody:
         description: Information about the Alert that was updated. The alert ID, the alert's Doppel URL, its display ID, and other relevant miscellaeneous fields are also included.
         required: true
@@ -709,6 +701,21 @@ webhooks:
           description: Invalid payload received.
 components:
   schemas:
+    Severity:
+      description: 'Severity level assigned to the alert.
+
+        - `high`: Confirmed or high-confidence threat requiring immediate action.
+
+        - `medium`: Likely threat that needs further investigation.
+
+        - `low`: Low-confidence signal; may be benign.
+
+        '
+      type: string
+      enum:
+      - high
+      - medium
+      - low
     AuditLog:
       title: AuditLog
       description: A log of the changes on a report.
@@ -753,18 +760,6 @@ components:
                     url:
                       description: URL associated with metadata.
                       type: string
-    TagActionType:
-      description: 'Action to take on a tag for an alert.
-
-        - `add`: Associate the named tag with the alert.
-
-        - `remove`: Remove the named tag from the alert.
-
-        '
-      type: string
-      enum:
-      - add
-      - remove
     ReportSource:
       description: How the report was sourced.
       type: string
@@ -786,130 +781,6 @@ components:
       - Web Beacon
       - Other
       - Crawler
-    QueueState:
-      description: 'The workflow queue an alert is currently in. Maps to the status columns in Doppel Vision.
-
-        - `doppel_review`: Under review by Doppel''s internal team.
-
-        - `needs_confirmation`: Awaiting customer confirmation before enforcement action.
-
-        - `actioned`: Enforcement action has been taken (e.g. takedown request sent).
-
-        - `taken_down`: Threat has been resolved. Equivalent to "Resolved" in Doppel Vision.
-
-        - `monitoring`: Being actively monitored but no enforcement action taken yet.
-
-        - `archived`: Dismissed or no longer relevant.
-
-        '
-      type: string
-      enum:
-      - doppel_review
-      - needs_confirmation
-      - actioned
-      - taken_down
-      - monitoring
-      - archived
-    FileActionType:
-      description: 'Type of file operation to perform on an alert.
-
-        - `upload`: Upload new files (file_to_upload is required for each file).
-
-        - `delete`: Delete existing files (only file_name is required).
-
-        '
-      type: string
-      enum:
-      - upload
-      - delete
-    EntityState:
-      description: 'The live status of the entity (URL, phone number, etc.) that the alert is tracking.
-
-        - `active`: The entity is currently live/accessible.
-
-        - `down`: The entity is no longer accessible (e.g. domain taken down).
-
-        - `parked`: The domain is parked (registered but not hosting active content).
-
-        - `suspicious`: The entity appears to be malicious or suspicious.
-
-        - `unclassified`: The entity has not yet been classified.
-
-        - `unrelated`: The entity has been determined to be unrelated to the brand.
-
-        - `related`: The entity is related to the brand but not necessarily malicious.
-
-        - `unknown`: The entity''s status cannot be determined.
-
-        '
-      type: string
-      enum:
-      - active
-      - down
-      - parked
-      - suspicious
-      - unclassified
-      - unrelated
-      - related
-      - unknown
-    AlertCreatedResponse:
-      title: AlertCreatedResponse
-      description: 'Lightweight response returned by POST /alert. Contains the alert ID and link but not the full alert details.
-
-        Use GET /alert with the returned `id` to retrieve the full alert object.
-
-        '
-      type: object
-      properties:
-        id:
-          type: string
-          description: Alert ID in the format ORG-NUMBER (e.g. ACM-1234).
-          example: ACM-1234
-        entity:
-          description: The URL or phone number submitted for the alert.
-          type: string
-          example: https://suspicious-site.example.com
-        doppel_link:
-          description: Direct link to the alert in the Doppel Vision web app.
-          type: string
-          example: https://app.doppel.com/alerts/ACM-1234
-        last_activity:
-          description: Timestamp of the most recent activity on this alert (ISO 8601).
-          type: string
-          format: date-time
-          example: '2024-06-15T10:30:00'
-        message:
-          description: Additional context about the response. Present when the alert already exists (e.g. "Alert exists but with different brand. To update brand contact support.").
-          type: string
-        file_results:
-          description: Results of file operations, only present when files were included in the request.
-          type: array
-          items:
-            $ref: '#/components/schemas/FileResult'
-    ErrorResponse:
-      title: ErrorResponse
-      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Human-readable error description.
-          example: This is an error message
-    Product:
-      description: Product category the report belongs to.
-      type: string
-      enum:
-      - domains
-      - social_media
-      - mobile_apps
-      - ecommerce
-      - crypto
-      - email
-      - paid_ads
-      - telco
-      - darkweb
     AlertResponse:
       title: AlertResponse
       description: 'Full alert object returned by GET /alert, GET /alerts, and PUT /alert.
@@ -1018,21 +889,59 @@ components:
             '
           type: string
           example: This alert tracks a phishing domain impersonating Acme Corp login pages.
-    Severity:
-      description: 'Severity level assigned to the alert.
+    AlertDarkWebCredentialData:
+      type: object
+      description: If the alert is a Credential Leak from Dark Web, this contains its credential data.
+      properties:
+        credential_url:
+          type: string
+          description: URL in which the leaked credentials were found.
+        network:
+          type: string
+          description: Network of the URL in which the leaked credentials were found.
+          example: ONION.V2
+        email:
+          type: string
+          description: Email of the leaked credentials.
+        password:
+          type: string
+          description: Password of the leaked credentials.
+    QueueState:
+      description: 'The workflow queue an alert is currently in. Maps to the status columns in Doppel Vision.
 
-        - `high`: Confirmed or high-confidence threat requiring immediate action.
+        - `doppel_review`: Under review by Doppel''s internal team.
 
-        - `medium`: Likely threat that needs further investigation.
+        - `needs_confirmation`: Awaiting customer confirmation before enforcement action.
 
-        - `low`: Low-confidence signal; may be benign.
+        - `actioned`: Enforcement action has been taken (e.g. takedown request sent).
+
+        - `taken_down`: Threat has been resolved. Equivalent to "Resolved" in Doppel Vision.
+
+        - `monitoring`: Being actively monitored but no enforcement action taken yet.
+
+        - `archived`: Dismissed or no longer relevant.
 
         '
       type: string
       enum:
-      - high
-      - medium
-      - low
+      - doppel_review
+      - needs_confirmation
+      - actioned
+      - taken_down
+      - monitoring
+      - archived
+    FileActionType:
+      description: 'Type of file operation to perform on an alert.
+
+        - `upload`: Upload new files (file_to_upload is required for each file).
+
+        - `delete`: Delete existing files (only file_name is required).
+
+        '
+      type: string
+      enum:
+      - upload
+      - delete
     FileResult:
       description: Result of an individual file operation.
       type: object
@@ -1128,23 +1037,93 @@ components:
         has_credit_card_data:
           type: boolean
           description: This is true if the report dark web contains associated credit card data. Data itself is not shown.
-    AlertDarkWebCredentialData:
+    ErrorResponse:
+      title: ErrorResponse
+      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
       type: object
-      description: If the alert is a Credential Leak from Dark Web, this contains its credential data.
+      required:
+      - message
       properties:
-        credential_url:
+        message:
           type: string
-          description: URL in which the leaked credentials were found.
-        network:
+          description: Human-readable error description.
+          example: This is an error message
+    EntityState:
+      description: 'The live status of the entity (URL, phone number, etc.) that the alert is tracking.
+
+        - `active`: The entity is currently live/accessible.
+
+        - `down`: The entity is no longer accessible (e.g. domain taken down).
+
+        - `parked`: The domain is parked (registered but not hosting active content).
+
+        - `suspicious`: The entity appears to be malicious or suspicious.
+
+        - `unclassified`: The entity has not yet been classified.
+
+        - `unrelated`: The entity has been determined to be unrelated to the brand.
+
+        - `related`: The entity is related to the brand but not necessarily malicious.
+
+        - `unknown`: The entity''s status cannot be determined.
+
+        '
+      type: string
+      enum:
+      - active
+      - down
+      - parked
+      - suspicious
+      - unclassified
+      - unrelated
+      - related
+      - unknown
+    TagActionType:
+      description: 'Action to take on a tag for an alert.
+
+        - `add`: Associate the named tag with the alert.
+
+        - `remove`: Remove the named tag from the alert.
+
+        '
+      type: string
+      enum:
+      - add
+      - remove
+    AlertCreatedResponse:
+      title: AlertCreatedResponse
+      description: 'Lightweight response returned by POST /alert. Contains the alert ID and link but not the full alert details.
+
+        Use GET /alert with the returned `id` to retrieve the full alert object.
+
+        '
+      type: object
+      properties:
+        id:
           type: string
-          description: Network of the URL in which the leaked credentials were found.
-          example: ONION.V2
-        email:
+          description: Alert ID in the format ORG-NUMBER (e.g. ACM-1234).
+          example: ACM-1234
+        entity:
+          description: The URL or phone number submitted for the alert.
           type: string
-          description: Email of the leaked credentials.
-        password:
+          example: https://suspicious-site.example.com
+        doppel_link:
+          description: Direct link to the alert in the Doppel Vision web app.
           type: string
-          description: Password of the leaked credentials.
+          example: https://app.doppel.com/alerts/ACM-1234
+        last_activity:
+          description: Timestamp of the most recent activity on this alert (ISO 8601).
+          type: string
+          format: date-time
+          example: '2024-06-15T10:30:00'
+        message:
+          description: Additional context about the response. Present when the alert already exists (e.g. "Alert exists but with different brand. To update brand contact support.").
+          type: string
+        file_results:
+          description: Results of file operations, only present when files were included in the request.
+          type: array
+          items:
+            $ref: '#/components/schemas/FileResult'
     FileInput:
       description: A file to upload or delete.
       type: object
@@ -1191,6 +1170,19 @@ components:
         '
       type: object
       additionalProperties: true
+    Product:
+      description: Product category the report belongs to.
+      type: string
+      enum:
+      - domains
+      - social_media
+      - mobile_apps
+      - ecommerce
+      - crypto
+      - email
+      - paid_ads
+      - telco
+      - darkweb
   securitySchemes:
     api_key:
       type: apiKey

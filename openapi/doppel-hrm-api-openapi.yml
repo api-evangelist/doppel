@@ -271,9 +271,7 @@ webhooks:
     post:
       operationId: hrm_event
       summary: HRM Campaign Event
-      description: 'This webhook is fired when a Human Risk Management (HRM) phishing simulation campaign engagement event is recorded. Events include attack delivery (email_sent), target interactions (email_opened, link_visited, data_submitted), training outcomes (training_accessed, quiz_passed, quiz_failed), reporting (email_reported), voice call results (call_answered, call_missed), and voice behavior analysis labels (refusal, disclosure_full, security_escalation, etc.).
-
-        '
+      description: This webhook is fired when a Human Risk Management (HRM) phishing simulation campaign engagement event is recorded. Events include attack delivery (email_sent), target interactions (email_opened, link_visited, data_submitted), training outcomes (training_accessed, quiz_passed, quiz_failed), reporting (email_reported), voice call results (call_answered, call_missed), and voice behavior analysis labels (refusal, disclosure_full, security_escalation, etc.).
       tags:
       - hrm
       requestBody:
@@ -312,6 +310,32 @@ webhooks:
           description: Invalid payload received.
 components:
   schemas:
+    ListEventsResponse:
+      type: object
+      required:
+      - data
+      - count
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HrmEventResponse'
+        count:
+          type: integer
+          description: Total number of matching events
+    ListCampaignsResponse:
+      type: object
+      required:
+      - data
+      - count
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HrmCampaignResponse'
+        count:
+          type: integer
+          description: Total number of matching campaigns
     HrmEventResponse:
       type: object
       required:
@@ -358,6 +382,17 @@ components:
         source:
           type: string
           description: Event source
+    ErrorResponse:
+      title: ErrorResponse
+      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error description.
+          example: This is an error message
     HrmEventPayload:
       type: object
       description: Payload type for the "HRM Event" webhook. Fired when a phishing simulation campaign engagement event is recorded (e.g., a target opens an attack email, clicks a link, submits data, completes training, or answers a vishing call).
@@ -402,30 +437,6 @@ components:
           - Mobile
           - Tablet
           example: Mobile
-    ListEventsResponse:
-      type: object
-      required:
-      - data
-      - count
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/HrmEventResponse'
-        count:
-          type: integer
-          description: Total number of matching events
-    ErrorResponse:
-      title: ErrorResponse
-      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Human-readable error description.
-          example: This is an error message
     HrmCampaignResponse:
       type: object
       required:
@@ -459,19 +470,6 @@ components:
         is_test:
           type: boolean
           description: Whether this is a test campaign
-    ListCampaignsResponse:
-      type: object
-      required:
-      - data
-      - count
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/HrmCampaignResponse'
-        count:
-          type: integer
-          description: Total number of matching campaigns
   securitySchemes:
     api_key:
       type: apiKey

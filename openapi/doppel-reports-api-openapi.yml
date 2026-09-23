@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://api.doppel.com/v1
 tags:
-- name: reports
+- name: Reports
 paths:
   /report:
     get:
@@ -18,7 +18,7 @@ paths:
       deprecated: true
       operationId: get_report
       tags:
-      - reports
+      - Reports
       x-google-backend:
         address: https://external-api-gateway-725058953679.us-west1.run.app
         jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
@@ -99,7 +99,7 @@ paths:
       deprecated: true
       operationId: submit_report
       tags:
-      - reports
+      - Reports
       x-google-backend:
         address: https://external-api-gateway-725058953679.us-west1.run.app
         jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
@@ -185,7 +185,7 @@ paths:
       deprecated: true
       operationId: update_report
       tags:
-      - reports
+      - Reports
       x-google-backend:
         address: https://external-api-gateway-725058953679.us-west1.run.app
         jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
@@ -293,7 +293,7 @@ paths:
         jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
         path_translation: APPEND_PATH_TO_ADDRESS
       tags:
-      - reports
+      - Reports
       parameters:
       - $ref: '#/components/parameters/XOrganizationCodeHeader'
       - name: search_key
@@ -461,6 +461,31 @@ components:
       - Web Beacon
       - Other
       - Crawler
+    ReportStatus:
+      description: 'Status of which queue the report is in.
+
+        (Note: taken_down is equivalent to Resolved in the Doppel Vision App)
+
+        '
+      type: string
+      enum:
+      - doppel_review
+      - needs_confirmation
+      - actioned
+      - taken_down
+      - monitoring
+      - archived
+    ErrorResponse:
+      title: ErrorResponse
+      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error description.
+          example: This is an error message
     ReportResponse:
       title: ReportResponse
       description: Doppel report schema
@@ -546,31 +571,6 @@ components:
               name:
                 type: string
                 description: The name of the tag.
-    ReportStatus:
-      description: 'Status of which queue the report is in.
-
-        (Note: taken_down is equivalent to Resolved in the Doppel Vision App)
-
-        '
-      type: string
-      enum:
-      - doppel_review
-      - needs_confirmation
-      - actioned
-      - taken_down
-      - monitoring
-      - archived
-    ErrorResponse:
-      title: ErrorResponse
-      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Human-readable error description.
-          example: This is an error message
     ReportClassification:
       description: New classification to update a report's url with (url required)
       type: string

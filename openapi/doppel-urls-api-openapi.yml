@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://api.doppel.com/v1
 tags:
-- name: urls
+- name: URLs
 paths: {}
 webhooks:
   url_surfaced:
@@ -18,7 +18,7 @@ webhooks:
       summary: URL Surfaced
       description: This webhook is fired whenever any URL appears in our system. The new URL may be associated with a newly-created or already-existing report.
       tags:
-      - urls
+      - URLs
       requestBody:
         description: Information about the URL Surfaced event, such as the URL, the report ID it is associated with, and the Doppel URL of the report. Subscribing endpoints will receive a JSON object with the following fields.
         required: true

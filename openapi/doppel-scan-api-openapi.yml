@@ -9,7 +9,7 @@ info:
 servers:
 - url: https://api.doppel.com/v1
 tags:
-- name: scan
+- name: Scan
 paths:
   /scan:
     post:
@@ -17,7 +17,7 @@ paths:
       summary: Submit Scan Url
       operationId: scan
       tags:
-      - scan
+      - Scan
       x-google-backend:
         address: https://external-api-gateway-725058953679.us-west1.run.app
         jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app
@@ -109,7 +109,7 @@ paths:
       summary: Get Scan Result
       operationId: get_scan_result
       tags:
-      - scan
+      - Scan
       x-google-backend:
         address: https://external-api-gateway-725058953679.us-west1.run.app
         jwt_audience: https://external-api-gateway-725058953679.us-west1.run.app

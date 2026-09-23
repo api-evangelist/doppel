@@ -39,15 +39,20 @@
     "doppel-openapi-original.yml: declared missing tag: reports (deprecated)",
     "doppel-openapi-original.yml: declared missing tag: scan",
     "doppel-openapi-original.yml: declared missing tag: sms_responses",
-    "doppel-openapi-original.yml: declared missing tag: urls"
+    "doppel-openapi-original.yml: declared missing tag: urls",
+    "apis.yml register: already-registered"
   ],
   "skipped": [
     "doppel-alerts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "doppel-brands-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "doppel-hrm-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doppel-iocs-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "doppel-phishing-simulation-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "doppel-protected-assets-api-openapi.yml: previously refined output, superseded by openapi/_original/",
     "doppel-reports-api-openapi.yml: previously refined output, superseded by openapi/_original/",
-    "doppel-scan-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+    "doppel-reports-deprecated-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doppel-scan-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doppel-sms-responses-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "doppel-urls-api-openapi.yml: previously refined output, superseded by openapi/_original/"
   ]
 }
