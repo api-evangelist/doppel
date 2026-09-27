@@ -396,50 +396,6 @@ paths:
           get-reports-request: 1
 components:
   schemas:
-    AuditLog:
-      title: AuditLog
-      description: A log of the changes on a report.
-      type: object
-      properties:
-        changed_by:
-          type: string
-          description: Email of the user who made the change, or "Doppel".
-        value:
-          type: string
-          description: New log value
-        timestamp:
-          type: string
-          format: date-time
-          description: Timestamp when the change was made.
-        type:
-          type: string
-          description: Type of audit log.
-        metadata:
-          title: Metadata
-          description: Metadata for audit log.
-          type: object
-          properties:
-            enforcement_request:
-              description: Enforcement request information.
-              type: object
-              properties:
-                platform:
-                  description: Platform where the enforcement request was made.
-                  type: string
-                type:
-                  description: Type of enforcement request.
-                  type: string
-            match:
-              description: Match information.
-              type: object
-              properties:
-                domain:
-                  description: Domain information.
-                  type: object
-                  properties:
-                    url:
-                      description: URL associated with metadata.
-                      type: string
     ReportSource:
       description: How the report was sourced.
       type: string
@@ -461,31 +417,14 @@ components:
       - Web Beacon
       - Other
       - Crawler
-    ReportStatus:
-      description: 'Status of which queue the report is in.
-
-        (Note: taken_down is equivalent to Resolved in the Doppel Vision App)
-
-        '
+    ReportClassification:
+      description: New classification to update a report's url with (url required)
       type: string
       enum:
-      - doppel_review
-      - needs_confirmation
-      - actioned
-      - taken_down
-      - monitoring
-      - archived
-    ErrorResponse:
-      title: ErrorResponse
-      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Human-readable error description.
-          example: This is an error message
+      - suspicious
+      - down
+      - parked
+      - active
     ReportResponse:
       title: ReportResponse
       description: Doppel report schema
@@ -571,14 +510,6 @@ components:
               name:
                 type: string
                 description: The name of the tag.
-    ReportClassification:
-      description: New classification to update a report's url with (url required)
-      type: string
-      enum:
-      - suspicious
-      - down
-      - parked
-      - active
     Product:
       description: Product category the report belongs to.
       type: string
@@ -592,6 +523,75 @@ components:
       - paid_ads
       - telco
       - darkweb
+    AuditLog:
+      title: AuditLog
+      description: A log of the changes on a report.
+      type: object
+      properties:
+        changed_by:
+          type: string
+          description: Email of the user who made the change, or "Doppel".
+        value:
+          type: string
+          description: New log value
+        timestamp:
+          type: string
+          format: date-time
+          description: Timestamp when the change was made.
+        type:
+          type: string
+          description: Type of audit log.
+        metadata:
+          title: Metadata
+          description: Metadata for audit log.
+          type: object
+          properties:
+            enforcement_request:
+              description: Enforcement request information.
+              type: object
+              properties:
+                platform:
+                  description: Platform where the enforcement request was made.
+                  type: string
+                type:
+                  description: Type of enforcement request.
+                  type: string
+            match:
+              description: Match information.
+              type: object
+              properties:
+                domain:
+                  description: Domain information.
+                  type: object
+                  properties:
+                    url:
+                      description: URL associated with metadata.
+                      type: string
+    ErrorResponse:
+      title: ErrorResponse
+      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error description.
+          example: This is an error message
+    ReportStatus:
+      description: 'Status of which queue the report is in.
+
+        (Note: taken_down is equivalent to Resolved in the Doppel Vision App)
+
+        '
+      type: string
+      enum:
+      - doppel_review
+      - needs_confirmation
+      - actioned
+      - taken_down
+      - monitoring
+      - archived
   securitySchemes:
     api_key:
       type: apiKey

@@ -310,32 +310,6 @@ webhooks:
           description: Invalid payload received.
 components:
   schemas:
-    ListEventsResponse:
-      type: object
-      required:
-      - data
-      - count
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/HrmEventResponse'
-        count:
-          type: integer
-          description: Total number of matching events
-    ListCampaignsResponse:
-      type: object
-      required:
-      - data
-      - count
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/HrmCampaignResponse'
-        count:
-          type: integer
-          description: Total number of matching campaigns
     HrmEventResponse:
       type: object
       required:
@@ -382,17 +356,65 @@ components:
         source:
           type: string
           description: Event source
-    ErrorResponse:
-      title: ErrorResponse
-      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
+    HrmCampaignResponse:
       type: object
       required:
-      - message
+      - id
+      - name
+      - status
+      - campaign_type
+      - is_test
       properties:
-        message:
+        id:
           type: string
-          description: Human-readable error description.
-          example: This is an error message
+          description: Campaign ID
+        name:
+          type: string
+          description: Campaign name
+        status:
+          type: string
+          description: Campaign status (e.g. pending, in_progress, finished)
+        campaign_type:
+          type: string
+          description: Campaign type (e.g. simulation)
+        launch_date:
+          type: string
+          description: ISO 8601 launch date
+        end_date:
+          type: string
+          description: ISO 8601 end date
+        created_at:
+          type: string
+          description: ISO 8601 creation timestamp
+        is_test:
+          type: boolean
+          description: Whether this is a test campaign
+    ListEventsResponse:
+      type: object
+      required:
+      - data
+      - count
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HrmEventResponse'
+        count:
+          type: integer
+          description: Total number of matching events
+    ListCampaignsResponse:
+      type: object
+      required:
+      - data
+      - count
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HrmCampaignResponse'
+        count:
+          type: integer
+          description: Total number of matching campaigns
     HrmEventPayload:
       type: object
       description: Payload type for the "HRM Event" webhook. Fired when a phishing simulation campaign engagement event is recorded (e.g., a target opens an attack email, clicks a link, submits data, completes training, or answers a vishing call).
@@ -437,39 +459,17 @@ components:
           - Mobile
           - Tablet
           example: Mobile
-    HrmCampaignResponse:
+    ErrorResponse:
+      title: ErrorResponse
+      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
       type: object
       required:
-      - id
-      - name
-      - status
-      - campaign_type
-      - is_test
+      - message
       properties:
-        id:
+        message:
           type: string
-          description: Campaign ID
-        name:
-          type: string
-          description: Campaign name
-        status:
-          type: string
-          description: Campaign status (e.g. pending, in_progress, finished)
-        campaign_type:
-          type: string
-          description: Campaign type (e.g. simulation)
-        launch_date:
-          type: string
-          description: ISO 8601 launch date
-        end_date:
-          type: string
-          description: ISO 8601 end date
-        created_at:
-          type: string
-          description: ISO 8601 creation timestamp
-        is_test:
-          type: boolean
-          description: Whether this is a test campaign
+          description: Human-readable error description.
+          example: This is an error message
   securitySchemes:
     api_key:
       type: apiKey

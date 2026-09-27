@@ -46,6 +46,9 @@ specificationVersion: '0.23'
 created: '2026-07-17'
 modified: '2026-07-18'
 image: https://prod-cms.doppel.com/sites/default/files/2025-11/Open_Graph_Image_0.png
+x-docs-platform: readme
+x-docs-platform-confidence: high
+x-docs-platform-checked: 2026-09-25
 tags:
 - Company
 - Security
@@ -59,7 +62,7 @@ tags:
 - Takedowns
 apis:
 - aid: doppel:doppel-alerts-api
-  name: Doppel alerts API
+  name: Doppel Alerts API
   description: The alerts API from Doppel — 3 operation(s) for alerts.
   humanURL: https://doppel.readme.io/reference
   baseURL: https://api.doppel.com/v1
@@ -73,7 +76,7 @@ apis:
   - type: APIReference
     url: https://doppel.readme.io/reference
 - aid: doppel:doppel-brands-api
-  name: Doppel brands API
+  name: Doppel Brands API
   description: The brands API from Doppel — 2 operation(s) for brands.
   humanURL: https://doppel.readme.io/reference
   baseURL: https://api.doppel.com/v1
@@ -87,7 +90,7 @@ apis:
   - type: APIReference
     url: https://doppel.readme.io/reference
 - aid: doppel:doppel-hrm-api
-  name: Doppel hrm API
+  name: Doppel Hrm API
   description: The hrm API from Doppel — 3 operation(s) for hrm.
   humanURL: https://doppel.readme.io/reference
   baseURL: https://api.doppel.com/v1
@@ -99,7 +102,7 @@ apis:
   - type: APIReference
     url: https://doppel.readme.io/reference
 - aid: doppel:doppel-phishing-simulation-api
-  name: Doppel phishing-simulation API
+  name: Doppel Phishing Simulation API
   description: The phishing-simulation API from Doppel — 1 operation(s) for phishing-simulation.
   humanURL: https://doppel.readme.io/reference
   baseURL: https://api.doppel.com/v1
@@ -113,7 +116,7 @@ apis:
   - type: APIReference
     url: https://doppel.readme.io/reference
 - aid: doppel:doppel-protected-assets-api
-  name: Doppel protected-assets API
+  name: Doppel Protected Assets API
   description: The protected-assets API from Doppel — 3 operation(s) for protected-assets.
   humanURL: https://doppel.readme.io/reference
   baseURL: https://api.doppel.com/v1
@@ -127,7 +130,7 @@ apis:
   - type: APIReference
     url: https://doppel.readme.io/reference
 - aid: doppel:doppel-reports-api
-  name: Doppel reports API
+  name: Doppel Reports API
   description: The reports API from Doppel — 2 operation(s) for reports.
   humanURL: https://doppel.readme.io/reference
   baseURL: https://api.doppel.com/v1
@@ -141,7 +144,7 @@ apis:
   - type: APIReference
     url: https://doppel.readme.io/reference
 - aid: doppel:doppel-scan-api
-  name: Doppel scan API
+  name: Doppel Scan API
   description: The scan API from Doppel — 2 operation(s) for scan.
   humanURL: https://doppel.readme.io/reference
   baseURL: https://api.doppel.com/v1
