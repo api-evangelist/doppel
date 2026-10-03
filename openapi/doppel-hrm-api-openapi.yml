@@ -356,6 +356,19 @@ components:
         source:
           type: string
           description: Event source
+    ListEventsResponse:
+      type: object
+      required:
+      - data
+      - count
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HrmEventResponse'
+        count:
+          type: integer
+          description: Total number of matching events
     HrmCampaignResponse:
       type: object
       required:
@@ -389,19 +402,6 @@ components:
         is_test:
           type: boolean
           description: Whether this is a test campaign
-    ListEventsResponse:
-      type: object
-      required:
-      - data
-      - count
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/HrmEventResponse'
-        count:
-          type: integer
-          description: Total number of matching events
     ListCampaignsResponse:
       type: object
       required:

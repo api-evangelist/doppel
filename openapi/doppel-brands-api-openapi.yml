@@ -182,21 +182,6 @@ paths:
         user_api_key: []
 components:
   schemas:
-    GetBrandResponse:
-      title: GetBrandResponse
-      description: Response model for list of brands
-      type: object
-      required:
-      - data
-      - count
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/BrandResponse'
-        count:
-          type: integer
-          description: Total number of brands returned
     BrandResponse:
       title: BrandResponse
       description: Response model for a single brand
@@ -222,6 +207,21 @@ components:
         updated_at:
           type: string
           description: Timestamp when the brand was last updated
+    GetBrandResponse:
+      title: GetBrandResponse
+      description: Response model for list of brands
+      type: object
+      required:
+      - data
+      - count
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/BrandResponse'
+        count:
+          type: integer
+          description: Total number of brands returned
     ErrorResponse:
       title: ErrorResponse
       description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.

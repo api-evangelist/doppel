@@ -326,35 +326,28 @@ paths:
         user_api_key: []
 components:
   schemas:
-    CreateProtectedAssetResponse:
-      title: CreateProtectedAssetResponse
-      description: Response model for created protected asset
+    CreateProtectedAssetRequest:
+      title: CreateProtectedAssetRequest
+      description: Request model for creating a protected asset
       type: object
       required:
-      - data
-      - message
+      - brand_ids
+      - asset_value
       properties:
-        data:
-          $ref: '#/components/schemas/ProtectedAssetResponse'
-        message:
-          type: string
-          description: Success message
-          example: Protected asset created successfully
-    ListProtectedAssetsResponse:
-      title: ListProtectedAssetsResponse
-      description: Response model for list of protected assets
-      type: object
-      required:
-      - data
-      - count
-      properties:
-        data:
+        brand_ids:
           type: array
           items:
-            $ref: '#/components/schemas/ProtectedAssetResponse'
-        count:
-          type: integer
-          description: Total number of protected assets returned
+            type: string
+            format: uuid
+          minItems: 1
+          maxItems: 100
+          description: List of brand IDs to associate with asset (1-100 brand IDs)
+          example:
+          - 123e4567-e89b-12d3-a456-426614174000
+        asset_value:
+          type: string
+          description: The protected asset value (URL, handle, identifier, etc.)
+          example: https://linkedin.com/company/example
     ProtectedAssetResponse:
       title: ProtectedAssetResponse
       description: Response model for a single protected asset
@@ -432,6 +425,35 @@ components:
         updated_by:
           type: string
           description: User who last updated the asset. Changes made by Doppel on your behalf are shown as "Doppel". Null when the last editor is unknown.
+    ListProtectedAssetsResponse:
+      title: ListProtectedAssetsResponse
+      description: Response model for list of protected assets
+      type: object
+      required:
+      - data
+      - count
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProtectedAssetResponse'
+        count:
+          type: integer
+          description: Total number of protected assets returned
+    CreateProtectedAssetResponse:
+      title: CreateProtectedAssetResponse
+      description: Response model for created protected asset
+      type: object
+      required:
+      - data
+      - message
+      properties:
+        data:
+          $ref: '#/components/schemas/ProtectedAssetResponse'
+        message:
+          type: string
+          description: Success message
+          example: Protected asset created successfully
     DeleteProtectedAssetResponse:
       title: DeleteProtectedAssetResponse
       description: Response model for deleted protected asset
@@ -448,28 +470,6 @@ components:
           type: string
           description: Success message
           example: Protected asset deleted successfully
-    CreateProtectedAssetRequest:
-      title: CreateProtectedAssetRequest
-      description: Request model for creating a protected asset
-      type: object
-      required:
-      - brand_ids
-      - asset_value
-      properties:
-        brand_ids:
-          type: array
-          items:
-            type: string
-            format: uuid
-          minItems: 1
-          maxItems: 100
-          description: List of brand IDs to associate with asset (1-100 brand IDs)
-          example:
-          - 123e4567-e89b-12d3-a456-426614174000
-        asset_value:
-          type: string
-          description: The protected asset value (URL, handle, identifier, etc.)
-          example: https://linkedin.com/company/example
     ErrorResponse:
       title: ErrorResponse
       description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.

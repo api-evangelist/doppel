@@ -396,6 +396,28 @@ paths:
           get-reports-request: 1
 components:
   schemas:
+    ReportClassification:
+      description: New classification to update a report's url with (url required)
+      type: string
+      enum:
+      - suspicious
+      - down
+      - parked
+      - active
+    ReportStatus:
+      description: 'Status of which queue the report is in.
+
+        (Note: taken_down is equivalent to Resolved in the Doppel Vision App)
+
+        '
+      type: string
+      enum:
+      - doppel_review
+      - needs_confirmation
+      - actioned
+      - taken_down
+      - monitoring
+      - archived
     ReportSource:
       description: How the report was sourced.
       type: string
@@ -417,14 +439,19 @@ components:
       - Web Beacon
       - Other
       - Crawler
-    ReportClassification:
-      description: New classification to update a report's url with (url required)
+    Product:
+      description: Product category the report belongs to.
       type: string
       enum:
-      - suspicious
-      - down
-      - parked
-      - active
+      - domains
+      - social_media
+      - mobile_apps
+      - ecommerce
+      - crypto
+      - email
+      - paid_ads
+      - telco
+      - darkweb
     ReportResponse:
       title: ReportResponse
       description: Doppel report schema
@@ -510,19 +537,6 @@ components:
               name:
                 type: string
                 description: The name of the tag.
-    Product:
-      description: Product category the report belongs to.
-      type: string
-      enum:
-      - domains
-      - social_media
-      - mobile_apps
-      - ecommerce
-      - crypto
-      - email
-      - paid_ads
-      - telco
-      - darkweb
     AuditLog:
       title: AuditLog
       description: A log of the changes on a report.
@@ -578,20 +592,6 @@ components:
           type: string
           description: Human-readable error description.
           example: This is an error message
-    ReportStatus:
-      description: 'Status of which queue the report is in.
-
-        (Note: taken_down is equivalent to Resolved in the Doppel Vision App)
-
-        '
-      type: string
-      enum:
-      - doppel_review
-      - needs_confirmation
-      - actioned
-      - taken_down
-      - monitoring
-      - archived
   securitySchemes:
     api_key:
       type: apiKey
