@@ -310,6 +310,74 @@ webhooks:
           description: Invalid payload received.
 components:
   schemas:
+    ErrorResponse:
+      title: ErrorResponse
+      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error description.
+          example: This is an error message
+    ListEventsResponse:
+      type: object
+      required:
+      - data
+      - count
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/HrmEventResponse'
+        count:
+          type: integer
+          description: Total number of matching events
+    HrmEventPayload:
+      type: object
+      description: Payload type for the "HRM Event" webhook. Fired when a phishing simulation campaign engagement event is recorded (e.g., a target opens an attack email, clicks a link, submits data, completes training, or answers a vishing call).
+      required:
+      - action
+      - campaign_id
+      properties:
+        action:
+          type: string
+          description: 'The engagement action that was recorded. Values come from the SimCampaignActions enum (e.g., email_opened, link_visited, data_submitted, quiz_passed) or voice behavior labels (e.g., refusal, disclosure_full, security_escalation).
+
+            '
+          example: link_visited
+        campaign_id:
+          type: string
+          format: uuid
+          description: ID of the phishing simulation campaign.
+          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
+        sim_user_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: ID of the simulated user (target) who performed the action.
+          example: 12345678-abcd-ef01-2345-6789abcdef01
+        sim_attack_instance_id:
+          type: string
+          format: uuid
+          nullable: true
+          description: ID of the specific attack instance (email, SMS, voice call, etc.) the action relates to.
+          example: abcdef01-2345-6789-abcd-ef0123456789
+        source:
+          type: string
+          nullable: true
+          description: Attack vector or source context (e.g., "qr_code", "link", "voice_followup_email", "voice_followup_sms").
+          example: link
+        device_type:
+          type: string
+          nullable: true
+          description: Device type of the target user when the action was recorded.
+          enum:
+          - Desktop
+          - Mobile
+          - Tablet
+          example: Mobile
     HrmEventResponse:
       type: object
       required:
@@ -356,7 +424,7 @@ components:
         source:
           type: string
           description: Event source
-    ListEventsResponse:
+    ListCampaignsResponse:
       type: object
       required:
       - data
@@ -365,10 +433,10 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/HrmEventResponse'
+            $ref: '#/components/schemas/HrmCampaignResponse'
         count:
           type: integer
-          description: Total number of matching events
+          description: Total number of matching campaigns
     HrmCampaignResponse:
       type: object
       required:
@@ -402,74 +470,6 @@ components:
         is_test:
           type: boolean
           description: Whether this is a test campaign
-    ListCampaignsResponse:
-      type: object
-      required:
-      - data
-      - count
-      properties:
-        data:
-          type: array
-          items:
-            $ref: '#/components/schemas/HrmCampaignResponse'
-        count:
-          type: integer
-          description: Total number of matching campaigns
-    HrmEventPayload:
-      type: object
-      description: Payload type for the "HRM Event" webhook. Fired when a phishing simulation campaign engagement event is recorded (e.g., a target opens an attack email, clicks a link, submits data, completes training, or answers a vishing call).
-      required:
-      - action
-      - campaign_id
-      properties:
-        action:
-          type: string
-          description: 'The engagement action that was recorded. Values come from the SimCampaignActions enum (e.g., email_opened, link_visited, data_submitted, quiz_passed) or voice behavior labels (e.g., refusal, disclosure_full, security_escalation).
-
-            '
-          example: link_visited
-        campaign_id:
-          type: string
-          format: uuid
-          description: ID of the phishing simulation campaign.
-          example: a1b2c3d4-e5f6-7890-abcd-ef1234567890
-        sim_user_id:
-          type: string
-          format: uuid
-          nullable: true
-          description: ID of the simulated user (target) who performed the action.
-          example: 12345678-abcd-ef01-2345-6789abcdef01
-        sim_attack_instance_id:
-          type: string
-          format: uuid
-          nullable: true
-          description: ID of the specific attack instance (email, SMS, voice call, etc.) the action relates to.
-          example: abcdef01-2345-6789-abcd-ef0123456789
-        source:
-          type: string
-          nullable: true
-          description: Attack vector or source context (e.g., "qr_code", "link", "voice_followup_email", "voice_followup_sms").
-          example: link
-        device_type:
-          type: string
-          nullable: true
-          description: Device type of the target user when the action was recorded.
-          enum:
-          - Desktop
-          - Mobile
-          - Tablet
-          example: Mobile
-    ErrorResponse:
-      title: ErrorResponse
-      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
-      type: object
-      required:
-      - message
-      properties:
-        message:
-          type: string
-          description: Human-readable error description.
-          example: This is an error message
   securitySchemes:
     api_key:
       type: apiKey
