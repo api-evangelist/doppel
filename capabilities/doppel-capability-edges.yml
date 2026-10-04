@@ -1,0 +1,54 @@
+slug: doppel
+provider: Doppel
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 4
+edges:
+- tag: phishing-simulation
+  spec_file: doppel-phishing-simulation-api-openapi.yml
+  capability_id: BC-620.60
+  capability_id_l1: BC-620
+  capability_name: Security Awareness Management
+  confidence: 0.9
+  evidence: GET /phishing/track  track_campaign_actions  Track Phishing Campaign Actions
+  reason: Tracking actions on simulated phishing campaigns is exactly phishing-simulation / awareness
+    programme measurement under Security Awareness Management.
+- tag: hrm
+  spec_file: doppel-hrm-api-openapi.yml
+  capability_id: BC-620.60
+  capability_id_l1: BC-620
+  capability_name: Security Awareness Management
+  confidence: 0.8
+  evidence: GET /hrm/campaigns  list-hrm-campaigns  List Campaigns; "Human Risk Management campaigns"
+  reason: Despite the 'hrm' tag string, this is Human Risk Management — security awareness campaigns and
+    the employee events (clicks, reports) they generate. It is not HR/human capital; it maps to security
+    awareness management. Noted homograph risk handled.
+- tag: Alerts
+  spec_file: doppel-alerts-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.78
+  evidence: 'openapi description: "Brand Protection alerts, URL scanning, reports, protected assets";
+    schemas AlertDarkWebCredentialData, Severity, QueueState'
+  reason: Alert create/update/triage operations over impersonation, phishing and dark-web credential findings
+    constitute threat detection and response workflow. Brand Management (BC-400.20) is a competing reading
+    since the alerts are brand-protection oriented, so confidence is held below 0.8.
+- tag: Scan
+  spec_file: doppel-scan-api-openapi.yml
+  capability_id: BC-620.30
+  capability_id_l1: BC-620
+  capability_name: Threat Detection & Response Management
+  confidence: 0.75
+  evidence: POST /scan  scan  Submit Scan Url; "URL scanning"
+  reason: Submitting a URL for scanning and retrieving a verdict is malicious-content detection, which
+    realises threat detection and response within cybersecurity management.
