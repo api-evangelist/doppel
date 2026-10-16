@@ -1,0 +1,21 @@
+{
+  "repo": "doppel",
+  "feeds": [
+    {
+      "source": "https://www.doppel.com/blog",
+      "feed_url": "https://www.doppel.com/blog",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    },
+    {
+      "source": "https://www.doppel.com/feed",
+      "feed_url": "https://www.doppel.com/feed",
+      "title": "",
+      "saved": 9,
+      "method": "feed"
+    }
+  ],
+  "post_count": 9,
+  "fetched": "2026-10-10T13:15:00Z"
+}
