@@ -326,17 +326,20 @@ paths:
         user_api_key: []
 components:
   schemas:
-    ErrorResponse:
-      title: ErrorResponse
-      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
+    CreateProtectedAssetResponse:
+      title: CreateProtectedAssetResponse
+      description: Response model for created protected asset
       type: object
       required:
+      - data
       - message
       properties:
+        data:
+          $ref: '#/components/schemas/ProtectedAssetResponse'
         message:
           type: string
-          description: Human-readable error description.
-          example: This is an error message
+          description: Success message
+          example: Protected asset created successfully
     CreateProtectedAssetRequest:
       title: CreateProtectedAssetRequest
       description: Request model for creating a protected asset
@@ -390,20 +393,6 @@ components:
         count:
           type: integer
           description: Total number of protected assets returned
-    CreateProtectedAssetResponse:
-      title: CreateProtectedAssetResponse
-      description: Response model for created protected asset
-      type: object
-      required:
-      - data
-      - message
-      properties:
-        data:
-          $ref: '#/components/schemas/ProtectedAssetResponse'
-        message:
-          type: string
-          description: Success message
-          example: Protected asset created successfully
     ProtectedAssetResponse:
       title: ProtectedAssetResponse
       description: Response model for a single protected asset
@@ -481,6 +470,17 @@ components:
         updated_by:
           type: string
           description: User who last updated the asset. Changes made by Doppel on your behalf are shown as "Doppel". Null when the last editor is unknown.
+    ErrorResponse:
+      title: ErrorResponse
+      description: Standard error response returned for all non-2xx responses. Contains a single `message` field with a human-readable error description.
+      type: object
+      required:
+      - message
+      properties:
+        message:
+          type: string
+          description: Human-readable error description.
+          example: This is an error message
   securitySchemes:
     api_key:
       type: apiKey
